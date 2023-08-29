@@ -9,17 +9,42 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
-  
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
+  networking = {
+    # If using dhcpcd:
+    dhcpcd.extraConfig = "nohook resolv.conf";
+    networkmanager = {
+      enable = true;
+      #dns = "none";
+    };
+    nameservers = [
+      # "127.0.0.1"
+      # "::1"
+      "10.0.0.1"
+      "10.0.0.10"
+      "2a06:98c1:54::3cfe"
+    ];
+  };
 
-  # List services that you want to enable:
+  services.resolved.enable = false;
+  
+
+  # services.stubby = {
+  #   enable = true;
+  #   settings = pkgs.stubby.passthru.settingsExample // {
+  #     upstream_recursive_servers = [{
+  #       address_data = "2a06:98c1:54::3cfe";
+  #       tls_auth_name = "cloudflare-dns.com";
+  #       tls_pubkey_pinset = [{
+  #         digest = "sha256";
+  #         value = "GP8Knf7qBae+aIfythytMbYnL+yowaWVeD6MoLHkVRg=";
+  #       }];
+  #     }];
+  #   };
+  # };
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-  networking.extraHosts = 
+  networking.extraHosts =
     ''
       10.0.0.10 yuno.home
     '';
