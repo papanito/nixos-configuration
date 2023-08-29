@@ -43,9 +43,6 @@
   };
 
 
-  # Configure console keymap
-  console.keyMap = "sg";
-
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -88,5 +85,12 @@
 
   system.autoUpgrade = {
     enable = true;
+  };
+
+  console = {
+    earlySetup = true;
+    #font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
+    packages = with pkgs; [ terminus_font ];
+    keyMap = "sg";
   };
 }
