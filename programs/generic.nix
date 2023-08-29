@@ -17,13 +17,11 @@
     onlyoffice-bin
     solo2-cli
     evince
-    gnome.geary
     mutt
     tor
     tor-browser-bundle-bin
-    yubikey-touch-detector
-    spotify
     irssi
+    signal-desktop
     helix
     vim
   ];

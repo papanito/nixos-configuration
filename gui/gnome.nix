@@ -14,6 +14,7 @@
     totem # video player
     nautilus
     nautilus-python
+    geary
     sushi
   ]);
   
