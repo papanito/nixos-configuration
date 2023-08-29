@@ -9,9 +9,11 @@
     ace
     btrfs-progs
     coreutils
+    dnsutils
     curl
     exa
     fzf
+    nix-direnv
     parted
     gnupg
     wget
