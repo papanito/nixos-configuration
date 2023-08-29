@@ -14,6 +14,7 @@
     exa
     fzf
     nix-direnv
+    yubikey-touch-detector
     parted
     gnupg
     wget
