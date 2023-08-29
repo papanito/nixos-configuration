@@ -5,10 +5,12 @@
     [
        ./cloud.nix
        ./generic.nix
-       ./development.nix 
+       ./development.nix
+       ./pentesting.nix
+       ./multimedia.nix
        ./system.nix
        ./tuxedo.nix
-       ./virt.nix  
+       ./virt.nix
     ];
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
