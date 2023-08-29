@@ -88,5 +88,5 @@
 
   system.autoUpgrade = {
     enable = true;
-  }
+  };
 }
