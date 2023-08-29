@@ -2,31 +2,46 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:§
+{ config, pkgs, ... }:
 
 {
-  imports =
-    [ 
-      ./hardware # Include the results of the hardware scan.
+  imports = [ 
+    ./hardware # Include the results of the hardware scan.
 
-      ./gui
-      ./programs
-      ./services
-      ./boot.nix
-      ./pam.nix
-      ./fonts.nix
-      ./printing.nix
-      ./networking.nix
-      ./users.nix
-    ];
-
- 
+    ./gui
+    ./programs
+    ./services
+    ./boot.nix
+    ./pam.nix
+    ./fonts.nix
+    ./printing.nix
+    ./networking.nix
+    ./users.nix
+  ];
 
   # Set your time zone.
   time.timeZone = "Europe/Zurich";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
+  i18n.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+    "de_CH.UTF-8/UTF-8"
+  ];
+
+  i18n.extraLocaleSettings = {
+    LC_LANG = "en_US.UTF-8";
+    LC_ADDRESS = "de_CH.utf8";
+    LC_IDENTIFICATION = "de_CH.utf8";
+    LC_MEASUREMENT = "de_CH.utf8";
+    LC_MONETARY = "de_CH.utf8";
+    LC_NAME = "de_CH.utf8";
+    LC_NUMERIC = "de_CH.utf8";
+    LC_PAPER = "de_CH.utf8";
+    LC_TELEPHONE = "de_CH.utf8";
+    LC_TIME = "de_CH.utf8";
+  };
+
 
   # Configure console keymap
   console.keyMap = "sg";
