@@ -28,10 +28,15 @@
     gnome.gpaste
     nautilus-open-any-terminal
     gnomeExtensions.appindicator
-    gnomeExtensions.paperwm
+    # gnomeExtensions.paperwm
     gnomeExtensions.burn-my-windows
     gnomeExtensions.tophat
     gnomeExtensions.cloudflare-warp-quick-settings
+    gnomeExtensions.forge
+    gnomeExtensions.openweather
+    gnomeExtensions.task-widget
+    gnomeExtensions.tilingnome
+    gnomeExtensions.another-window-session-manager
   ];
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 }
