@@ -4,6 +4,7 @@
 { pkgs, ... }: {
   imports = [
     ./gnome.nix
+    ./generic.nix
   ];
   # Enable the X11 windowing system.
   services.xserver.enable = true;
