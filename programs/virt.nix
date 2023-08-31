@@ -18,6 +18,16 @@
     qemu
     virt-manager
     gnome.gnome-boxes
+    darling # Open-source Darwin/macOS emulation layer for Linuc
+    # 
+    (wine.override { wineBuild = "wine64"; })
+    # wine-staging (version with experimental features)
+    wineWowPackages.staging
+    # winetricks (all versions)
+    winetricks
+    # native wayland support (unstable)
+    wineWowPackages.waylandFull
+    bottles
   ];
 
   # virtualisation.virtualbox.host.enable = true;

@@ -7,5 +7,6 @@
     spotify
     yt-dlp
     ytmdl
+    ffmpeg-full
   ];
 }
