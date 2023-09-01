@@ -11,6 +11,7 @@
       gnomeExtensions.gsconnect
       gnomeExtensions.hue-lights
       gnomeExtensions.top-bar-organizer
+      gnomeExtensions.stocks-extension
     ];
   };
 }
