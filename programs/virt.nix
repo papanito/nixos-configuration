@@ -22,7 +22,7 @@
     # 
     (wine.override { wineBuild = "wine64"; })
     # wine-staging (version with experimental features)
-    wineWowPackages.staging
+    #wineWowPackages.staging
     # winetricks (all versions)
     winetricks
     # native wayland support (unstable)
