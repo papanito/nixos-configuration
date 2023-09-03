@@ -31,12 +31,12 @@
     # gnomeExtensions.paperwm
     gnomeExtensions.burn-my-windows
     gnomeExtensions.tophat
-    gnomeExtensions.cloudflare-warp-quick-settings
     gnomeExtensions.forge
     gnomeExtensions.openweather
     gnomeExtensions.task-widget
     gnomeExtensions.tilingnome
     gnomeExtensions.another-window-session-manager
+    gnomeExtensions.sound-output-device-chooser
   ];
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 }

@@ -12,10 +12,16 @@
     fd # A simple, fast and user-friendly alternative to find
     fq # jq for binary formats
     gnupg
+    gtop # graphic top
     gum # a tool for glamorous shell scripts
+    guake
+    tilix
     lsix # ls for images
     melt # Backup and restore Ed25519 SSH keys with seed words
-    nix-direnv
+    miller # Like awk, sed, cut, join, and sort for data formats such as CSV, TSV, JSON, JSON Lines, and positionally-indexed
+    direnv # A shell extension that manages your environment
+    nix-direnv # A fast, persistent use_nix implementation for direnv
+    nq # Unix command line queue utility
     pueue # A daemon for managing long running shell commands
     tmux
     thefuck # Magnificent app which corrects your previous console command

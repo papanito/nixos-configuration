@@ -20,12 +20,12 @@
     buildkit-nix #Nix frontend for BuildKit
     buildkite-cli # A command line interface for Buildkite
     buildah # A tool which facilitates building OCI images
+    wrangler_1
     cargo
     nodejs
     jq
     yq
-    guake
-    tilix
+    hurl #Command line tool that performs HTTP requests defined in a simple plain text format.
     python3Full
     navi
     terraform
@@ -35,5 +35,6 @@
     shellcheck # Shell script analysis tool
     nodePackages.zx # A tool for writing better scripts.
     insomnia # The most intuitive cross-platform REST API Client
+    just # A handy way to save and run project-specific commands
   ];
 }
