@@ -8,6 +8,7 @@
     [
       ./gui
       ./container.nix
+      ./cloud.nix
       ./generic.nix
       ./development.nix
       ./pentesting.nix
