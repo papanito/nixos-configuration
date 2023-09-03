@@ -11,9 +11,10 @@
     coreutils
     dnsutils
     curl
+    cifs-utils
     exa
     fzf
-    nix-direnv
+    home-manager
     yubikey-touch-detector
     parted
     gnupg
