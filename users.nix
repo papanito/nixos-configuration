@@ -8,10 +8,13 @@
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
     packages = with pkgs; [
       chezmoi
+      gnomeExtensions.espresso
       gnomeExtensions.gsconnect
       gnomeExtensions.hue-lights
       gnomeExtensions.top-bar-organizer
-      gnomeExtensions.stocks-extension
+      gnomeExtensions.stocks-extension # Outdated
+      gnomeExtensions.all-ip-addresses # fails
+      gnomeExtensions.show-external-ip-thisipcancyou # Outdated
     ];
   };
 }
