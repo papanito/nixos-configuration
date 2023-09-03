@@ -7,7 +7,7 @@
   imports =
     [
       ./gui
-      ./cloud.nix
+      ./container.nix
       ./generic.nix
       ./development.nix
       ./pentesting.nix

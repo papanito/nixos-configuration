@@ -14,7 +14,6 @@
     ./pam.nix
     ./fonts.nix
     ./printing.nix
-    ./networking.nix
     ./users.nix
 
      "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/main.tar.gz"}/modules/age.nix"
@@ -99,5 +98,12 @@
     #font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
     packages = with pkgs; [ terminus_font ];
     keyMap = "sg";
+  };
+
+  environment.etc."fuse.conf".text = ''
+    user_allow_other
+  '';
+  security.wrappers = {
+    fusermount.source  = "${pkgs.fuse}/bin/fusermount";
   };
 }

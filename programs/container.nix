@@ -13,11 +13,11 @@
     podman
     podman-desktop
     podman-compose
+    runc # A CLI tool for spawning and running containers according to the OCI specification
+    containerd # A daemon to control runC
     gnomeExtensions.containers
-    cloudflared
-    cloudflare-warp
-    gnomeExtensions.cloudflare
     wrangler_1
+    nova # Find outdated or deprecated Helm charts running in your cluster
   ];
 
   virtualisation = {
@@ -28,14 +28,13 @@
       dockerCompat = true;
 
       # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
-      # For Nixos version > 22.11
-      #defaultNetwork.settings = {
-      #  dns_enabled = true;
-      #};
+      defaultNetwork.settings = {
+        dns_enabled = true;
+      };
     };
-    #oci-containers = {
-    #  backend = "podman";
+
+    oci-containers = {
+     backend = "podman";
     #  containers = {
     #    container-name = {
     #      image = "container-image";
@@ -43,7 +42,7 @@
     #      ports = [ "127.0.0.1:1234:1234" ];
     #    };
     #  };
-    #};
+    };
   };
 }
 
