@@ -6,6 +6,8 @@
   environment.systemPackages = with pkgs; [
     ansible
     ansible-lint
+    anytype # P2P note-taking tool
+    obsidian # A powerful knowledge base that works on top of a local folder of plain text Markdown files
     gh # github cli
     act # Run your GitHub Actions locally
     actionlint # Static checker for GitHub Actions workflow files
@@ -27,6 +29,8 @@
     yq
     hurl #Command line tool that performs HTTP requests defined in a simple plain text format.
     python3Full
+    python311Packages.bootstrapped-pip
+    python311Packages.pip
     navi
     terraform
     terragrunt
