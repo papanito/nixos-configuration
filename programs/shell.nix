@@ -18,6 +18,8 @@
     tilix
     lsix # ls for images
     melt # Backup and restore Ed25519 SSH keys with seed words
+    mods # AI on the command line
+    glow # Render markdown on the CLI, with pizzazz
     miller # Like awk, sed, cut, join, and sort for data formats such as CSV, TSV, JSON, JSON Lines, and positionally-indexed
     direnv # A shell extension that manages your environment
     nix-direnv # A fast, persistent use_nix implementation for direnv

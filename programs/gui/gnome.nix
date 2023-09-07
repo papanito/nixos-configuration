@@ -30,11 +30,10 @@
     gnomeExtensions.appindicator
     # gnomeExtensions.paperwm
     gnomeExtensions.burn-my-windows
-    gnomeExtensions.tophat
-    gnomeExtensions.forge
+    #gnomeExtensions.tophat
+    #gnomeExtensions.forge
     gnomeExtensions.openweather
     gnomeExtensions.task-widget
-    gnomeExtensions.tilingnome
     gnomeExtensions.another-window-session-manager
     gnomeExtensions.sound-output-device-chooser
   ];
