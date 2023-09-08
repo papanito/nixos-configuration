@@ -15,6 +15,7 @@
     extraHosts =
       ''
         10.0.0.10 yuno.home
+        10.0.0.10 jf.home
       '';
 
     # If using dhcpcd:
@@ -27,8 +28,6 @@
     nameservers = [
       "127.0.0.1"
       "::1"
-      "10.0.0.1"
-      "10.0.0.10"
       "2a06:98c1:54::3cfe"
     ];
   };
@@ -50,8 +49,7 @@
         minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
       };
 
-      # You can choose a specific set of servers from https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/public-resolvers.md
-      # server_names = [ ... ];
+      forwarding_rules = "/etc/nixos/services/networking/forwarding-rules.txt";
     };
   };
 
