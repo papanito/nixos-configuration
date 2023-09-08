@@ -33,9 +33,9 @@
   
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
-  environment.interactiveShellInit = ''
-    alias ls=exa
-  '';
+  # environment.interactiveShellInit = ''
+  #   alias exa=eza
+  # '';
 
   # To add the zsh package to /etc/shells you must update environment.shells.
   environment.shells = with pkgs; [ zsh ];
