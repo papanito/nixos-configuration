@@ -4,35 +4,48 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    initrd = {
+      availableKernelModules = [
+        "xhci_pci"
+        "thunderbolt"
+        "nvme"
+        "usb_storage"
+        "usbhid"
+        "sd_mod"
+      ];
+      kernelModules = [ ];
+    };
+    kernelModules = [ "kvm-intel" ];
+    extraModulePackages = [ ];
+  };  
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/0a81878c-2e28-4c73-8589-96446e93c6a4";
+  fileSystems."/" = { 
+      device = "/dev/disk/by-uuid/0a81878c-2e28-4c73-8589-96446e93c6a4";
       fsType = "ext4";
-    };
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/a308663e-a262-448d-bfdf-16cd450cf246";
+  };
+  fileSystems."/home" = { 
+      device = "/dev/disk/by-uuid/a308663e-a262-448d-bfdf-16cd450cf246";
       fsType = "btrfs";
-    };
+  };
 
   boot.initrd.luks.devices."luks-266811b8-953c-4007-9bbd-ed9a009f72ed".device = "/dev/disk/by-uuid/266811b8-953c-4007-9bbd-ed9a009f72ed";
   boot.initrd.luks.devices."luks-361b9e74-4d96-49fa-9243-1676586caed0".device = "/dev/disk/by-uuid/361b9e74-4d96-49fa-9243-1676586caed0";
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/B581-AD78";
+  fileSystems."/boot" ={ 
+    device = "/dev/disk/by-uuid/B581-AD78";
       fsType = "vfat";
-    };
+  };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/0b1951d8-e365-4f7a-a072-10c383407677"; }
-    ];
+  swapDevices = [
+    { 
+      device = "/dev/disk/by-uuid/0b1951d8-e365-4f7a-a072-10c383407677";
+    }
+  ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -46,20 +59,17 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-#   environment.systemPackages = with pkgs; [
-#     sshfs
-#   ];
 
-#   fileSystems."/mnt/yunohost" = {
-#     device = "adrian@yuno.home:/home";
-#     fsType = "sshfs";
-#     options = [
-#       "noauto"
-#       "x-systemd.automount"
-#       "_netdev"
-#       "reconnect"
-#       "identityfile=/home/papanito/.ssh/id_rsa"
-#       "allow_other"
-#     ];
-#   };
+  fileSystems."/mnt/yunohost" = {
+    device = "admin@yuno.home:/media";
+    fsType = "sshfs";
+    options = [
+      "noauto"
+      "x-systemd.automount"
+      "_netdev"
+      "reconnect"
+      "identityfile=/home/papanito/.ssh/id_rsa"
+      "allow_other"
+    ];
+  };
 }
