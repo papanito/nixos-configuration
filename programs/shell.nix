@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  #linuxKernel.packages.linux_latest_libre.tuxedo-keyboard;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     curl
     exa

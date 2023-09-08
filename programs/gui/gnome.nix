@@ -26,6 +26,7 @@
     gnome.seahorse
     gnome3.gnome-tweaks
     gnome.gpaste
+    #gnome.polari
     nautilus-open-any-terminal
     gnomeExtensions.appindicator
     # gnomeExtensions.paperwm
@@ -36,6 +37,8 @@
     gnomeExtensions.task-widget
     gnomeExtensions.another-window-session-manager
     gnomeExtensions.sound-output-device-chooser
+    gnome.geary # Mail client for GNOME 3
+    gnomeExtensions.geary-tray-icon # Adds an icon to the panel to open mailbox and creating new mail.
   ];
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 }
