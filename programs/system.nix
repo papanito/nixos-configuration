@@ -3,8 +3,6 @@
 {
   #linuxKernel.packages.linux_latest_libre.tuxedo-keyboard;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     ace
     btrfs-progs
@@ -12,7 +10,8 @@
     dnsutils
     curl
     cifs-utils
-    exa
+    exa # a modern replacement for ls
+    # eza # replacement for exa which is unmaintained
     fzf
     home-manager
     yubikey-touch-detector
@@ -26,6 +25,7 @@
     busybox # Tiny versions of common UNIX utilities in a single small executable
     usbutils # Tools for working with USB devices, such as lsusb
     cifs-utils # Tools for managing Linux CIFS client filesystems
+    sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     nfstrace # NFS and CIFS tracing/monitoring/capturing/analyzing tool
     s3fs # Mount an S3 bucket as filesystem through FUSE
     ventoy-full # A New Bootable USB Solution
@@ -33,6 +33,9 @@
   
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
+  # environment.interactiveShellInit = ''
+  #   alias exa=eza
+  # '';
 
   # To add the zsh package to /etc/shells you must update environment.shells.
   environment.shells = with pkgs; [ zsh ];

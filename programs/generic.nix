@@ -16,6 +16,10 @@
     slides # Terminal based presentation tool
     ssh-tools # Collection of various tools using ssh
     topgrade # Upgrade all the things
+    discord # All-in-one cross-platform voice and text chat for gamers
+    slack # Desktop client for Slack
+    #teams # Microsoft Teams
+    wiki-tui # A simple and easy to use Wikipedia Text User Inter
   ];
   programs.gpaste.enable = true;
 }
