@@ -9,7 +9,7 @@
     kubectl
     google-cloud-sdk
     kubernetes-helm
-    podman
+    #podman
     podman-desktop
     podman-compose
     runc # A CLI tool for spawning and running containers according to the OCI specification
@@ -26,6 +26,12 @@
       # Create a `docker` alias for podman, to use it as a drop-in replacement
       dockerCompat = true;
 
+      autoPrune = {
+        enable = true; # Periodically prune Podman Images not in use.
+        dates = "weekly";
+        flags = [ "--all" ];
+      };
+
       # Required for containers under podman-compose to be able to talk to each other.
       defaultNetwork.settings = {
         dns_enabled = true;
@@ -33,15 +39,25 @@
     };
 
     oci-containers = {
-     backend = "podman";
-    #  containers = {
-    #    container-name = {
-    #      image = "container-image";
-    #      autoStart = true;
-    #      ports = [ "127.0.0.1:1234:1234" ];
-    #    };
-    #  };
+      backend = "podman";
+       containers = {
+         web-check = {
+           image = "lissy93/web-check";
+           autoStart = true;
+           ports = [ "127.0.0.1:8888:3000" ];
+         };
+      };
     };
+  };
+
+  networking = {
+    firewall.trustedInterfaces = [ "podman0" ];
+    #firewall.interfaces.podman0.allowedTCPPorts = [ 8888 ];
+    firewall.interfaces.podman0.allowedUDPPorts = [ 53 ];
+    firewall.allowedUDPPorts = [
+      53 # DNS
+      5353 # Multicast
+    ];
   };
 }
 
