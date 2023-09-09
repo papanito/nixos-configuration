@@ -19,7 +19,7 @@
     virt-manager
     gnome.gnome-boxes
     darling # Open-source Darwin/macOS emulation layer for Linuc
-    # 
+
     (wine.override { wineBuild = "wine64"; })
     # wine-staging (version with experimental features)
     #wineWowPackages.staging
