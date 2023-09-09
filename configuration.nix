@@ -45,9 +45,6 @@
   };
 
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
   # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
@@ -103,6 +100,7 @@
   environment.etc."fuse.conf".text = ''
     user_allow_other
   '';
+
   security.wrappers = {
     fusermount.source  = "${pkgs.fuse}/bin/fusermount";
   };
