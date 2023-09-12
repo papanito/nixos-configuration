@@ -44,7 +44,8 @@
     repository = "b2:papanito-private-backup:/clawfinger";
     timerConfig = {
       # backup every 1d
-      OnUnitActiveSec = "1d";
+      OnCalendar = "daily";
+      Persistent = true; 
     };
 
     environmentFile = config.age.secrets.restic_b2_credentials.path;
