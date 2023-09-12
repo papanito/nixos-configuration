@@ -10,6 +10,12 @@
     runc # A CLI tool for spawning and running containers according to the OCI specification
     containerd # A daemon to control runC
     gnomeExtensions.containers
+    kind
+    kubectl
+    google-cloud-sdk
+    kubernetes-helm
+    wrangler_1
+    nova # Find outdated or deprecated Helm charts running in your cluster
   ];
 
   virtualisation = {

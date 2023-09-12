@@ -8,12 +8,8 @@
   imports = [ 
     ./hardware # Include the results of the hardware scan.
 
-    ./programs
-    ./services
+    ./modules
     ./boot.nix
-    ./pam.nix
-    ./fonts.nix
-    ./printing.nix
     ./users.nix
   ];
 
