@@ -3,6 +3,7 @@
   imports = [
     ./gui
     ./networking
+    ./services
 
     ./cloud.nix
     ./container.nix
@@ -14,7 +15,6 @@
     ./pam.nix
     ./pentesting.nix
     ./printing.nix
-    ./restic.nix
     ./shell.nix
     ./system.nix
     ./virt.nix
