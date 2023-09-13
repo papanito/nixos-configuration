@@ -27,6 +27,7 @@
     ventoy-full # A New Bootable USB Solution
     wget
     yubikey-touch-detector
+    xdg-ninja
     zsh
     zoxide
   ];
