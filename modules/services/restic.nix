@@ -22,10 +22,10 @@
 
   age.secrets = {
     restic_b2_credentials = {
-      file = ../secrets/restic_b2_credentials.age;
+      file = ../../secrets/restic_b2_credentials.age;
     };
     restic_password = {
-      file = ../secrets/restic_password.age;
+      file = ../../secrets/restic_password.age;
     };
   };
 
