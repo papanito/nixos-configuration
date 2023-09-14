@@ -51,7 +51,7 @@
     environmentFile = config.age.secrets.restic_b2_credentials.path;
 
     exclude = [
-      "**/tmp"
+      "**/cs"
       "*/.android*"
       "*/.Android*"
       "*/.ansible/collections"
@@ -95,6 +95,7 @@
       "*/Public"
       "*/share"
       "*/snap"
+      "**/tmp"
       "*/Trash"
       "*/Videos/Children"
       "*/Videos/Movies"
