@@ -19,6 +19,8 @@
     nfstrace # NFS and CIFS tracing/monitoring/capturing/analyzing tool
     s3fs # Mount an S3 bucket as filesystem through FUSE
     usbutils # Tools for working with USB devices, such as lsusb
+    clamav # Antivirus engine designed for detecting Trojans, viruses, malware and other malicious threats
+    vt-cli # VirusTotal Command Line Interface
     ventoy-full # A New Bootable USB Solution
   ];
   
