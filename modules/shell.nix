@@ -3,6 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     age # Modern encryption tool with small explicit keys
+    alacritty #A cross-platform, GPU-accelerated terminal emulator
     agebox # Age based repository file encryption gitops tool
     bat # A cat(1) clone with syntax highlighting and Git integration
     btop # A monitor of resources
