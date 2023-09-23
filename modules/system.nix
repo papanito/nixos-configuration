@@ -22,6 +22,11 @@
     clamav # Antivirus engine designed for detecting Trojans, viruses, malware and other malicious threats
     vt-cli # VirusTotal Command Line Interface
     ventoy-full # A New Bootable USB Solution
+    wireplumber # A modular session / policy manager for PipeWire
+    bluez # Bluetooth support for Linux
+    bluez-tools # Command line bluetooth manager for Bluez5
+    blueman # GTK-based Bluetooth Manager
+    brightnessctl # This program allows you read and control device brightness
   ];
   
   programs.zsh.enable = true;
