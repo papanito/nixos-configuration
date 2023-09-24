@@ -18,5 +18,7 @@
     streamlink # CLI for extracting streams from various websites to video player of your choosing
     vlc # Cross-platform media player and streaming server
     rhythmbox # A music playing application for GNOME
+    tesseract # OCR engine
+    gnome-frog # Intuitive text extraction tool (OCR) for GNOME desktop
   ];
 }
