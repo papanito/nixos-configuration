@@ -81,7 +81,7 @@
   # https://discourse.nixos.org/t/best-practices-for-auto-upgrades-of-flake-enabled-nixos-systems/31255
   system.autoUpgrade = {
     enable = true;
-    flake = inputs.self.outPath;
+    #flake = inputs.self.outPath;
     flags = [
       "--update-input"
       "nixpkgs"
