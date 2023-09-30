@@ -33,13 +33,14 @@
     python311Packages.pip
     navi # An interactive cheatsheet tool for the command-line and application launchers
     terraform
-    terragrunt
+    terragrunt # A thin wrapper for Terraform that supports locking for Terraform state and enforces best practices
     terraform-docs # A utility to generate documentation from Terraform modules in various output formats
-    vscode
+    vscode # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
     vscodium # Open source source code editor developed by Microsoft for Windows, Linux and macOS (VS Code without MS branding/telemetry/licensing) 
     lazygit # Simple terminal UI for git commands
     shellcheck # Shell script analysis tool
     nodePackages.zx # A tool for writing better scripts.
+    nodePackages.snyk # snyk library and cli utility
     insomnia # The most intuitive cross-platform REST API Client
     just # A handy way to save and run project-specific commands
   ];
