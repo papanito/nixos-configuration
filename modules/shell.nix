@@ -34,6 +34,7 @@
     pueue # A daemon for managing long running shell commands
     ranger # File manager with minimalistic curses interface
     thefuck # Magnificent app which corrects your previous console command
+    contour # Modern C++ Terminal Emulator
     wezterm # GPU-accelerated cross-platform terminal emulator and multiplexer written by @wez and implemented in Rust
     wget
     xdg-ninja
