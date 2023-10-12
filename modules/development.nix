@@ -12,6 +12,7 @@
     act # Run your GitHub Actions locally
     actionlint # Static checker for GitHub Actions workflow files
     bump # CLI tool to draft a GitHub Release for the next semantic version
+    doppler # The official CLI for interacting with your Doppler Enclave secrets and configuration
     glab # gitlab cli
     git
     git-crypt
