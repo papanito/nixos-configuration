@@ -19,7 +19,6 @@
     nfstrace # NFS and CIFS tracing/monitoring/capturing/analyzing tool
     s3fs # Mount an S3 bucket as filesystem through FUSE
     usbutils # Tools for working with USB devices, such as lsusb
-    clamav # Antivirus engine designed for detecting Trojans, viruses, malware and other malicious threats
     vt-cli # VirusTotal Command Line Interface
     ventoy-full # A New Bootable USB Solution
     wireplumber # A modular session / policy manager for PipeWire
@@ -27,6 +26,10 @@
     bluez-tools # Command line bluetooth manager for Bluez5
     blueman # GTK-based Bluetooth Manager
     brightnessctl # This program allows you read and control device brightness
+
+    lynis # Security auditing tool for Linux, macOS, and UNIX-based systems
+    chkrootkit # Locally checks for signs of a rootkit
+    clamav # Antivirus engine designed for detecting Trojans, viruses, malware and other malicious threats
   ];
   
   programs.zsh.enable = true;
