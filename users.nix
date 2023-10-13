@@ -1,15 +1,11 @@
 { config, pkgs, ... }:
 
 {
-  users.groups.paperless = {
-    gid = 232071;
-  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.papanito = {
     isNormalUser = true;
     description = "papanito";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "paperless" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
     packages = with pkgs; [
       chezmoi
       gnomeExtensions.espresso
