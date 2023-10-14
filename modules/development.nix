@@ -32,6 +32,7 @@
     python3Full
     python311Packages.bootstrapped-pip
     python311Packages.pip
+    python311Packages.django # A high-level Python Web framework
     navi # An interactive cheatsheet tool for the command-line and application launchers
     terraform
     terragrunt # A thin wrapper for Terraform that supports locking for Terraform state and enforces best practices
