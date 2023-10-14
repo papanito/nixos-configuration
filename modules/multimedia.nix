@@ -10,8 +10,10 @@
     spotify
     spotify-tui # Spotify for the terminal written in Rust
     spotify-tray # Adds a tray icon to the Spotify Linux client application.
-    yt-dlp
-    ytmdl
+    yt-dlp # Command-line tool to download videos from YouTube.com and other sites (youtube-dl fork)
+    ytmdl # YouTube Music Downloader
+    youtube-dl # Command-line tool to download videos from YouTube.com and other sites
+    youtube-tui # An aesthetically pleasing YouTube TUI written in Rust
     ffmpeg-full
     gst_all_1.gstreamer # Open source multimedia framework
     peertube # A free software to take back control of your videos

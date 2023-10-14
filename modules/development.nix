@@ -16,7 +16,6 @@
     glab # gitlab cli
     git
     git-crypt
-    gitleaks # Scan git repos (or files) for secrets
     go
     openjdk19
     maven
