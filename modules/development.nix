@@ -1,8 +1,13 @@
 { config, pkgs, ... }:
-
+  let
+    my-python-packages = ps: with ps; [
+      pandas
+      requests
+      pip
+      django
+    ];
+  in
 {
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     ansible
     ansible-lint
@@ -29,10 +34,8 @@
     jq 
     yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
     hurl #Command line tool that performs HTTP requests defined in a simple plain text format.
-    python3Full
-    python311Packages.bootstrapped-pip
-    python311Packages.pip
-    python311Packages.django # A high-level Python Web framework
+    python3
+    (pkgs.python3.withPackages my-python-packages)
     navi # An interactive cheatsheet tool for the command-line and application launchers
     terraform
     terragrunt # A thin wrapper for Terraform that supports locking for Terraform state and enforces best practices
