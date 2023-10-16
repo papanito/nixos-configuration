@@ -1,0 +1,42 @@
+[
+ {
+  "Description": "Generic API Key",
+  "StartLine": 50,
+  "EndLine": 50,
+  "StartColumn": 19,
+  "EndColumn": 82,
+  "Match": "key = \"RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3\"",
+  "Secret": "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3",
+  "File": "services/networking/dns.nix",
+  "SymlinkFile": "",
+  "Commit": "5f610c756a990f755b02475b185a0846f43cdeab",
+  "Entropy": 5.110577,
+  "Author": "papanito",
+  "Email": "papanito@wyssmann.com",
+  "Date": "2023-09-03T14:26:53Z",
+  "Message": "feat: add cloudflare-warp, restructure files",
+  "Tags": [],
+  "RuleID": "generic-api-key",
+  "Fingerprint": "5f610c756a990f755b02475b185a0846f43cdeab:services/networking/dns.nix:generic-api-key:50"
+ },
+ {
+  "Description": "Generic API Key",
+  "StartLine": 51,
+  "EndLine": 51,
+  "StartColumn": 19,
+  "EndColumn": 82,
+  "Match": "key = \"RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3\"",
+  "Secret": "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3",
+  "File": "networking.nix",
+  "SymlinkFile": "",
+  "Commit": "a384b0a4f9a9e079ec77dc6822ccb574b1f63c27",
+  "Entropy": 5.110577,
+  "Author": "papanito",
+  "Email": "papanito@wyssmann.com",
+  "Date": "2023-08-29T13:11:49Z",
+  "Message": "feat: add encrpyted DNS",
+  "Tags": [],
+  "RuleID": "generic-api-key",
+  "Fingerprint": "a384b0a4f9a9e079ec77dc6822ccb574b1f63c27:networking.nix:generic-api-key:51"
+ }
+]

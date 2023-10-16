@@ -1,6 +1,24 @@
 { config, pkgs, ... }:
 
 {
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+
+  # Configure keymap in X11
+  services.xserver = {
+    layout = "ch";
+    xkbVariant = "de_nodeadkeys";
+  };
+  
+  programs.dconf.enable = true;
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  programs.gpaste.enable = true;
+
+
   environment.gnome.excludePackages = (with pkgs; [
     gnome-tour
   ])++ (with pkgs.gnome; [
@@ -18,8 +36,6 @@
     sushi
   ]);
   
-  programs.dconf.enable = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -51,5 +67,4 @@
     gnome.geary # Mail client for GNOME 3
     gnomeExtensions.geary-tray-icon # Adds an icon to the panel to open mailbox and creating new mail.
   ];
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 }
