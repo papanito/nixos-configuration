@@ -187,6 +187,7 @@ in
     bluez-tools # Command line bluetooth manager for Bluez5
     blueman # GTK-based Bluetooth Manager
     brightnessctl # This program allows you read and control device brightness
+    polkit # A toolkit for defining and handling the policy that allows unprivileged processes to speak to privileged processes
 
     lynis # Security auditing tool for Linux, macOS, and UNIX-based systems
     chkrootkit # Locally checks for signs of a rootkit
