@@ -50,16 +50,15 @@
     gnome-feeds # An RSS/Atom feed reader for GNOME
     gnome.zenity # Tool to display dialogs from the commandline and shell scripts
     gnome-photos # Access, organize and share your photos
-    #gnome.polari
     gnomecast # A native Linux GUI for Chromecasting local files
     denaro # Personal finance manager for GNOME
     nautilus-open-any-terminal
     gradience # Customize libadwaita and GTK3 apps (with adw-gtk3)
     gnomeExtensions.appindicator
-    # gnomeExtensions.paperwm
     gnomeExtensions.burn-my-windows
     #gnomeExtensions.tophat
     #gnomeExtensions.forge
+    gnomeExtensions.battery-health-charging # Battery Health Charging: An extension to maximize the battery life of laptops by setting their charging threshold or modes.
     gnomeExtensions.openweather
     gnomeExtensions.task-widget
     gnomeExtensions.another-window-session-manager
