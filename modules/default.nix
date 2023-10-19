@@ -21,7 +21,7 @@ in
     ./pentesting.nix
     ./printing.nix
     ./system.nix
-    # ./tuxedo.nix
+    ./tuxedo.nix
     ./virt.nix
   ];
 
@@ -62,69 +62,67 @@ in
     python311Packages.hcloud # Library for the Hetzner Cloud API
 
     ### Development ###
-    ansible
-    ansible-lint
-    anytype # P2P note-taking tool
-    obsidian # A powerful knowledge base that works on top of a local folder of plain text Markdown files
-    gh # github cli
     act # Run your GitHub Actions locally
     actionlint # Static checker for GitHub Actions workflow files
     bump # CLI tool to draft a GitHub Release for the next semantic version
-    doppler # The official CLI for interacting with your Doppler Enclave secrets and configuration
-    glab # gitlab cli
-    git
-    git-crypt
-    go
-    openjdk19
-    maven
+    ansible
+    ansible-lint
+    anytype # P2P note-taking tool
     buildkit # Concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit
     buildkit-nix #Nix frontend for BuildKit
     buildkite-cli # A command line interface for Buildkite
     buildah # A tool which facilitates building OCI images
-    wrangler_1 # A CLI tool designed for folks who are interested in using Cloudflare Workers
     cargo # Downloads your Rust project's dependencies and builds your project
-    nodejs
-    jq 
-    yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
+    doppler # The official CLI for interacting with your Doppler Enclave secrets and configuration
+    gh # github cli
+    glab # gitlab cli
+    git
+    git-crypt
+    go
     hurl #Command line tool that performs HTTP requests defined in a simple plain text format.
+    jq 
+    maven
+    nodejs
+    obsidian # A powerful knowledge base that works on top of a local folder of plain text Markdown files
+    openjdk19
     python3
     (pkgs.python3.withPackages my-python-packages)
     navi # An interactive cheatsheet tool for the command-line and application launchers
     terraform
     terragrunt # A thin wrapper for Terraform that supports locking for Terraform state and enforces best practices
     terraform-docs # A utility to generate documentation from Terraform modules in various output formats
-    vscode # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
-    vscodium # Open source source code editor developed by Microsoft for Windows, Linux and macOS (VS Code without MS branding/telemetry/licensing) 
-    lazygit # Simple terminal UI for git commands
     shellcheck # Shell script analysis tool
     nodePackages.zx # A tool for writing better scripts.
     nodePackages.snyk # snyk library and cli utility
     insomnia # The most intuitive cross-platform REST API Client
     just # A handy way to save and run project-specific commands
+    vscode # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
+    vscodium # Open source source code editor developed by Microsoft for Windows, Linux and macOS (VS Code without MS branding/telemetry/licensing) 
+    lazygit # Simple terminal UI for git commands
+    wrangler_1 # A CLI tool designed for folks who are interested in using Cloudflare Workers
+    yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
 
     ### Multimedia ###
     ghostscript
-    mpv # General-purpose media player, fork of MPlayer and mplayer2
+    gnome-frog # Intuitive text extraction tool (OCR) for GNOME desktop
     ncspot # Cross-platform ncurses Spotify client written in Rust, inspired by ncmpc and the likes
+    ffmpeg-full
+    gst_all_1.gstreamer # Open source multimedia framework
+    peertube # A free software to take back control of your videos
+    rhythmbox # A music playing application for GNOME
     spotify
     spotify-tui # Spotify for the terminal written in Rust
     spotify-tray # Adds a tray icon to the Spotify Linux client application.
+    streamlink # CLI for extracting streams from various websites to video player of your choosing
+    tesseract # OCR engine
+    vlc # Cross-platform media player and streaming server
     yt-dlp # Command-line tool to download videos from YouTube.com and other sites (youtube-dl fork)
     ytmdl # YouTube Music Downloader
     youtube-dl # Command-line tool to download videos from YouTube.com and other sites
     youtube-tui # An aesthetically pleasing YouTube TUI written in Rust
-    ffmpeg-full
-    gst_all_1.gstreamer # Open source multimedia framework
-    peertube # A free software to take back control of your videos
-    streamlink # CLI for extracting streams from various websites to video player of your choosing
-    vlc # Cross-platform media player and streaming server
-    rhythmbox # A music playing application for GNOME
-    tesseract # OCR engine
-    gnome-frog # Intuitive text extraction tool (OCR) for GNOME desktop
 
     ### Shell ###
     age # Modern encryption tool with small explicit keys
-    alacritty #A cross-platform, GPU-accelerated terminal emulator
     agebox # Age based repository file encryption gitops tool
     bat # A cat(1) clone with syntax highlighting and Git integration
     btop # A monitor of resources
@@ -167,6 +165,10 @@ in
     ### System ###
     btrfs-progs
     busybox # Tiny versions of common UNIX utilities in a single small executable
+    bluez # Bluetooth support for Linux
+    bluez-tools # Command line bluetooth manager for Bluez5
+    blueman # GTK-based Bluetooth Manager
+    brightnessctl # This program allows you read and control device brightness
     cifs-utils # Tools for managing Linux CIFS client filesystems
     coreutils # The GNU Core Utilities
     cryfs # Cryptographic filesystem for the cloud
@@ -183,14 +185,10 @@ in
     vt-cli # VirusTotal Command Line Interface
     ventoy-full # A New Bootable USB Solution
     wireplumber # A modular session / policy manager for PipeWire
-    bluez # Bluetooth support for Linux
-    bluez-tools # Command line bluetooth manager for Bluez5
-    blueman # GTK-based Bluetooth Manager
-    brightnessctl # This program allows you read and control device brightness
     polkit # A toolkit for defining and handling the policy that allows unprivileged processes to speak to privileged processes
 
-    lynis # Security auditing tool for Linux, macOS, and UNIX-based systems
     chkrootkit # Locally checks for signs of a rootkit
     clamav # Antivirus engine designed for detecting Trojans, viruses, malware and other malicious threats
+    lynis # Security auditing tool for Linux, macOS, and UNIX-based systems
   ];
 }
