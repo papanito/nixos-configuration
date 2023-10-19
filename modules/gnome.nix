@@ -58,7 +58,7 @@
     gnomeExtensions.burn-my-windows
     #gnomeExtensions.tophat
     #gnomeExtensions.forge
-    gnomeExtensions.battery-health-charging # Battery Health Charging: An extension to maximize the battery life of laptops by setting their charging threshold or modes.
+    #gnomeExtensions.battery-health-charging # Battery Health Charging: An extension to maximize the battery life of laptops by setting their charging threshold or modes.
     gnomeExtensions.openweather
     gnomeExtensions.task-widget
     gnomeExtensions.another-window-session-manager
