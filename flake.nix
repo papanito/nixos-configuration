@@ -16,9 +16,12 @@
           ./configuration.nix
           agenix.nixosModules.default
           tuxedo-nixos.nixosModules.default
-          { 
-            hardware.tuxedo-control-center.enable = true; 
-            # tuxedo-control-center.package = tuxedo-nixos.packages.x86_64-linux.default;
+          {
+            hardware = {
+              tuxedo-control-center.enable = true;
+              tuxedo-control-center.package = tuxedo-nixos.packages.x86_64-linux.default;
+              tuxedo-keyboard.enable = true;
+            };
           }
         ];
       };
