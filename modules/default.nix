@@ -30,29 +30,29 @@ in
     helix
     irssi
     mutt
-    rpi-imager
-    pdftk # Command-line tool for working with PDFs
-    solo2-cli
-    speechd # Common interface to speech synthesis
-    wl-clipboard
-    vim
-    libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice.o
-    slides # Terminal based presentation tool
-    ssh-tools # Collection of various tools using ssh
-    topgrade # Upgrade all the things
-    wiki-tui # A simple and easy to use Wikipedia Text User Inter
     bitwarden
     bitwarden-cli
     chromium
+    evince
     firefox
     gimp-with-plugins
     nextcloud-client
     onlyoffice-bin
-    evince
+    pdftk # Command-line tool for working with PDFs
+    libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice.o
+    thunderbird # A full-featured e-mail client
     tor-browser-bundle-bin
-    signal-desktop
     rpi-imager
+    signal-desktop
+    slides # Terminal based presentation tool
+    ssh-tools # Collection of various tools using ssh
+    solo2-cli
+    speechd # Common interface to speech synthesis
+    topgrade # Upgrade all the things
     timeline #  Display and navigate information on a timeline
+    vim
+    wl-clipboard
+    wiki-tui # A simple and easy to use Wikipedia Text User Inter
 
     ### cloud ###
     azure-cli
