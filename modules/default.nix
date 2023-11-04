@@ -36,21 +36,26 @@ in
     evince
     firefox
     gimp-with-plugins
+    imagemagick # A software suite to create, edit, compose, or convert bitmap images
+    logseq
+    libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice.o
     nextcloud-client
     onlyoffice-bin
     pdftk # Command-line tool for working with PDFs
-    libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice.o
-    thunderbird # A full-featured e-mail client
-    tor-browser-bundle-bin
+    pdfchain # A graphical user interface for the PDF Toolkit (PDFtk)
+    pdfarranger # Merge or split pdf documents and rotate, crop and rearrange their pages using an interactive and intuitive graphical interface
     rpi-imager
     signal-desktop
     slides # Terminal based presentation tool
     ssh-tools # Collection of various tools using ssh
     solo2-cli
     speechd # Common interface to speech synthesis
+    tor-browser-bundle-bin
     topgrade # Upgrade all the things
     timeline #  Display and navigate information on a timeline
+    thunderbird # A full-featured e-mail client
     vim
+    watchman # Watches files and takes action when they change
     wl-clipboard
     wiki-tui # A simple and easy to use Wikipedia Text User Inter
 
@@ -74,33 +79,35 @@ in
     buildah # A tool which facilitates building OCI images
     cargo # Downloads your Rust project's dependencies and builds your project
     doppler # The official CLI for interacting with your Doppler Enclave secrets and configuration
+    findutils # GNU Find Utilities, the basic directory searching utilities of the GNU operating system
     gh # github cli
     glab # gitlab cli
     git
     git-crypt
+    git-filter-repo # Quickly rewrite git repository history
+    lazygit # Simple terminal UI for git commands
     go
     hurl #Command line tool that performs HTTP requests defined in a simple plain text format.
+    insomnia # The most intuitive cross-platform REST API Client
     jq 
     maven
     nodejs
+    nodePackages.zx # A tool for writing better scripts.
+    nodePackages.snyk # snyk library and cli utility
     obsidian # A powerful knowledge base that works on top of a local folder of plain text Markdown files
     openjdk19
+    poppler # A PDF rendering library
+    poppler_utils # A PDF rendering library
     python3
     (pkgs.python3.withPackages my-python-packages)
-    navi # An interactive cheatsheet tool for the command-line and application launchers
     terraform
     terragrunt # A thin wrapper for Terraform that supports locking for Terraform state and enforces best practices
     terraform-docs # A utility to generate documentation from Terraform modules in various output formats
     shellcheck # Shell script analysis tool
-    nodePackages.zx # A tool for writing better scripts.
-    nodePackages.snyk # snyk library and cli utility
-    insomnia # The most intuitive cross-platform REST API Client
     just # A handy way to save and run project-specific commands
     vscode # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
     vscodium # Open source source code editor developed by Microsoft for Windows, Linux and macOS (VS Code without MS branding/telemetry/licensing) 
-    lazygit # Simple terminal UI for git commands
     wrangler_1 # A CLI tool designed for folks who are interested in using Cloudflare Workers
-    yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
 
     ### Multimedia ###
     ghostscript
@@ -140,10 +147,10 @@ in
     guake # Drop-down terminal for GNOME
     # tilix # Tiling terminal emulator following the Gnome Human Interface Guidelines
     python311Packages.pillow # The friendly PIL fork (Python Imaging Library)
-    w3m # A text-mode web browser
     lsix # ls for images
     melt # Backup and restore Ed25519 SSH keys with seed words
     mods # AI on the command line
+    navi # An interactive cheatsheet tool for the command-line and application launchers
     neofetch # A fast, highly customizable system info script
     glow # Render markdown on the CLI, with pizzazz
     miller # Like awk, sed, cut, join, and sort for data formats such as CSV, TSV, JSON, JSON Lines, and positionally-indexed
@@ -153,10 +160,13 @@ in
     pueue # A daemon for managing long running shell commands
     ranger # File manager with minimalistic curses interface
     thefuck # Magnificent app which corrects your previous console command
-    contour # Modern C++ Terminal Emulator
+    #toybox # Lightweight implementation of some Unix command line utilities
+    w3m # A text-mode web browser
     wezterm # GPU-accelerated cross-platform terminal emulator and multiplexer written by @wez and implemented in Rust
     wget
     xdg-ninja
+    xz # A general-purpose data compression software, successor of LZMA
+    yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
     yubikey-touch-detector
     zellij # A terminal workspace with batteries included
     zsh
@@ -164,7 +174,6 @@ in
 
     ### System ###
     btrfs-progs
-    busybox # Tiny versions of common UNIX utilities in a single small executable
     bluez # Bluetooth support for Linux
     bluez-tools # Command line bluetooth manager for Bluez5
     blueman # GTK-based Bluetooth Manager
@@ -173,8 +182,10 @@ in
     coreutils # The GNU Core Utilities
     cryfs # Cryptographic filesystem for the cloud
     dnsutils
+    file # A program that shows the type of files
     home-manager
     parted
+    psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
     ncdu # Disk usage analyzer with an ncurses interface
     power-profiles-daemon # Makes user-selected power profiles handling available over D-Bus
     gnomeExtensions.power-profile-switcher # Automatically switch between power profiles based on power supply and percentage.
