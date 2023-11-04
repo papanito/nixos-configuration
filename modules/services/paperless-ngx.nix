@@ -6,8 +6,9 @@
     address = "0.0.0.0";
     port = 58080;
     consumptionDirIsPublic = true;
-    mediaDir = "/home/papanito/paperless-ngx/media/";
+    mediaDir = "/home/papanito/paperless-ngx/";
     consumptionDir = "/home/papanito/paperless-ngx/consume";
+    user = "papanito";
 
     extraConfig = {
       PAPERLESS_OCR_LANGUAGE = "deu+eng";
@@ -15,6 +16,7 @@
       PAPERLESS_FILENAME_FORMAT = "{document_type}/{correspondent}/{created_year}/{correspondent}_{created_year}{created_month}{created_day}_{title}";
       PAPERLESS_CONSUMER_RECURSIVE =  true;
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = true;
+      PAPERLESS_TRASH_DIR = "/home/papanito/paperless-ngx/trash";
     };
   };
   systemd.services.paperless-scheduler.after = ["var-lib-paperless.mount"];
