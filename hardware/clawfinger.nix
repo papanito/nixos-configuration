@@ -24,6 +24,13 @@
     kernelPackages = pkgs.linuxPackages_latest;
     extraModulePackages = [ ];
   };  
+  
+  hardware.tuxedo-rs = {
+    enable = true;
+    tailor-gui.enable = true;
+  };
+  
+  hardware.tuxedo-keyboard.enable = true;
 
   fileSystems."/" = { 
       device = "/dev/disk/by-uuid/0a81878c-2e28-4c73-8589-96446e93c6a4";
@@ -59,7 +66,6 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
 
   fileSystems."/mnt/yunohost" = {
     device = "admin@yuno.home:/media";

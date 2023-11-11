@@ -63,7 +63,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "unstable"; # Did you read the comment?
 
   nix = {
     package = pkgs.nixFlakes;
@@ -74,7 +74,7 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 14d";
+      options = "--delete-older-than 30d";
     };
   };
 
@@ -106,4 +106,8 @@
   security.wrappers = {
     fusermount.source  = "${pkgs.fuse}/bin/fusermount";
   };
+
+  environment.systemPackages = [
+    pkgs.linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
+  ];
 }
