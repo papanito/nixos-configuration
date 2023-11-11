@@ -2,7 +2,7 @@
 
 {
   fonts= {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       font-awesome_4
       meslo-lgs-nf
       nerdfonts

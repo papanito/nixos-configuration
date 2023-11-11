@@ -18,7 +18,6 @@ in
     ./gnome.nix
     ./journald.nix
     ./pam.nix
-    ./pentesting.nix
     ./printing.nix
     ./system.nix
     ./tuxedo.nix
@@ -72,7 +71,7 @@ in
     bump # CLI tool to draft a GitHub Release for the next semantic version
     ansible
     ansible-lint
-    anytype # P2P note-taking tool
+    # anytype # P2P note-taking tool
     buildkit # Concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit
     buildkit-nix #Nix frontend for BuildKit
     buildkite-cli # A command line interface for Buildkite
@@ -135,8 +134,7 @@ in
     btop # A monitor of resources
     bats # Bash Automated Testing System
     curl # A command line tool for transferring files with URL syntax
-    exa # Replacement for 'ls' written in Rust
-    # eza # replacement for exa which is unmaintained
+    eza # replacement for exa which is unmaintained
     fzf # A command-line fuzzy finder written in Go
     fd # A simple, fast and user-friendly alternative to find
     feh # A light-weight image viewer
@@ -164,6 +162,7 @@ in
     w3m # A text-mode web browser
     wezterm # GPU-accelerated cross-platform terminal emulator and multiplexer written by @wez and implemented in Rust
     wget
+    xclip # Tool to access the X clipboard from a console application
     xdg-ninja
     xz # A general-purpose data compression software, successor of LZMA
     yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
