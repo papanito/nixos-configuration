@@ -157,10 +157,10 @@ in
     nq # Unix command line queue utility
     pueue # A daemon for managing long running shell commands
     ranger # File manager with minimalistic curses interface
+    terminator # Terminal emulator with support for tiling and tabs
     thefuck # Magnificent app which corrects your previous console command
     #toybox # Lightweight implementation of some Unix command line utilities
     w3m # A text-mode web browser
-    wezterm # GPU-accelerated cross-platform terminal emulator and multiplexer written by @wez and implemented in Rust
     wget
     xclip # Tool to access the X clipboard from a console application
     xdg-ninja
