@@ -5,6 +5,8 @@ let
     requests
     pip
     django
+    pillow # The friendly PIL fork (Python Imaging Library)
+    jupyter
   ];
 in
 
@@ -99,6 +101,7 @@ in
     poppler_utils # A PDF rendering library
     python3
     (pkgs.python3.withPackages my-python-packages)
+    pipenv # Python Development Workflow for Humans
     terraform
     terragrunt # A thin wrapper for Terraform that supports locking for Terraform state and enforces best practices
     terraform-docs # A utility to generate documentation from Terraform modules in various output formats
@@ -144,7 +147,6 @@ in
     gum # a tool for glamorous shell scripts
     guake # Drop-down terminal for GNOME
     # tilix # Tiling terminal emulator following the Gnome Human Interface Guidelines
-    python311Packages.pillow # The friendly PIL fork (Python Imaging Library)
     lsix # ls for images
     melt # Backup and restore Ed25519 SSH keys with seed words
     mods # AI on the command line
@@ -183,6 +185,7 @@ in
     dnsutils
     file # A program that shows the type of files
     home-manager
+    paper-age # Easy and secure paper backups of secrets
     parted
     psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
     ncdu # Disk usage analyzer with an ncurses interface

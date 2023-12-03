@@ -64,6 +64,6 @@
     gnomeExtensions.another-window-session-manager
     gnomeExtensions.sound-output-device-chooser
     gnome.geary # Mail client for GNOME 3
-    gnomeExtensions.geary-tray-icon # Adds an icon to the panel to open mailbox and creating new mail.
+    #gnomeExtensions.geary-tray-icon # Adds an icon to the panel to open mailbox and creating new mail.
   ];
 }
