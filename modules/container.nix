@@ -11,6 +11,7 @@
     containerd # A daemon to control runC
     gnomeExtensions.containers
     kind
+    k3s # lightweight Kubernetes distribution
     kubectl
     google-cloud-sdk
     kubernetes-helm
