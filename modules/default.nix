@@ -3,10 +3,11 @@ let
    my-python-packages = ps: with ps; [
     pandas
     requests
-    pip
+    pip # The PyPA recommended tool for installing Python packages
     django
     pillow # The friendly PIL fork (Python Imaging Library)
-    jupyter
+    jupyter # A high-level dynamically-typed programming language
+    notebook # Web-based notebook environment for interactive computing
   ];
 in
 
@@ -36,6 +37,7 @@ in
     chromium
     evince
     firefox
+    google-chrome
     gimp-with-plugins
     imagemagick # A software suite to create, edit, compose, or convert bitmap images
     logseq

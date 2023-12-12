@@ -1,7 +1,7 @@
 {
   inputs = {
     agenix.url = "github:ryantm/agenix";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # tuxedo-nixos = {
     #   url = "github:blitz/tuxedo-nixos";
     #   #inputs.nixpkgs.follows = "nixpkgs";
