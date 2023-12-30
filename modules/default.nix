@@ -48,6 +48,7 @@ in
     pdfchain # A graphical user interface for the PDF Toolkit (PDFtk)
     pdfarranger # Merge or split pdf documents and rotate, crop and rearrange their pages using an interactive and intuitive graphical interface
     rpi-imager
+    sad # CLI tool to search and replace
     signal-desktop
     slides # Terminal based presentation tool
     ssh-tools # Collection of various tools using ssh
