@@ -110,4 +110,6 @@
   environment.systemPackages = [
     pkgs.linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
   ];
+
+  services.envfs.enable = true;
 }
