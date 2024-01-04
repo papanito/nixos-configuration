@@ -6,17 +6,28 @@
     #   url = "github:blitz/tuxedo-nixos";
     #   #inputs.nixpkgs.follows = "nixpkgs";
     # };
-    pentesting.url = "/home/papanito/Workspaces/papanito/nix-pentesting";
+    # pentesting = {
+    #   url = "/home/papanito/Workspaces/papanito/nix-pentesting";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
-  outputs = { self, nixpkgs, agenix, pentesting }: {
+  outputs = { self, nixpkgs, ... }@inputs:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
+    {
     nixosConfigurations = {
       clawfinger = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
+        # extraSpecialArgs = {
+        #   inherit inputs;
+        # };
         modules = [
           ./configuration.nix
-          agenix.nixosModules.default
-          #pentesting.nixosModules.default
+          inputs.agenix.nixosModules.default
+          #inputs.pentesting.nixosModules.default
           # tuxedo-nixos.nixosModules.default
           # {
           #   hardware = {
