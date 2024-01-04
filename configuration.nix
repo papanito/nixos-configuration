@@ -2,11 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [ 
-    ./hardware # Include the results of the hardware scan.
+    ./hosts/clawfinger # Include the results of the hardware scan.
 
     ./modules
     ./boot.nix
@@ -106,10 +106,6 @@
   security.wrappers = {
     fusermount.source  = "${pkgs.fuse}/bin/fusermount";
   };
-
-  environment.systemPackages = [
-    pkgs.linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
-  ];
 
   services.envfs.enable = true;
 }
