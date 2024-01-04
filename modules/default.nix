@@ -40,8 +40,9 @@ in
     google-chrome
     gimp-with-plugins
     imagemagick # A software suite to create, edit, compose, or convert bitmap images
-    logseq
-    libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice.o
+    logseq # A local-first, non-linear, outliner notebook for organizing and sharing your personal knowledge base
+    libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice
+    mkcert # A simple tool for making locally-trusted development certificates
     nextcloud-client
     onlyoffice-bin
     pdftk # Command-line tool for working with PDFs
