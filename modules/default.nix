@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 let
    my-python-packages = ps: with ps; [
     pandas
@@ -19,7 +19,6 @@ in
     ./container.nix
     ./fonts.nix
     ./gnome.nix
-    ./journald.nix
     ./pam.nix
     ./printing.nix
     ./system.nix

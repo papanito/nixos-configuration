@@ -6,10 +6,10 @@
     #   url = "github:blitz/tuxedo-nixos";
     #   #inputs.nixpkgs.follows = "nixpkgs";
     # };
-    # pentesting = {
-    #   url = "/home/papanito/Workspaces/papanito/nix-pentesting";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    pentesting = {
+      url = "/home/papanito/Workspaces/papanito/nix-pentesting";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
@@ -27,7 +27,7 @@
         modules = [
           ./configuration.nix
           inputs.agenix.nixosModules.default
-          #inputs.pentesting.nixosModules.default
+          inputs.pentesting.nixosModules.default
           # tuxedo-nixos.nixosModules.default
           # {
           #   hardware = {
