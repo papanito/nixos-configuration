@@ -24,7 +24,6 @@
   ])++ (with pkgs.gnome; [
     cheese # webcam tool
     gnome-terminal
-    gedit # text editor
     epiphany # web browser
     geary # email reader
     seahorse
@@ -46,6 +45,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     bleachbit # A program to clean your computer
+    gedit # text editor
     gnome-usage # A nice way to view information about use of system resources, like memory and disk space
     gnome-feeds # An RSS/Atom feed reader for GNOME
     gnome-photos # Access, organize and share your photos
