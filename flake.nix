@@ -2,6 +2,7 @@
   inputs = {
     agenix.url = "github:ryantm/agenix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    #home-manager = 
     # tuxedo-nixos = {
     #   url = "github:blitz/tuxedo-nixos";
     #   #inputs.nixpkgs.follows = "nixpkgs";
