@@ -20,7 +20,7 @@
     {
     nixosConfigurations = {
       clawfinger = nixpkgs.lib.nixosSystem {
-        inherit system;
+        #inherit inputs;
         # extraSpecialArgs = {
         #   inherit inputs;
         # };

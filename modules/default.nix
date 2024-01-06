@@ -130,7 +130,6 @@ in
     tesseract # OCR engine
     vlc # Cross-platform media player and streaming server
     yt-dlp # Command-line tool to download videos from YouTube.com and other sites (youtube-dl fork)
-    ytmdl # YouTube Music Downloader
     youtube-dl # Command-line tool to download videos from YouTube.com and other sites
     youtube-tui # An aesthetically pleasing YouTube TUI written in Rust
 
