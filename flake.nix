@@ -21,10 +21,7 @@
     {
     nixosConfigurations = {
       clawfinger = nixpkgs.lib.nixosSystem {
-        #inherit inputs;
-        # extraSpecialArgs = {
-        #   inherit inputs;
-        # };
+        specialArgs = { inherit inputs; };
         modules = [
           ./configuration.nix
           inputs.agenix.nixosModules.default

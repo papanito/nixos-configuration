@@ -106,7 +106,7 @@
         "dirtyRev": "bb57a4e672655f9e937b721bd3925cd7235867d1-dirty",
         "dirtyShortRev": "bb57a4e-dirty",
         "lastModified": 1704296048,
-        "narHash": "sha256-Yqvz+2CUVsHEmlhbLuFFcZAGxTu4k6z/0/+lZAf69uo=",
+        "narHash": "sha256-GmzfR5SZYISSUv9EVb2PCPSbM2Yg8AopCkXpe22dI3g=",
         "type": "git",
         "url": "file:///home/papanito/Workspaces/papanito/nix-pentesting"
       },

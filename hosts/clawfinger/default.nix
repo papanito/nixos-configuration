@@ -26,4 +26,6 @@
   environment.systemPackages = [
     pkgs.linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
   ];
+
+  pentesting.enable = true;
 }
