@@ -108,4 +108,8 @@
   };
 
   services.envfs.enable = true;
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-25.9.0"
+  ];
 }
