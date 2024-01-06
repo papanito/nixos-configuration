@@ -18,6 +18,10 @@
   printing.enable = true;
   printing.drivers = [ pkgs.hplipWithPlugin ];
 
+  ## virtualisation
+  virtualisation.enable = true;
+  windows-support.enable = true;
+
   ## hardware specific system packages
   environment.systemPackages = [
     pkgs.linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
