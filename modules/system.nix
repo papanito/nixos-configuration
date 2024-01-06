@@ -6,4 +6,8 @@
 
   # To add the zsh package to /etc/shells you must update environment.shells.
   environment.shells = with pkgs; [ zsh ];
+
+  services.journald.extraConfig = ''
+    SystemMaxUse=2G
+  '';
 }
