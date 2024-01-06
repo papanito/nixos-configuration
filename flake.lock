@@ -96,10 +96,30 @@
         "type": "github"
       }
     },
+    "pentesting": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dirtyRev": "bb57a4e672655f9e937b721bd3925cd7235867d1-dirty",
+        "dirtyShortRev": "bb57a4e-dirty",
+        "lastModified": 1704296048,
+        "narHash": "sha256-Yqvz+2CUVsHEmlhbLuFFcZAGxTu4k6z/0/+lZAf69uo=",
+        "type": "git",
+        "url": "file:///home/papanito/Workspaces/papanito/nix-pentesting"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/papanito/Workspaces/papanito/nix-pentesting"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "pentesting": "pentesting"
       }
     },
     "systems": {
