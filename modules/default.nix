@@ -24,6 +24,7 @@ in
     ./system.nix
     ./tuxedo.nix
     ./virt.nix
+    ./wine.nix
   ];
 
   environment.systemPackages = with pkgs; [
