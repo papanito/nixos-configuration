@@ -4,6 +4,7 @@
 { pkgs, ... }: {
   imports = [
     ./hardware.nix
+    ./networking
   ];
 
   ## pam stuff

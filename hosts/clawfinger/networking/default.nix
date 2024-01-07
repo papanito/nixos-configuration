@@ -4,7 +4,10 @@
   nixpkgs.config.allowUnfree = true;
 
   imports = [
-    ./firewall.nix
-    ./sshd.nix
+    ./cloudflare.nix
+    ./dns.nix
+    ./firejail.nix
+    ./tor.nix
+    ./vpn.nix
   ];
 }

@@ -63,6 +63,7 @@ in
     watchman # Watches files and takes action when they change
     wl-clipboard
     wiki-tui # A simple and easy to use Wikipedia Text User Inter
+    gixy # Nginx configuration static analyzer
 
     ### cloud ###
     azure-cli
