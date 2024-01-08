@@ -63,14 +63,10 @@ in
     watchman # Watches files and takes action when they change
     wl-clipboard
     wiki-tui # A simple and easy to use Wikipedia Text User Inter
-    gixy # Nginx configuration static analyzer
+    xgixy # Nginx configuration static analyzer
 
     ### cloud ###
-    azure-cli
     insync
-    google-cloud-sdk
-    hcloud # A command-line interface for Hetzner Cloud, a provider for cloud virtual private servers1
-    python311Packages.hcloud # Library for the Hetzner Cloud API
 
     ### Development ###
     act # Run your GitHub Actions locally
@@ -107,9 +103,6 @@ in
     python3
     (pkgs.python3.withPackages my-python-packages)
     pipenv # Python Development Workflow for Humans
-    terraform
-    terragrunt # A thin wrapper for Terraform that supports locking for Terraform state and enforces best practices
-    terraform-docs # A utility to generate documentation from Terraform modules in various output formats
     shellcheck # Shell script analysis tool
     just # A handy way to save and run project-specific commands
     vscode # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
