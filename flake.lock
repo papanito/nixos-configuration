@@ -103,10 +103,11 @@
         ]
       },
       "locked": {
-        "dirtyRev": "3e514497983ed1f537fbba82c091912cee49d77a-dirty",
-        "dirtyShortRev": "3e51449-dirty",
-        "lastModified": 1704548898,
-        "narHash": "sha256-RW/knrsSFKLOexfAv0j9cOt0gz+8zrVrWum+CarjDA4=",
+        "lastModified": 1704638000,
+        "narHash": "sha256-mFfl9B13ONqn1guuw2e44YJVcCQfvOzu4IfflFq53zo=",
+        "ref": "refs/heads/main",
+        "rev": "ecc4cf97643048841dc277a7a30b1f5a53a015e2",
+        "revCount": 4,
         "type": "git",
         "url": "file:///home/papanito/Workspaces/papanito/nix-pentesting"
       },
