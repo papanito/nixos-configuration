@@ -24,9 +24,11 @@
   windows-support.enable = true;
 
   ## hardware specific system packages
-  environment.systemPackages = [
-    pkgs.linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
+  environment.systemPackages = with pkgs; [
+    linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
+    insync
   ];
 
-  pentesting.enable = true;
+  pentesting.enable = false;
+  conatiner.enable = true;
 }
