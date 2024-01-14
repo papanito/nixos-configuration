@@ -82,11 +82,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1704194953,
-        "narHash": "sha256-RtDKd8Mynhe5CFnVT8s0/0yqtWFMM9LmCzXv/YKxnq4=",
+        "lastModified": 1705133751,
+        "narHash": "sha256-rCIsyE80jgiOU78gCWN3A0wE0tR2GI5nH6MlS+HaaSQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "bd645e8668ec6612439a9ee7e71f7eac4099d4f6",
+        "rev": "9b19f5e77dd906cb52dade0b7bd280339d2a1f3d",
         "type": "github"
       },
       "original": {
@@ -103,11 +103,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1704638000,
-        "narHash": "sha256-mFfl9B13ONqn1guuw2e44YJVcCQfvOzu4IfflFq53zo=",
+        "lastModified": 1704638096,
+        "narHash": "sha256-FTI6T/BLNgdB2A5Oz8l1GIq3DEQ0YXakHK2ne1BAcTE=",
         "ref": "refs/heads/main",
-        "rev": "ecc4cf97643048841dc277a7a30b1f5a53a015e2",
-        "revCount": 4,
+        "rev": "c64007abff8d21dbde228238815b08ab6927147a",
+        "revCount": 5,
         "type": "git",
         "url": "file:///home/papanito/Workspaces/papanito/nix-pentesting"
       },
