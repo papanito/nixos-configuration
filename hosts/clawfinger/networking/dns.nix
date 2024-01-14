@@ -49,7 +49,7 @@
         minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"; #gitleaks:allow
       };
 
-      forwarding_rules = "/etc/nixos/modules/networking/forwarding-rules.txt";
+      forwarding_rules = "/etc/nixos/hosts/clawfinger/networking/forwarding-rules.txt";
     };
   };
 
