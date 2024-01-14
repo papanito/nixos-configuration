@@ -1,4 +1,6 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? (import <nixpkgs> { 
+ config.allowUnfree = true;
+}), ... }:
 
 pkgs.mkShell
 {
@@ -10,6 +12,7 @@ pkgs.mkShell
     terraform
     terragrunt # A thin wrapper for Terraform that supports locking for Terraform state and enforces best practices
     terraform-docs # A utility to generate documentation from Terraform modules in various output formats
+    wrangler_1 # A CLI tool designed for folks who are interested in using Cloudflare Workers
   ];
 
   shellHook = ''
