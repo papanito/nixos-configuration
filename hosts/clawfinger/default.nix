@@ -18,6 +18,7 @@
   container.enable = true;
   cloud.enable = true;
   multimedia.enable = true;
+  office.enable = true;
 
   ## printing module
   printing.enable = true;
@@ -31,6 +32,7 @@
   environment.systemPackages = with pkgs; [
     linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
     insync
+    solo2-cli
   ];
 
   pentesting.enable = false;

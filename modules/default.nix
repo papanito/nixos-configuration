@@ -21,6 +21,7 @@ in
     ./fonts.nix
     ./gnome.nix
     ./multimedia.nix
+    ./office.nix
     ./pam.nix
     ./printing.nix
     ./system.nix
@@ -41,13 +42,7 @@ in
     firefox
     google-chrome
     logseq # A local-first, non-linear, outliner notebook for organizing and sharing your personal knowledge base
-    libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice
     mkcert # A simple tool for making locally-trusted development certificates
-    nextcloud-client
-    onlyoffice-bin
-    pdftk # Command-line tool for working with PDFs
-    pdfchain # A graphical user interface for the PDF Toolkit (PDFtk)
-    pdfarranger # Merge or split pdf documents and rotate, crop and rearrange their pages using an interactive and intuitive graphical interface
     rpi-imager
     signal-desktop
     slides # Terminal based presentation tool
@@ -166,7 +161,6 @@ in
     gnomeExtensions.power-profile-switcher # Automatically switch between power profiles based on power supply and percentage.
     sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     ssh-tools # Collection of various tools using ssh
-    solo2-cli
     nfstrace # NFS and CIFS tracing/monitoring/capturing/analyzing tool
     s3fs # Mount an S3 bucket as filesystem through FUSE
     usbutils # Tools for working with USB devices, such as lsusb
