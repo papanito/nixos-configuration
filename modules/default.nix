@@ -16,6 +16,7 @@ in
     ./networking
     ./services
 
+    ./cloud.nix
     ./container.nix
     ./fonts.nix
     ./gnome.nix

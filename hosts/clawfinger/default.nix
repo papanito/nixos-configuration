@@ -16,6 +16,7 @@
   # modules
   solokey.enable = true;
   container.enable = true;
+  cloud.enable = true;
 
   ## printing module
   printing.enable = true;
