@@ -18,7 +18,6 @@
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   programs.gpaste.enable = true;
 
-
   environment.gnome.excludePackages = (with pkgs; [
     gnome-tour
   ])++ (with pkgs.gnome; [
@@ -41,8 +40,6 @@
     sushi
   ]);
   
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     bleachbit # A program to clean your computer
     gedit # text editor

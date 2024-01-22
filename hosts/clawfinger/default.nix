@@ -13,14 +13,15 @@
     enableSSHSupport = true;
   };
 
+  # modules
   solokey.enable = true;
   container.enable = true;
 
-  ## printing
+  ## printing module
   printing.enable = true;
   printing.drivers = [ pkgs.hplipWithPlugin ];
 
-  ## virtualisation
+  ## virtualisation module
   virtualisation.enable = true;
   windows-support.enable = true;
 

@@ -61,8 +61,8 @@ in
     #xgixy # Nginx configuration static analyzer
 
     ### cloud ###
-    insync
-
+    terraform
+    
     ### Development ###
     act # Run your GitHub Actions locally
     actionlint # Static checker for GitHub Actions workflow files
@@ -82,6 +82,7 @@ in
     git # git
     git-crypt
     git-filter-repo # Quickly rewrite git repository history
+    gitleaks # Scan git repos (or files) for secrets
     lazygit # Simple terminal UI for git commands
     go
     hurl #Command line tool that performs HTTP requests defined in a simple plain text format.
