@@ -37,6 +37,6 @@
         ];
       };
     };
-    devShells.x86_64-linux.default = (import ./shells/cloud.nix { inherit pkgs; });
+    #devShells.x86_64-linux.default = (import ./shells/cloud.nix { inherit pkgs; });
   };
 }
