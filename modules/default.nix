@@ -20,6 +20,7 @@ in
     ./container.nix
     ./fonts.nix
     ./gnome.nix
+    ./multimedia.nix
     ./pam.nix
     ./printing.nix
     ./system.nix
@@ -62,7 +63,6 @@ in
     #xgixy # Nginx configuration static analyzer
 
     ### cloud ###
-    terraform
     
     ### Development ###
     act # Run your GitHub Actions locally
@@ -103,26 +103,6 @@ in
     just # A handy way to save and run project-specific commands
     vscode # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
     vscodium # Open source source code editor developed by Microsoft for Windows, Linux and macOS (VS Code without MS branding/telemetry/licensing) 
-
-    ### Multimedia ###
-    ffmpeg-full
-    gst_all_1.gstreamer # Open source multimedia framework
-    gimp-with-plugins
-    ghostscript # PostScript interpreter (mainline version)
-    gnome-frog # Intuitive text extraction tool (OCR) for GNOME desktop
-    imagemagick # A software suite to create, edit, compose, or convert bitmap images
-    ncspot # Cross-platform ncurses Spotify client written in Rust, inspired by ncmpc and the likes
-    peertube # A free software to take back control of your videos
-    rhythmbox # A music playing application for GNOME
-    spotify
-    spotify-tui # Spotify for the terminal written in Rust
-    spotify-tray # Adds a tray icon to the Spotify Linux client application.
-    streamlink # CLI for extracting streams from various websites to video player of your choosing
-    tesseract # OCR engine
-    vlc # Cross-platform media player and streaming server
-    yt-dlp # Command-line tool to download videos from YouTube.com and other sites (youtube-dl fork)
-    youtube-dl # Command-line tool to download videos from YouTube.com and other sites
-    youtube-tui # An aesthetically pleasing YouTube TUI written in Rust
 
     ### Shell and Terminal tools and apps ###
     age # Modern encryption tool with small explicit keys
