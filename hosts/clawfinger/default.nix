@@ -14,6 +14,7 @@
   };
 
   solokey.enable = true;
+  container.enable = true;
 
   ## printing
   printing.enable = true;
@@ -30,5 +31,4 @@
   ];
 
   pentesting.enable = false;
-  conatiner.enable = true;
 }
