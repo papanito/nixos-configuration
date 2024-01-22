@@ -14,6 +14,7 @@
   };
 
   # modules
+  gnome.enable = true;
   solokey.enable = true;
   container.enable = true;
   cloud.enable = true;
@@ -32,7 +33,6 @@
   environment.systemPackages = with pkgs; [
     linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
     insync
-    solo2-cli
   ];
 
   pentesting.enable = false;
