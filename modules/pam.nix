@@ -33,5 +33,9 @@ in
         destination = "/etc/udev/rules.d/70-solo2.rules";
       })
     ];
+
+    environment.systemPackages = with pkgs; [
+     solo2-cli
+    ];
   };
 }
