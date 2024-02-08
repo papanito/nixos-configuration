@@ -17,6 +17,8 @@
       PAPERLESS_CONSUMER_RECURSIVE =  true;
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = true;
       PAPERLESS_TRASH_DIR = "/home/papanito/paperless-ngx/trash";
+      PAPERLESS_CONVERT_TMPDIR = "/var/tmp/paperless";
+      PAPERLESS_SCRATCH_DIR = "/var/tmp/paperless-scratch";
     };
   };
   systemd.services.paperless-scheduler.after = ["var-lib-paperless.mount"];
