@@ -10,7 +10,7 @@
     consumptionDir = "/home/papanito/paperless-ngx/consume";
     user = "papanito";
 
-    extraConfig = {
+    settings = {
       PAPERLESS_OCR_LANGUAGE = "deu+eng";
       PAPERLESS_TIME_ZONE = "Europe/Zurich";
       PAPERLESS_FILENAME_FORMAT = "{document_type}/{correspondent}/{created_year}/{correspondent}_{created_year}{created_month}{created_day}_{title}";
