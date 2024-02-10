@@ -20,6 +20,7 @@
       ];
       kernelModules = [ ];
     };
+    runSize = "50%";
     kernelModules = [ "kvm-intel" ];
     kernelPackages = pkgs.linuxPackages_latest;
     extraModulePackages = [ ];
