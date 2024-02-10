@@ -13,6 +13,11 @@
     enableSSHSupport = true;
   };
 
+  services.logind.extraConfig = ''
+    RuntimeDirectorySize=32G
+    HandleLidSwitchDocked=ignore
+  '';
+
   # modules
   gnome.enable = true;
   solokey.enable = true;
@@ -33,6 +38,7 @@
   environment.systemPackages = with pkgs; [
     linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
     insync
+    profile-sync-daemon
   ];
 
   pentesting.enable = false;
