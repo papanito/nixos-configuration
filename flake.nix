@@ -14,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, nixpkgs, disko, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -23,10 +23,11 @@
     nixosConfigurations = {
       clawfinger = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
+        system = "x86_64-linux";
         modules = [
           ./configuration.nix
           inputs.agenix.nixosModules.default
-          inputs.pentesting.nixosModules.default
+          #inputs.pentesting.nixosModules.default
           # tuxedo-nixos.nixosModules.default
           # {
           #   hardware = {
