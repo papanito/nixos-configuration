@@ -6,10 +6,7 @@
 
 {
   imports = [ 
-    ./hosts/clawfinger # Include the results of the hardware scan.
-
     ./modules
-    ./users.nix
   ];
 
   # Set your time zone.
