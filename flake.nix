@@ -27,7 +27,7 @@
         modules = [
           ./configuration.nix
           inputs.agenix.nixosModules.default
-          #inputs.pentesting.nixosModules.default
+          inputs.pentesting.nixosModules.default
           # tuxedo-nixos.nixosModules.default
           # {
           #   hardware = {
