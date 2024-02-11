@@ -16,16 +16,33 @@
 
   outputs = { self, nixpkgs, disko, ... }@inputs:
     let
+      # System types to support.
+      supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
+
+      # Helper function to generate an attrset '{ x86_64-linux = f "x86_64-linux"; ... }'.
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+
+      # Nixpkgs instantiated for supported system types.
+      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; overlays = [ self.overlay ]; });
+
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
+    packages = forAllSystems (system:
+      let pkgs = nixpkgs.legacyPackages.${system};
+      #in { default = import ./pkgs { inherit pkgs; }; }
+      in { inherit pkgs; }
+    );
+
     nixosConfigurations = {
       clawfinger = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         inherit system;
         modules = [
           ./configuration.nix
+          ./hosts/clawfinger # Include the results of the hardware scan.
+          ./users.nix
           inputs.agenix.nixosModules.default
           inputs.pentesting.nixosModules.default
           # tuxedo-nixos.nixosModules.default
@@ -43,6 +60,7 @@
         modules = [
           ({modulesPath, ... }: {
             imports = [
+              ./configuration.nix
               "${modulesPath}/installer/scan/not-detected.nix"
               "${modulesPath}/profiles/qemu-guest.nix"
               disko.nixosModules.disko
