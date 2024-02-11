@@ -23,7 +23,7 @@
     nixosConfigurations = {
       clawfinger = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
-        system = "x86_64-linux";
+        inherit system;
         modules = [
           ./configuration.nix
           inputs.agenix.nixosModules.default
@@ -39,7 +39,7 @@
         ];
       };
       hetzner-cloud = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         modules = [
           ({modulesPath, ... }: {
             imports = [
