@@ -14,7 +14,7 @@ in
 {
   imports = [
     ./networking
-    ./services
+    #./services
 
     ./cloud.nix
     ./container.nix
@@ -25,7 +25,6 @@ in
     ./pam.nix
     ./printing.nix
     ./system.nix
-    ./tuxedo.nix
     ./virt.nix
     ./wine.nix
   ];
