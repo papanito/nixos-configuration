@@ -5,6 +5,7 @@
   imports = [
     ./hardware.nix
     ./networking
+    ./services
     ./boot.nix
   ];
 
