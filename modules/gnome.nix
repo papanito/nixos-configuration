@@ -74,6 +74,7 @@ in
       gnome-browser-connector # Native host connector for the GNOME Shell browser extension
       #gnomeExtensions.geary-tray-icon # Adds an icon to the panel to open mailbox and creating new mail.
       libgtop
+      transmission # torrent client
     ];
 
     environment.variables = {
