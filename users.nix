@@ -17,4 +17,8 @@
       gnomeExtensions.google-earth-wallpaper
     ];
   };
+
+  security.sudo.configFile = ''
+%wheel  ALL=(ALL) NOPASSWD:/run/current-system/sw/bin/cryptsetup, /run/wrappers/bin/mount
+  '';
 }
