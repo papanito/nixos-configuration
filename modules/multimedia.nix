@@ -10,6 +10,7 @@ in
   };
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
+      audacity #Sound editor with graphical UI
       ffmpeg-full
       gst_all_1.gstreamer # Open source multimedia framework
       gimp-with-plugins
@@ -22,12 +23,14 @@ in
       spotify
       spotify-tui # Spotify for the terminal written in Rust
       spotify-tray # Adds a tray icon to the Spotify Linux client application.
+      spotdl # Download your Spotify playlists and songs along with album art and metadata
       streamlink # CLI for extracting streams from various websites to video player of your choosing
       tesseract # OCR engine
       vlc # Cross-platform media player and streaming server
       yt-dlp # Command-line tool to download videos from YouTube.com and other sites (youtube-dl fork)
       youtube-dl # Command-line tool to download videos from YouTube.com and other sites
       youtube-tui # An aesthetically pleasing YouTube TUI written in Rust
+      ytmdl # neYouTube Music Downloader
     ];
   };
 }
