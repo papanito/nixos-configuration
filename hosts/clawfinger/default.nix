@@ -42,6 +42,7 @@
   solokey.enable = true;
   container.enable = true;
   cloud.enable = true;
+  development.enable = true;
   multimedia.enable = true;
   office.enable = true;
 
@@ -53,11 +54,42 @@
   virtualisation.enable = true;
   windows-support.enable = true;
 
-  ## hardware specific system packages
+  ## host-specific packages
   environment.systemPackages = with pkgs; [
     linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
     insync
     profile-sync-daemon
+    transmission # torrent client
+    deluge
+    qbittorrent
+    ollama
+    emacs
+    irssi
+    mutt
+    bitwarden
+    bitwarden-cli
+    chromium
+    evince
+    firefox
+    google-chrome
+    logseq # A local-first, non-linear, outliner notebook for organizing and sharing your personal knowledge base
+    mkcert # A simple tool for making locally-trusted development certificates
+    rpi-imager
+    signal-desktop
+    slides # Terminal based presentation tool
+    speechd # Common interface to speech synthesis
+    tor-browser-bundle-bin
+    tailscale # The node agent for Tailscale, a mesh VPN built on WireGuard
+    gnomeExtensions.tailscale-qs # Add Tailscale to GNOME quick settings
+    topgrade # Upgrade all the things
+    timeline #  Display and navigate information on a timeline
+    thunderbird # A full-featured e-mail client
+    vim
+    watchman # Watches files and takes action when they change
+    wl-clipboard
+    wiki-tui # A simple and easy to use Wikipedia Text User Inter
+    #xgixy # Nginx configuration static analyzer
+
   ];
 
   pentesting.enable = false;
