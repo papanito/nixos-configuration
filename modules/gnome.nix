@@ -26,6 +26,13 @@ in
     services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
     programs.gpaste.enable = true;
 
+    services.gnome = {
+      gnome-user-share.enable= true;
+      gnome-online-accounts.enable = true;
+      gnome-browser-connector.enable = true;
+    };
+    programs.seahorse.enable = true;
+
     environment.gnome.excludePackages = (with pkgs; [
       gnome-tour
     ])++ (with pkgs.gnome; [
@@ -78,6 +85,12 @@ in
 
     environment.variables = {
       GI_TYPELIB_PATH = "/run/current-system/sw/lib/girepository-1.0";
+    };
+    
+    qt = {
+      enable = true;
+      platformTheme = "gnome";
+      style = "adwaita-dark";
     };
   };
 }
