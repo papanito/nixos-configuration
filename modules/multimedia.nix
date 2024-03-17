@@ -21,7 +21,6 @@ in
       peertube # A free software to take back control of your videos
       rhythmbox # A music playing application for GNOME
       spotify
-      spotify-tui # Spotify for the terminal written in Rust
       spotify-tray # Adds a tray icon to the Spotify Linux client application.
       spotdl # Download your Spotify playlists and songs along with album art and metadata
       streamlink # CLI for extracting streams from various websites to video player of your choosing

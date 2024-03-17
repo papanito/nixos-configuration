@@ -11,13 +11,15 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       #podman
-      podman-desktop
+      #podman-desktop # outdated
+      podman-tui
       podman-compose
       runc # A CLI tool for spawning and running containers according to the OCI specification
       containerd # A daemon to control runC
       gnomeExtensions.containers
       kind
       k3s # lightweight Kubernetes distribution
+      slirp4netns # User-mode networking for unprivileged network namespaces
       kubectl
       google-cloud-sdk
       kubernetes-helm
