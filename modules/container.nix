@@ -12,6 +12,7 @@ in
     environment.systemPackages = with pkgs; [
       #podman
       #podman-desktop # outdated
+      pods # A podman desktop application
       podman-tui
       podman-compose
       runc # A CLI tool for spawning and running containers according to the OCI specification
