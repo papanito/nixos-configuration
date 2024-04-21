@@ -13,7 +13,6 @@
       gnomeExtensions.hue-lights
       gnomeExtensions.top-bar-organizer
       gnomeExtensions.stocks-extension # Outdated
-      gnomeExtensions.show-external-ip-thisipcancyou # Outdated
       gnomeExtensions.google-earth-wallpaper
     ];
   };
