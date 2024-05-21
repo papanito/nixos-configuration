@@ -15,7 +15,7 @@ in
       gst_all_1.gstreamer # Open source multimedia framework
       gimp
       #gimpPlugins.gap
-      gimpPlugins.gmic
+      #gimpPlugins.gmic
       gimpPlugins.bimp
       gimpPlugins.fourier
       gimpPlugins.texturize
