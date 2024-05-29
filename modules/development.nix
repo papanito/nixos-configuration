@@ -47,7 +47,7 @@ in
       nodePackages.zx # A tool for writing better scripts.
       nodePackages.snyk # snyk library and cli utility
       obsidian # A powerful knowledge base that works on top of a local folder of plain text Markdown files
-      openjdk19
+      openjdk21
       poppler # A PDF rendering library
       poppler_utils # A PDF rendering library
       python3
