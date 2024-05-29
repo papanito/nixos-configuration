@@ -36,6 +36,12 @@ in
 
     environment.systemPackages = with pkgs; [
      solo2-cli
+     pam_u2f
     ];
   };
 }
+
+# The pam module comes with a configration tool that can be used to create the keys-strings in the configration for your SoloKeys. Simply plugin your solokey into the USB port and then in a terminal run the following command:
+#
+# pamu2fcfg > ~/.config/Yubico/u2f_keys
+# pamu2fcfg -n >> ~/.config/Yubico/u2f_keys
