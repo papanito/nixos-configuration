@@ -29,7 +29,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
-    packages = forAllSystems (system:
+    pkgs = forAllSystems (system:
       let pkgs = nixpkgs.legacyPackages.${system};
       #in { default = import ./pkgs { inherit pkgs; }; }
       in { inherit pkgs; }
