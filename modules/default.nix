@@ -21,6 +21,7 @@
 
   environment.systemPackages = with pkgs; [
     helix
+    nixVersions.latest
     
     ### Shell and Terminal tools and apps ###
     age # Modern encryption tool with small explicit keys
@@ -46,7 +47,6 @@
     melt # Backup and restore Ed25519 SSH keys with seed words
     mods # AI on the command line
     navi # An interactive cheatsheet tool for the command-line and application launchers
-    neofetch # A fast, highly customizable system info script
     miller # Like awk, sed, cut, join, and sort for data formats such as CSV, TSV, JSON, JSON Lines, and positionally-indexed
     nq # Unix command line queue utility
     pueue # A daemon for managing long running shell commands
@@ -66,7 +66,7 @@
     xz # A general-purpose data compression software, successor of LZMA
     yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
     zellij # A terminal workspace with batteries included
-    zsh
+    zsh # zsh shell
     zoxide # A fast cd command that learns your habits
 
     ### System ###

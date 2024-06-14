@@ -53,7 +53,7 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 90d";
+      options = "--delete-older-than 250d";
     };
   };
 
@@ -88,9 +88,10 @@
 
   services.envfs.enable = true;
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0"
-  ];
-  
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    permittedInsecurePackages = [
+      "electron"
+    ];
+    allowUnfree = true;
+  };
 }
