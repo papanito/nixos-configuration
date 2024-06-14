@@ -25,6 +25,7 @@ in
       ansible
       ansible-lint
       # anytype # P2P note-taking tool
+      bruno # Open-source IDE For exploring and testing APIs
       buildkit # Concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit
       buildkit-nix #Nix frontend for BuildKit
       buildkite-cli # A command line interface for Buildkite
