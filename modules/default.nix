@@ -53,6 +53,7 @@
     ranger # File manager with minimalistic curses interface
     sad # CLI tool to search and replace
     tomb
+    timg # Terminal image and video viewer
     pinentry #GnuPG’s interface to passphrase input
     pinentry-curses #GnuPG’s interface to passphrase input
     steghide #Open source steganography program
