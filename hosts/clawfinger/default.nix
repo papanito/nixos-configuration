@@ -95,5 +95,11 @@
 
   ];
 
-  pentesting.enable = false;
+  pentesting = {
+    enable = true;
+    bruteforce = true;
+    generators = true;
+    osint = true;
+    sniffer = true;
+  };
 }

@@ -21,7 +21,6 @@
 
   environment.systemPackages = with pkgs; [
     helix
-    nixVersions.latest
     
     ### Shell and Terminal tools and apps ###
     age # Modern encryption tool with small explicit keys
@@ -44,6 +43,7 @@
     gum # a tool for glamorous shell scripts
     guake # Drop-down terminal for GNOME
     lsix # ls for images
+    lsof # Tool to list open files
     melt # Backup and restore Ed25519 SSH keys with seed words
     mods # AI on the command line
     navi # An interactive cheatsheet tool for the command-line and application launchers
@@ -95,7 +95,7 @@
     ventoy-full # A New Bootable USB Solution
     wireplumber # A modular session / policy manager for PipeWire
     polkit # A toolkit for defining and handling the policy that allows unprivileged processes to speak to privileged processes
-    yubikey-touch-detector
+    # yubikey-touch-detector
 
     ### Security ###
     chkrootkit # Locally checks for signs of a rootkit

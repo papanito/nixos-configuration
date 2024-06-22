@@ -54,3 +54,8 @@ in
 #
 # pamu2fcfg > ~/.config/Yubico/u2f_keys
 # pamu2fcfg -n >> ~/.config/Yubico/u2f_keys
+#
+# Testing:
+# nix-shell -p pamtester
+# pamtester login <username> authenticate
+# pamtester sudo <username> authenticate
