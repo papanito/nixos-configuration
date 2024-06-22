@@ -45,7 +45,8 @@
   system.stateVersion = "unstable"; # Did you read the comment?
 
   nix = {
-    package = pkgs.nixFlakes;
+    #package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.git;
     extraOptions= ''
       experimental-features = nix-command flakes
     '';
