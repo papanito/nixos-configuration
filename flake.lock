@@ -48,11 +48,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1718242063,
-        "narHash": "sha256-n3AWItJ4a94GT0cray/eUV7tt3mulQ52L+lWJN9d1E8=",
+        "lastModified": 1718846788,
+        "narHash": "sha256-9dtXYtEkmXoUJV+PGLqscqF7qTn4AIhAKpFWRFU2NYs=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "832a9f2c81ff3485404bd63952eadc17bf7ccef2",
+        "rev": "e1174d991944a01eaaa04bc59c6281edca4c0e6e",
         "type": "github"
       },
       "original": {
@@ -100,11 +100,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1718149104,
-        "narHash": "sha256-Ds1QpobBX2yoUDx9ZruqVGJ/uQPgcXoYuobBguyKEh8=",
+        "lastModified": 1718606988,
+        "narHash": "sha256-pmjP5ePc1jz+Okona3HxD7AYT0wbrCwm9bXAlj08nDM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e913ae340076bbb73d9f4d3d065c2bca7caafb16",
+        "rev": "38d3352a65ac9d621b0cd3074d3bef27199ff78f",
         "type": "github"
       },
       "original": {
@@ -116,11 +116,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1718318537,
-        "narHash": "sha256-4Zu0RYRcAY/VWuu6awwq4opuiD//ahpc2aFHg2CWqFY=",
+        "lastModified": 1718895438,
+        "narHash": "sha256-k3JqJrkdoYwE3fHE6xGDY676AYmyh4U2Zw+0Bwe5DLU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e9ee548d90ff586a6471b4ae80ae9cfcbceb3420",
+        "rev": "d603719ec6e294f034936c0d0dc06f689d91b6c3",
         "type": "github"
       },
       "original": {
@@ -138,10 +138,11 @@
         "utils": "utils"
       },
       "locked": {
-        "dirtyRev": "f70dfdffad930b04afd288980d91b5493aa06718-dirty",
-        "dirtyShortRev": "f70dfdf-dirty",
-        "lastModified": 1707571973,
-        "narHash": "sha256-oHmbE/boKZ+pYUrb1+IKJAh5KCki81wtXpdPc8dABBU=",
+        "lastModified": 1719046533,
+        "narHash": "sha256-Tyxs442d9eS77TsxwWSmbh+mGbUqc98SBztuIq4wS1Y=",
+        "ref": "refs/heads/main",
+        "rev": "4b3f1f1a6cf5a21170186368eb86536f59780203",
+        "revCount": 16,
         "type": "git",
         "url": "file:///home/papanito/Workspaces/papanito/nix-pentesting"
       },
@@ -193,11 +194,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1705309234,
-        "narHash": "sha256-uNRRNRKmJyCRC/8y1RqBkqWBLM034y4qN7EprSdmgyA=",
+        "lastModified": 1710146030,
+        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "1ef2e671c3b0c19053962c07dbda38332dcebf26",
+        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
         "type": "github"
       },
       "original": {
