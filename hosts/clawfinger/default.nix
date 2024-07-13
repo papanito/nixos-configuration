@@ -108,6 +108,11 @@
   pentesting = {
     enable = true;
     audit = true;
+    osint = true;
+    ids = true;
+    explotation = true;
+    sniffer = true;
+    vulnerability = true;
     bruteforce = true;
   };
 }
