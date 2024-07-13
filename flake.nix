@@ -1,7 +1,7 @@
 {
   inputs = {
     agenix.url = "github:ryantm/agenix";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     disko.url = "github:nix-community/disko";
     #home-manager = 
     # tuxedo-nixos = {
@@ -14,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, disko, ... }@inputs:
+  outputs = { self, nixpkgs, disko, pentesting, ... }@inputs:
     let
       # System types to support.
       supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
