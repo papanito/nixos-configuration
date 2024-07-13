@@ -20,8 +20,6 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    helix
-    
     ### Shell and Terminal tools and apps ###
     age # Modern encryption tool with small explicit keys
     agebox # Age based repository file encryption gitops tool
@@ -37,6 +35,7 @@
     feh # A light-weight image viewer
     fq # jq for binary formats
     glow # Render markdown on the CLI, with pizzazz
+    helix
     jq # A lightweight and flexible command-line JSON processor
     gnupg # Modern release of the GNU Privacy Guard, a GPL OpenPGP implementation
     gtop # graphic top
@@ -55,8 +54,8 @@
     sad # CLI tool to search and replace
     tomb
     timg # Terminal image and video viewer
-    pinentry #GnuPG’s interface to passphrase input
-    pinenry-curses #GnuPG’s interface to passphrase input
+    # pinentry #GnuPG’s interface to passphrase input
+    # pinenry-curses #GnuPG’s interface to passphrase input
     steghide #Open source steganography program
     terminator # Terminal emulator with support for tiling and tabs
     timg # Terminal image and video viewer
