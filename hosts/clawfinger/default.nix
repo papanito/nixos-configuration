@@ -60,7 +60,7 @@
     linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
     insync
     profile-sync-daemon
-    transmission # torrent client
+    #transmission # torrent client
     deluge
     qbittorrent
     ollama
@@ -79,27 +79,35 @@
     mkcert # A simple tool for making locally-trusted development certificates
     rclone # Command line program to sync files and directories to and from major cloud storage
     rpi-imager
-    signal-desktop
+    #signal-desktop
     slides # Terminal based presentation tool
     speechd # Common interface to speech synthesis
     tor-browser-bundle-bin
     tailscale # The node agent for Tailscale, a mesh VPN built on WireGuard
     gnomeExtensions.tailscale-qs # Add Tailscale to GNOME quick settings
     topgrade # Upgrade all the things
-    timeline #  Display and navigate information on a timeline
+    #timeline #  Display and navigate information on a timeline
     vim
     watchman # Watches files and takes action when they change
     wl-clipboard
-    wiki-tui # A simple and easy to use Wikipedia Text User Inter
+    wiki-tui # A simple and easy to use Wikipedia Text User Interface
+    xxh # Bring your favorite shell wherever you go through SSH
     #xgixy # Nginx configuration static analyzer
 
   ];
 
+  # programs.go = {
+  #   enable = true;
+  #   packages = { 
+  #     "golang.org/x/tools/mksub" = builtins.fetchGit {
+  #       url = "https://github.com/trickest/mksub";
+  #       rev = "c90cbdc254378cdcee972198f878435da79103af";
+  #     };
+  #   };
+  # }; 
   pentesting = {
     enable = true;
+    audit = true;
     bruteforce = true;
-    generators = true;
-    osint = true;
-    sniffer = true;
   };
 }

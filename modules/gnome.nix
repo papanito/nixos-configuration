@@ -36,6 +36,10 @@ in
     environment.gnome.excludePackages = (with pkgs; [
       gnome-tour
     ])++ (with pkgs.gnome; [
+      gnome-characters
+    ]);
+
+    environment.systemPackages = with pkgs; [
       cheese # webcam tool
       gnome-terminal
       epiphany # web browser
@@ -47,21 +51,16 @@ in
       totem # Movie player for the GNOME desktop based on GStreamer
       zenity # Tool to display dialogs from the commandline and shell scripts
       evince # document viewer
-      gnome-characters
       totem # video player
       nautilus
       nautilus-python
       geary
-      sushi
-    ]);
-    
-    environment.systemPackages = with pkgs; [
       bleachbit # A program to clean your computer
       gedit # text editor
-      gnome-usage # A nice way to view information about use of system resources, like memory and disk space
+      gnome-tweaks
       gnome-feeds # An RSS/Atom feed reader for GNOME
       gnome-photos # Access, organize and share your photos
-      gnome3.gnome-tweaks
+      gnome-usage # A nice way to view information about use of system resources, like memory and disk space
       gnomecast # A native Linux GUI for Chromecasting local files
       denaro # Personal finance manager for GNOME
       nautilus-open-any-terminal

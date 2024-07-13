@@ -44,6 +44,7 @@
     guake # Drop-down terminal for GNOME
     lsix # ls for images
     lsof # Tool to list open files
+    fswatch #Cross-platform file change monitor with multiple backends
     melt # Backup and restore Ed25519 SSH keys with seed words
     mods # AI on the command line
     navi # An interactive cheatsheet tool for the command-line and application launchers
@@ -55,10 +56,11 @@
     tomb
     timg # Terminal image and video viewer
     pinentry #GnuPG’s interface to passphrase input
-    pinentry-curses #GnuPG’s interface to passphrase input
+    pinenry-curses #GnuPG’s interface to passphrase input
     steghide #Open source steganography program
     terminator # Terminal emulator with support for tiling and tabs
-    thefuck # Magnificent app which corrects your previous console command
+    timg # Terminal image and video viewer
+    #thefuck # Magnificent app which corrects your previous console command
     w3m # A text-mode web browser
     wget
     xclip # Tool to access the X clipboard from a console application
