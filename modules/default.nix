@@ -54,12 +54,10 @@
     sad # CLI tool to search and replace
     tomb
     timg # Terminal image and video viewer
-    # pinentry #GnuPG’s interface to passphrase input
-    # pinenry-curses #GnuPG’s interface to passphrase input
     steghide #Open source steganography program
     terminator # Terminal emulator with support for tiling and tabs
     timg # Terminal image and video viewer
-    #thefuck # Magnificent app which corrects your previous console command
+    thefuck # Magnificent app which corrects your previous console command
     w3m # A text-mode web browser
     wget
     xclip # Tool to access the X clipboard from a console application
