@@ -36,10 +36,6 @@ in
     environment.gnome.excludePackages = (with pkgs; [
       gnome-tour
     ])++ (with pkgs.gnome; [
-      gnome-characters
-    ]);
-
-    environment.systemPackages = with pkgs; [
       cheese # webcam tool
       gnome-terminal
       epiphany # web browser
@@ -51,16 +47,21 @@ in
       totem # Movie player for the GNOME desktop based on GStreamer
       zenity # Tool to display dialogs from the commandline and shell scripts
       evince # document viewer
+      gnome-characters
       totem # video player
       nautilus
       nautilus-python
       geary
-      bleachbit # A program to clean your computer
+      sushi
+    ]);
+    
+    environment.systemPackages = with pkgs; [
+      bleachbit # A program to cleutiluan your computer
       gedit # text editor
-      gnome-tweaks
+      gnome-usage # A nice way to view information about use of system resources, like memory and disk space
       gnome-feeds # An RSS/Atom feed reader for GNOME
       gnome-photos # Access, organize and share your photos
-      gnome-usage # A nice way to view information about use of system resources, like memory and disk space
+      gnome3.gnome-tweaks
       gnomecast # A native Linux GUI for Chromecasting local files
       denaro # Personal finance manager for GNOME
       nautilus-open-any-terminal
@@ -68,17 +69,17 @@ in
       gnomeExtensions.appindicator
       gnomeExtensions.burn-my-windows
       gnomeExtensions.tophat
-      #gnomeExtensions.forge
       #gnomeExtensions.battery-health-charging # Battery Health Charging: An extension to maximize the battery life of laptops by setting their charging threshold or modes.
       gnomeExtensions.openweather
       gnomeExtensions.task-widget
       gnomeExtensions.another-window-session-manager
+      gnomeExtensions.smartcard-lock #This extension just locks the screen whenever a smartcard token recognized by GNOME as used for login is removed.
       gnomeExtensions.hue-lights # This extension controls Philips Hue compatible lights using Philips Hue Bridge on your local network, it also allows controlling Philips Hue Sync Box. I
       gnomeExtensions.google-earth-wallpaper # Sets your wallpaper to a random photo from the curated Google Earth collection (2604 photos).
       gnomeExtensions.stocks-extension # Stocks Extension brings stock quotes to your GNOME Shell Panel
+      gnomeExtensions.topicons-plus # Brings all icons back to the top panel, so that it's easier to keep track of apps running in the backround
       gnome.geary # Mail client for GNOME 3
       gnome-browser-connector # Native host connector for the GNOME Shell browser extension
-      #gnomeExtensions.geary-tray-icon # Adds an icon to the panel to open mailbox and creating new mail.
       libgtop
     ];
 
