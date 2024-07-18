@@ -31,7 +31,7 @@
     tailor-gui.enable = true;
   };
   
-  hardware.tuxedo-keyboard.enable = true;
+  #hardware.tuxedo-keyboard.enable = true;
 
   fileSystems."/" = { 
       device = "/dev/disk/by-uuid/0a81878c-2e28-4c73-8589-96446e93c6a4";

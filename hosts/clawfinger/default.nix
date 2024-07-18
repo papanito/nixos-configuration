@@ -57,7 +57,7 @@
 
   ## host-specific packages
   environment.systemPackages = with pkgs; [
-    linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
+    #linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
     insync
     profile-sync-daemon
     #transmission # torrent client
@@ -106,12 +106,5 @@
   
   pentesting = {
     enable = true;
-    audit = true;
-    osint = true;
-    ids = true;
-    explotation = true;
-    sniffer = true;
-    vulnerability = false;
-    bruteforce = true;
   };
 }
