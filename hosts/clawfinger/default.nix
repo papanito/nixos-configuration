@@ -78,6 +78,7 @@
     mkcert # A simple tool for making locally-trusted development certificates
     rclone # Command line program to sync files and directories to and from major cloud storage
     rpi-imager
+    element-desktop # A feature-rich client for Matrix.org
     signal-desktop
     slides # Terminal based presentation tool
     speechd # Common interface to speech synthesis
@@ -90,6 +91,8 @@
     watchman # Watches files and takes action when they change
     wl-clipboard
     wiki-tui # A simple and easy to use Wikipedia Text User Interface
+    warp # Fast and secure file transfer
+    warp-terminal # Rust-based terminal
     xxh # Bring your favorite shell wherever you go through SSH
     #xgixy # Nginx configuration static analyzer
   ];

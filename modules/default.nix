@@ -15,6 +15,7 @@
     ./pam.nix
     ./printing.nix
     ./system.nix
+    #./services.nix
     ./virt.nix
     ./wine.nix
   ];
