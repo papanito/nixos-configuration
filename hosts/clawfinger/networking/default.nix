@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   imports = [
-    ./cloudflare.nix
+    #./cloudflare.nix
     ./dns.nix
     ./firejail.nix
     ./tor.nix
