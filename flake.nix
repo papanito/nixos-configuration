@@ -1,20 +1,31 @@
 {
   inputs = {
-    agenix.url = "github:ryantm/agenix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    agenix.url = "github:ryantm/agenix";
     disko.url = "github:nix-community/disko";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     #home-manager = 
     # tuxedo-nixos = {
     #   url = "github:blitz/tuxedo-nixos";
     #   #inputs.nixpkgs.follows = "nixpkgs";
     # };
+  
     pentesting = {
       url = "/home/papanito/Workspaces/papanito/nix-pentesting";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, disko, agenix, pentesting, ... }@inputs:
+  outputs = { self, nixpkgs, disko, agenix, pentesting, sops-nix, ... }@inputs:
     let
       # System types to support.
       supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
@@ -45,6 +56,7 @@
           ./users.nix
           inputs.agenix.nixosModules.default
           inputs.pentesting.nixosModules.default
+          inputs.sops-nix.nixosModules.sops
         ];
       };
       hetzner-cloud = nixpkgs.lib.nixosSystem {

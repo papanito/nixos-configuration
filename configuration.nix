@@ -32,7 +32,6 @@
     LC_TIME = "de_CH.utf8";
   };
 
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
