@@ -1,0 +1,16 @@
+# Also see https://github.com/Mic92/dotfiles/blob/master/nixos/.sops.yaml
+# for a more complex example.
+keys:
+  - &admin_papanito age12q4dwh0zqgfxfswzydr3mq7ppm5htv73aqkrfpel9ppcmml3eqds5zzzhr
+  - &server_clawfinger age155ygrv7uzel70wp7tde2fp3xg9kjsht3kcu49rt3l89qw5j0tgsqsvccye 
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_papanito
+      - *server_clawfinger
+  - path_regex: secrets/clawfinger/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_papanito
+      - *server_clawfinger
