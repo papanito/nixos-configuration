@@ -39,6 +39,7 @@ in
       git-crypt
       git-filter-repo # Quickly rewrite git repository history
       gitleaks # Scan git repos (or files) for secrets
+      pre-commit-hook-ensure-sops # pre-commit hook to ensure that files that should be encrypted with sops are
       lazygit # Simple terminal UI for git commands
       go
       hurl #Command line tool that performs HTTP requests defined in a simple plain text format.
