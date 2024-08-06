@@ -17,6 +17,7 @@
     ./system.nix
     #./services.nix
     ./sops.nix
+    ./tmpfs.nix
     ./virt.nix
     ./wine.nix
   ];
