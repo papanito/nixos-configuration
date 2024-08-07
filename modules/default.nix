@@ -63,6 +63,7 @@
     thefuck # Magnificent app which corrects your previous console command
     w3m # A text-mode web browser
     wget
+    unzip
     xclip # Tool to access the X clipboard from a console application
     xdg-ninja
     xz # A general-purpose data compression software, successor of LZMA
