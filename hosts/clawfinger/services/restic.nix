@@ -38,7 +38,7 @@
       #
       #user = "restic";
       #
-      passwordFile = config.age.secrets.restic_password.path;
+      passwordFile = "/run/secrets/restic_password";
       # what to backup.
       paths = ["/home/papanito"];
       # the name of your repository.
@@ -49,7 +49,7 @@
         Persistent = true; 
       };
 
-      environmentFile = config.age.secrets.restic_b2_credentials.path;
+      environmentFile = "${config.sops.templates."restic.env".path}";
 
       exclude = [
         "**/cs"
