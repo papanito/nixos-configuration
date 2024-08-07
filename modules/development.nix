@@ -38,6 +38,7 @@ in
       git # git
       git-crypt
       git-filter-repo # Quickly rewrite git repository history
+      git-graph # Command line tool to show clear git graphs arranged for your branching model
       gitleaks # Scan git repos (or files) for secrets
       pre-commit-hook-ensure-sops # pre-commit hook to ensure that files that should be encrypted with sops are
       lazygit # Simple terminal UI for git commands
