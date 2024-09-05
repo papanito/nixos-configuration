@@ -19,6 +19,7 @@
     ./sops.nix
     ./sudo.nix
     ./tmpfs.nix
+    ./tuxedo.nix
     ./virt.nix
     ./wine.nix
   ];
