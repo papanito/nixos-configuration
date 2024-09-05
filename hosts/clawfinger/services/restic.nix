@@ -124,7 +124,7 @@
       # what to backup.
       paths = ["/home/papanito"];
       # the name of your repository.
-      repository = "/run/media/papanito/Backup/backup/clawfinger";
+      repository = "/home/backup/backup/clawfinger";
       timerConfig = {
         # backup every 1d
         OnCalendar = "daily";
