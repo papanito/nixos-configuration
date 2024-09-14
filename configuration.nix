@@ -45,7 +45,7 @@
 
   nix = {
     #package = pkgs.nixFlakes;
-    package = pkgs.nixVersions.git;
+    #package = pkgs.nixVersions.git;
     extraOptions= ''
       experimental-features = nix-command flakes
     '';
