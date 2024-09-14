@@ -45,6 +45,7 @@ in
       go
       hurl #Command line tool that performs HTTP requests defined in a simple plain text format.
       insomnia # The most intuitive cross-platform REST API Client
+      hugo # A fast and modern static website engine
       maven
       nodejs
       nodePackages.zx # A tool for writing better scripts.

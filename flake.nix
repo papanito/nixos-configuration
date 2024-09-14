@@ -1,6 +1,8 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs = {
+      url = "github:NixOS/nixpkgs/nixos-24.05";
+    };
     agenix.url = "github:ryantm/agenix";
     disko.url = "github:nix-community/disko";
     sops-nix = {
@@ -13,12 +15,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    #home-manager = 
-    # tuxedo-nixos = {
-    #   url = "github:blitz/tuxedo-nixos";
-    #   #inputs.nixpkgs.follows = "nixpkgs";
-    # };
-  
     pentesting = {
       url = "/home/papanito/Workspaces/papanito/nix-pentesting";
       inputs.nixpkgs.follows = "nixpkgs";
