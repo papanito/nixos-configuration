@@ -21,9 +21,12 @@
       kernelModules = [ ];
     };
     runSize = "50%";
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [ 
+      "kvm-intel"
+      "tuxedo_keyboard"
+    ];
     kernelPackages = pkgs.linuxPackages_6_6;
-    extraModulePackages = [ ];
+    extraModulePackages = [ ( config.boot.kernelPackages.callPackage ./../../tuxedo-keyboard/default.nix { } ) ];
   };  
   
   hardware.tuxedo-rs = {
