@@ -26,7 +26,6 @@
       "tuxedo_keyboard"
     ];
     kernelPackages = pkgs.linuxPackages_6_6;
-    extraModulePackages = [ ( config.boot.kernelPackages.callPackage ./../../tuxedo-keyboard/default.nix { } ) ];
   };  
   
   hardware.tuxedo-rs = {
