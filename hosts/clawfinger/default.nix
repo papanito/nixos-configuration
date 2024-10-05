@@ -57,7 +57,6 @@
 
   ## host-specific packages
   environment.systemPackages = with pkgs; [
-    #linuxKernel.packages.linux_latest_libre.tuxedo-keyboard
     insync
     profile-sync-daemon
     #transmission # torrent client
