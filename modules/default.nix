@@ -33,6 +33,7 @@
     curl # A command line tool for transferring files with URL syntax
     direnv # A shell extension that manages your environment
     nix-direnv # A fast, persistent use_nix implementation for direnv
+    entr # Run arbitrary commands when files change
     eza # replacement for exa which is unmaintained
     fzf # A command-line fuzzy finder written in Go
     fd # A simple, fast and user-friendly alternative to find
