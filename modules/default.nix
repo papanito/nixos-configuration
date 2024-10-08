@@ -33,7 +33,6 @@
     curl # A command line tool for transferring files with URL syntax
     direnv # A shell extension that manages your environment
     nix-direnv # A fast, persistent use_nix implementation for direnv
-    entr # Run arbitrary commands when files change
     eza # replacement for exa which is unmaintained
     fzf # A command-line fuzzy finder written in Go
     fd # A simple, fast and user-friendly alternative to find
@@ -48,7 +47,6 @@
     guake # Drop-down terminal for GNOME
     lsix # ls for images
     lsof # Tool to list open files
-    fswatch #Cross-platform file change monitor with multiple backends
     melt # Backup and restore Ed25519 SSH keys with seed words
     mods # AI on the command line
     navi # An interactive cheatsheet tool for the command-line and application launchers
@@ -64,6 +62,7 @@
     timg # Terminal image and video viewer
     thefuck # Magnificent app which corrects your previous console command
     w3m # A text-mode web browser
+    watchman # Watches files and takes action when they change
     wget
     unzip
     xclip # Tool to access the X clipboard from a console application
