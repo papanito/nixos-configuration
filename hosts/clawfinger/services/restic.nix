@@ -20,25 +20,13 @@
   #   #capabilities = "cap_dac_read_search=+ep";
   # };
 
-  age.secrets = {
-    restic_b2_credentials = {
-      file = ../../../secrets/restic_b2_credentials.age;
-    };
-    restic_password = {
-      file = ../../../secrets/restic_password.age;
-    };
-  };
-
   services.restic.backups = {
     b2 = {
       initialize = false;
-      # since this uses an `agenix` secret that's only readable to the
-      # root user, we need to run this script as root. If your
-      # environment is configured differently, you may be able to do:
       #
       #user = "restic";
       #
-      passwordFile = "/run/secrets/restic_password";
+      passwordFile = "${config.sops.secrets.restic_password.path}";
       # what to backup.
       paths = ["/home/papanito"];
       # the name of your repository.
@@ -49,6 +37,7 @@
         Persistent = true; 
       };
 
+      # defined in modules/sops.nix
       environmentFile = "${config.sops.templates."restic.env".path}";
 
       exclude = [
@@ -114,13 +103,10 @@
     };
     local = {
       initialize = true;
-      # since this uses an `agenix` secret that's only readable to the
-      # root user, we need to run this script as root. If your
-      # environment is configured differently, you may be able to do:
       #
       #user = "restic";
       #
-      passwordFile = config.age.secrets.restic_password.path;
+      passwordFile = "${config.sops.secrets.restic_password.path}";
       # what to backup.
       paths = ["/home/papanito"];
       # the name of your repository.
