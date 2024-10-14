@@ -35,6 +35,8 @@
         # backup every 1d
         OnCalendar = "daily";
         Persistent = true; 
+        OnSuccess = "systemd-desktop-notifier@%N.service,systemd-googlechat-notifier@%N.service";
+        OnFailure = "systemd-desktop-notifier@%N.service,systemd-googlechat-notifier@%N.service";
       };
 
       # defined in modules/sops.nix

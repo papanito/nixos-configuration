@@ -11,6 +11,7 @@
     secrets.restic_password = {};
     secrets.B2_ACCOUNT_ID = {};
     secrets.B2_ACCOUNT_KEY = {};
+    secrets.GOOGLE_CHAT_KEY = {};
     templates."restic.env".content = ''
       B2_ACCOUNT_ID=${config.sops.placeholder.B2_ACCOUNT_ID}
       B2_ACCOUNT_KEY=${config.sops.placeholder.B2_ACCOUNT_KEY}
