@@ -6,7 +6,7 @@
    ];
    systemd.services = {
       "systemd-googlechat-notifier@" = {
-         enable = true;
+         enable = false;
          description = "Send notifications to google chat endpoint";
          wantedBy = [ "default.target" ];
          after = [ "network.target" ];
@@ -70,7 +70,7 @@
          '';
       };
       "systemd-desktop-notifier@" = {
-         enable = true;
+         enable = false;
          description = "Send notifications to desktop";
          wantedBy = [ "default.target" ];
          after = [ "network.target" ];
