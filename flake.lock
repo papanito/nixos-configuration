@@ -48,11 +48,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1728334376,
-        "narHash": "sha256-CTKEKPzD/j8FK6H4DO3EjyixZd3HHvgAgfnCwpGFP5c=",
+        "lastModified": 1728922573,
+        "narHash": "sha256-FegyBabjV4868aJUbvFtqH0zKDEtUpeCAfnB1vWXeBg=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "d39ee334984fcdae6244f5a8e6ab857479cbaefe",
+        "rev": "3b778f10eb275573da9f5c8a7a49e774200b87e5",
         "type": "github"
       },
       "original": {
@@ -89,11 +89,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728337164,
-        "narHash": "sha256-VdRTjJFyq4Q9U7Z/UoC2Q5jK8vSo6E86lHc2OanXtvc=",
+        "lastModified": 1728903686,
+        "narHash": "sha256-ZHFrGNWDDriZ4m8CA/5kDa250SG1LiiLPApv1p/JF0o=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "038630363e7de57c36c417fd2f5d7c14773403e4",
+        "rev": "e1aec543f5caf643ca0d94b6a633101942fd065f",
         "type": "github"
       },
       "original": {
@@ -115,6 +115,23 @@
         "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1728327362,
+        "narHash": "sha256-2pibcwpoK22EySqSEio4yuHfadBfpr4FrC36LXxZ3Sg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "c5989b0173fa669297d1f92cee201cf77aa6c3eb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "rev": "c5989b0173fa669297d1f92cee201cf77aa6c3eb",
         "type": "github"
       }
     },
@@ -152,11 +169,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1728193676,
-        "narHash": "sha256-PbDWAIjKJdlVg+qQRhzdSor04bAPApDqIv2DofTyynk=",
+        "lastModified": 1728740863,
+        "narHash": "sha256-u+rxA79a0lyhG+u+oPBRtTDtzz8kvkc9a6SWSt9ekVc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ecbc1ca8ffd6aea8372ad16be9ebbb39889e55b6",
+        "rev": "a3f9ad65a0bf298ed5847629a57808b97e6e8077",
         "type": "github"
       },
       "original": {
@@ -174,11 +191,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1721321405,
-        "narHash": "sha256-BUpdvTPQk45ut0QU5xY0t3NXf/ey86imJ1OZQzQmGJs=",
+        "lastModified": 1729006857,
+        "narHash": "sha256-igBnE2/ANcIA2M6N6QbIFleVJt2PLFfRysODoUUCl48=",
         "ref": "refs/heads/main",
-        "rev": "6b01de00eb690ab6d52900b103ff69d294f8fe17",
-        "revCount": 30,
+        "rev": "0343eda9c72b9c96088dd276a3c247195edf082a",
+        "revCount": 31,
         "type": "git",
         "url": "file:///home/papanito/Workspaces/papanito/nix-pentesting"
       },
@@ -193,6 +210,7 @@
         "disko": "disko",
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgs-master": "nixpkgs-master",
         "pentesting": "pentesting",
         "sops-nix": "sops-nix"
       }

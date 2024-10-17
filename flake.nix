@@ -3,6 +3,13 @@
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-24.05";
     };
+    nixpkgs-master = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      ref = "master";
+      rev = "c5989b0173fa669297d1f92cee201cf77aa6c3eb";
+    };
     agenix.url = "github:ryantm/agenix";
     disko.url = "github:nix-community/disko";
     sops-nix = {
@@ -21,7 +28,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, disko, agenix, pentesting, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, disko, agenix, pentesting, sops-nix, nixpkgs-master, ... }@inputs:
     let
       # System types to support.
       supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
@@ -43,14 +50,13 @@
     );
 
     nixosConfigurations = {
-      clawfinger = nixpkgs.lib.nixosSystem {
+      clawfinger = nixpkgs-master.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         inherit system;
         modules = [
           ./configuration.nix
           ./hosts/clawfinger # Include the results of the hardware scan.
           ./users.nix
-          inputs.agenix.nixosModules.default
           inputs.pentesting.nixosModules.default
           inputs.sops-nix.nixosModules.sops
         ];
