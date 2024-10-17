@@ -18,22 +18,15 @@
         "usbhid"
         "sd_mod"
       ];
-      kernelModules = [ ];
+      kernelModules = [
+      ];
     };
-    runSize = "50%";
+    runSize = "20%";
     kernelModules = [ 
       "kvm-intel"
-      "tuxedo_keyboard"
     ];
-    kernelPackages = pkgs.linuxPackages_6_6;
+    kernelPackages = pkgs.linuxPackages_latest;
   };  
-  
-  hardware.tuxedo-rs = {
-    enable = true;
-    tailor-gui.enable = true;
-  };
-  
-  #hardware.tuxedo-keyboard.enable = true;
 
   fileSystems."/" = { 
       device = "/dev/disk/by-uuid/0a81878c-2e28-4c73-8589-96446e93c6a4";
@@ -69,17 +62,4 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  fileSystems."/mnt/yunohost" = {
-    device = "admin@yuno.home:/media";
-    fsType = "sshfs";
-    options = [
-      "noauto"
-      "x-systemd.automount"
-      "_netdev"
-      "reconnect"
-      "identityfile=/home/papanito/.ssh/id_rsa"
-      "allow_other"
-    ];
-  };
 }
