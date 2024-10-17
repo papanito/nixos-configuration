@@ -15,7 +15,6 @@
     ./pam.nix
     ./printing.nix
     ./system.nix
-    #./services.nix
     ./sops.nix
     ./sudo.nix
     ./tmpfs.nix
@@ -26,7 +25,6 @@
   environment.systemPackages = with pkgs; [
     ### Shell and Terminal tools and apps ###
     age # Modern encryption tool with small explicit keys
-    agebox # Age based repository file encryption gitops tool
     bat # A cat(1) clone with syntax highlighting and Git integration
     btop # A monitor of resources
     bats # Bash Automated Testing System
