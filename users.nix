@@ -12,8 +12,13 @@
       gnomeExtensions.gsconnect
       gnomeExtensions.hue-lights
       gnomeExtensions.top-bar-organizer
-      gnomeExtensions.stocks-extension # Outdated
-      gnomeExtensions.google-earth-wallpaper
+      gnomeExtensions.resolution-and-refresh-rate-in-quick-settings
+      gnomeExtensions.vscode-search-provider
+      gnomeExtensions.hue-lights # This extension controls Philips Hue compatible lights using Philips Hue Bridge on your local network, it also allows controlling Philips Hue Sync Box. I
+      gnomeExtensions.google-earth-wallpaper # Sets your wallpaper to a random photo from the curated Google Earth collection (2604 photos).
+      gnomeExtensions.stocks-extension # Stocks Extension brings stock quotes to your GNOME Shell Panel
+      gnomeExtensions.topicons-plus # Brings all icons back to the top panel, so that it's easier to keep track of apps running in the backround
+      #gnomeExtensions.battery-health-charging # Battery Health Charging: An extension to maximize the battery life of laptops by setting their charging threshold or modes.
     ];
   };
 
