@@ -69,15 +69,10 @@ in
       gnomeExtensions.appindicator
       gnomeExtensions.burn-my-windows
       gnomeExtensions.tophat
-      #gnomeExtensions.battery-health-charging # Battery Health Charging: An extension to maximize the battery life of laptops by setting their charging threshold or modes.
       gnomeExtensions.openweather
       gnomeExtensions.task-widget
       gnomeExtensions.another-window-session-manager
       gnomeExtensions.smartcard-lock #This extension just locks the screen whenever a smartcard token recognized by GNOME as used for login is removed.
-      gnomeExtensions.hue-lights # This extension controls Philips Hue compatible lights using Philips Hue Bridge on your local network, it also allows controlling Philips Hue Sync Box. I
-      gnomeExtensions.google-earth-wallpaper # Sets your wallpaper to a random photo from the curated Google Earth collection (2604 photos).
-      gnomeExtensions.stocks-extension # Stocks Extension brings stock quotes to your GNOME Shell Panel
-      gnomeExtensions.topicons-plus # Brings all icons back to the top panel, so that it's easier to keep track of apps running in the backround
       gnome.geary # Mail client for GNOME 3
       gnome-browser-connector # Native host connector for the GNOME Shell browser extension
       libgtop
