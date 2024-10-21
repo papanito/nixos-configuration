@@ -61,6 +61,15 @@
           inputs.sops-nix.nixosModules.sops
         ];
       };
+      envy = nixpkgs-master.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        inherit system;
+        modules = [
+          ./configuration.nix
+          ./hosts/envy # Include the results of the hardware scan.
+          inputs.sops-nix.nixosModules.sops
+        ];
+      };
       hetzner-cloud = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
