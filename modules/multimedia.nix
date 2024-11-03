@@ -26,6 +26,7 @@ in
       ghostscript # PostScript interpreter (mainline version)
       gnome-frog # Intuitive text extraction tool (OCR) for GNOME desktop
       imagemagick # A software suite to create, edit, compose, or convert bitmap images
+      nautilus
       ncspot # Cross-platform ncurses Spotify client written in Rust, inspired by ncmpc and the likes
       parabolic # Download web video and audio
       peertube # A free software to take back control of your videos
