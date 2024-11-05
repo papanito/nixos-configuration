@@ -3,14 +3,6 @@
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-24.05";
     };
-    nixpkgs-master = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "master";
-      rev = "c5989b0173fa669297d1f92cee201cf77aa6c3eb";
-    };
-    agenix.url = "github:ryantm/agenix";
     disko.url = "github:nix-community/disko";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -28,7 +20,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, disko, agenix, pentesting, sops-nix, nixpkgs-master, ... }@inputs:
+  outputs = { self, nixpkgs, disko, pentesting, sops-nix, ... }@inputs:
     let
       # System types to support.
       supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
@@ -50,7 +42,7 @@
     );
 
     nixosConfigurations = {
-      clawfinger = nixpkgs-master.lib.nixosSystem {
+      clawfinger = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         inherit system;
         modules = [
@@ -61,7 +53,7 @@
           inputs.sops-nix.nixosModules.sops
         ];
       };
-      envy = nixpkgs-master.lib.nixosSystem {
+      envy = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         inherit system;
         modules = [
@@ -88,7 +80,6 @@
             };
             services.openssh.enable = true;
 
-            environment.systemPackages = [ agenix.packages.${system}.default ];
             users.users.root.openssh.authorizedKeys.keys = [
               "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDDW6I1hIPUBCGNCLa7Rfb++19kqgWwz3oKoyOCGE8csP8W83VNCiNnDxOZf3uASpUtz9ObP67IV7YiSFKOKksC6jt8SpLFCITD2n9EdC1j7Aii6eX/oF4OeFLadi5iOvsnw4Y7exoon4U6FlGlc6PdfBOKTRyB3W+69QT7N0RDuWS7s2M6+lTOxGhlWP+qeYDh5aT8/GVIFXzJCk+0aEShzXvF23BnrfCfDj7owfxNayDCMpTw6wnDQCB535sQtTkK4UtLoOQVAzMOj3h7ErEVPkpYbxLaE36xal55kEWhyLdCwqoDOfEGvB+PSqIJ0WxMYsoRi7b2EazTzyj+TKJ0oUAlw8RecWiJjnqfxIf+fR2bx4fmhurTiVzXm/Iq9dJAO0dOr4YsZlpxeh8G6Cm6TlqbtRF9ULoNrx1bL5hz2aEgTlWEyvFzztap19o0UA8h67uu6YGwpQe4KUh8GO44pxtI0ZqLFTwNhqTYu/jX94g35+X+YflydKCE3nTl3x2Jyg6hzjAALziZmMxY3JfeSD8Y9+TFfJ9P3Vr+Ag6XSX9Vrc30fBOeD9gpNlcZybQBiQSPGPNWd/54R3ob3I6w4IgGhN7T4lqE6THxEOmCwkBzMt/9jo7MePG4qPD7rxsECa+Nf4X6cLCWg7rbZ2AvIqtEhcGOQ+dwRBG9WP+5DQ=="
             ];
