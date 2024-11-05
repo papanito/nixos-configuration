@@ -62,7 +62,6 @@
     profile-sync-daemon
     #transmission # torrent client
     deluge
-    qbittorrent
     ollama
     emacs
     irssi
