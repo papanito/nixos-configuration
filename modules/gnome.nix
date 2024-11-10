@@ -33,9 +33,7 @@ in
     };
     programs.seahorse.enable = true;
 
-    environment.gnome.excludePackages = (with pkgs; [
-      gnome-tour
-    ])++ (with pkgs.gnome; [
+    environment.systemPackages = with pkgs; [
       cheese # webcam tool
       gnome-terminal
       epiphany # web browser
@@ -47,21 +45,18 @@ in
       totem # Movie player for the GNOME desktop based on GStreamer
       zenity # Tool to display dialogs from the commandline and shell scripts
       evince # document viewer
-      gnome-characters
       totem # video player
       nautilus
       nautilus-python
       geary
       sushi
-    ]);
-    
-    environment.systemPackages = with pkgs; [
+      gnome-characters
       bleachbit # A program to cleutiluan your computer
       gedit # text editor
       gnome-usage # A nice way to view information about use of system resources, like memory and disk space
       gnome-feeds # An RSS/Atom feed reader for GNOME
       gnome-photos # Access, organize and share your photos
-      gnome3.gnome-tweaks
+      gnome-tweaks
       gnomecast # A native Linux GUI for Chromecasting local files
       denaro # Personal finance manager for GNOME
       nautilus-open-any-terminal
@@ -69,10 +64,10 @@ in
       gnomeExtensions.appindicator
       gnomeExtensions.burn-my-windows
       gnomeExtensions.tophat
-      gnomeExtensions.openweather
+      gnomeExtensions.openweather-refined
       gnomeExtensions.task-widget
       gnomeExtensions.another-window-session-manager
-      gnomeExtensions.smartcard-lock #This extension just locks the screen whenever a smartcard token recognized by GNOME as used for login is removed.
+      #gnomeExtensions.smartcard-lock #This extension just locks the screen whenever a smartcard token recognized by GNOME as used for login is removed.
       gnome.geary # Mail client for GNOME 3
       gnome-browser-connector # Native host connector for the GNOME Shell browser extension
       libgtop

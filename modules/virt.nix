@@ -19,7 +19,7 @@
     environment.systemPackages = with pkgs; [ 
       qemu
       virt-manager
-      gnome.gnome-boxes
+      gnome-boxes
       #darling # Open-source Darwin/macOS emulation layer for Linux
     ];
   };
