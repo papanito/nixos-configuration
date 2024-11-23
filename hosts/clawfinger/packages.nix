@@ -24,7 +24,6 @@
     signal-desktop
     slides # Terminal based presentation tool
     speechd # Common interface to speech synthesis
-    terminal-stocks # Terminal based application that provides stock price information
     tor-browser-bundle-bin
     tailscale # The node agent for Tailscale, a mesh VPN built on WireGuard
     gnomeExtensions.tailscale-qs # Add Tailscale to GNOME quick settings

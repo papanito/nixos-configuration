@@ -23,7 +23,7 @@ in
     };
     
     programs.dconf.enable = true;
-    services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+    services.udev.packages = with pkgs; [ gnome-settings-daemon ];
     programs.gpaste.enable = true;
 
     services.gnome = {
