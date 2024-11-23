@@ -8,6 +8,7 @@
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
     packages = with pkgs; [
       chezmoi
+      ticker # Terminal stock ticker with live updates and position tracking
       gnomeExtensions.espresso
       gnomeExtensions.gsconnect
       gnomeExtensions.hue-lights
