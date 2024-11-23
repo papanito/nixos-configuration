@@ -48,7 +48,6 @@ in
       totem # video player
       nautilus
       nautilus-python
-      geary
       sushi
       gnome-characters
       bleachbit # A program to cleutiluan your computer
@@ -68,7 +67,6 @@ in
       gnomeExtensions.task-widget
       gnomeExtensions.another-window-session-manager
       #gnomeExtensions.smartcard-lock #This extension just locks the screen whenever a smartcard token recognized by GNOME as used for login is removed.
-      gnome.geary # Mail client for GNOME 3
       gnome-browser-connector # Native host connector for the GNOME Shell browser extension
       libgtop
     ];
