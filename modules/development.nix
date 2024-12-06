@@ -25,6 +25,7 @@ in
       ansible
       ansible-lint
       # anytype # P2P note-taking tool
+      bfg-repo-cleaner # removes large or troublesome blobs in a git repository like git-filter-branch does, but faster
       bruno # Open-source IDE For exploring and testing APIs
       buildkit # Concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit
       buildkit-nix #Nix frontend for BuildKit
