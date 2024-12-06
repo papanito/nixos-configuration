@@ -8,7 +8,6 @@
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
     packages = with pkgs; [
       chezmoi
-      ticker # Terminal stock ticker with live updates and position tracking
       gnomeExtensions.espresso
       gnomeExtensions.gsconnect
       gnomeExtensions.hue-lights
@@ -19,6 +18,8 @@
       #gnomeExtensions.stocks-extension # Stocks Extension brings stock quotes to your GNOME Shell Panel
       gnomeExtensions.topicons-plus # Brings all icons back to the top panel, so that it's easier to keep track of apps running in the backround
       #gnomeExtensions.battery-health-charging # Battery Health Charging: An extension to maximize the battery life of laptops by setting their charging threshold or modes.
+      ticker # Terminal stock ticker with live updates and position tracking
+      vhs # Tool for generating terminal GIFs with code
     ];
   };
 

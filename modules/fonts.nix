@@ -5,12 +5,17 @@
     packages = with pkgs; [
       font-awesome_4
       meslo-lgs-nf
-      nerdfonts
+      nerd-fonts.droid-sans-mono
+      nerd-fonts.fantasque-sans-mono
+      nerd-fonts.meslo-lg
+      nerd-fonts.fira-mono
+      nerd-fonts.intone-mono
+      nerd-fonts.dejavu-sans-mono
+      nerd-fonts.terminess-ttf
       noto-fonts
       noto-fonts-emoji
       open-sans
       powerline-fonts
-      terminus-nerdfont
     ];
 
     fontconfig = {
