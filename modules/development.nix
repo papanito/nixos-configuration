@@ -33,6 +33,7 @@ in
       buildah # A tool which facilitates building OCI images
       cargo # Downloads your Rust project's dependencies and builds your project
       #doppler # The official CLI for interacting with your Doppler Enclave secrets and configuration
+      delta # Syntax-highlighting pager for git
       findutils # GNU Find Utilities, the basic directory searching utilities of the GNU operating system
       gh # github cli
       glab # gitlab cli

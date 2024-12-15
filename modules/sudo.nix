@@ -3,6 +3,13 @@
 {
   security.sudo = {
     enable = true;
+    configFile = ''
+# Command alias specification
+Cmnd_Alias TOMB = /usr/bin/tomb
+
+# Avoid that tomb execution is logged by syslog
+Defaults!TOMB !syslog
+'';
     extraRules = [{
       commands = [
         {
@@ -22,7 +29,7 @@
           options = [ "NOPASSWD" ];
         }
         {
-          command = "/run/current-system/sw/bin/tomb";
+          command = "TOMB";
           options = [ "NOPASSWD" ];
         }
         {
