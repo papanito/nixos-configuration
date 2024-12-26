@@ -43,6 +43,7 @@
     gtop # graphic top
     gum # a tool for glamorous shell scripts
     guake # Drop-down terminal for GNOME
+    imgcat
     lsix # ls for images
     lsof # Tool to list open files
     melt # Backup and restore Ed25519 SSH keys with seed words
@@ -54,6 +55,7 @@
     ranger # File manager with minimalistic curses interface
     sad # CLI tool to search and replace
     tomb
+    pinentry-tty # GnuPG’s interface to passphrase input
     timg # Terminal image and video viewer
     steghide #Open source steganography program
     terminator # Terminal emulator with support for tiling and tabs

@@ -5,10 +5,13 @@
     enable = true;
     configFile = ''
 # Command alias specification
-Cmnd_Alias TOMB = /usr/bin/tomb
+Cmnd_Alias TOMB = /run/current-system/sw/bin/tomb
+Cmnd_Alias LOSETUP = /run/current-system/sw/bin/losetup
 
 # Avoid that tomb execution is logged by syslog
 Defaults!TOMB !syslog
+
+papanito ALL=NOPASSWD: TOMB, LOSETUP
 '';
     extraRules = [{
       commands = [
@@ -38,6 +41,14 @@ Defaults!TOMB !syslog
         }
       ];
       groups = [ "wheel" ];
+    # },{ 
+    #   commands = [
+    #     {
+    #       command = "TOMB";
+    #       options = [ "NOPASSWD" ];
+    #     }
+    #   ];
+    #   users = [ "papanito" ];
     }];
     extraConfig = with pkgs; ''
       Defaults:picloud secure_path="${lib.makeBinPath [
