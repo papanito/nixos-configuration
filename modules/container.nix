@@ -10,8 +10,8 @@ in
   };
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      #podman
-      #podman-desktop # outdated
+      podman
+      podman-desktop # A graphical tool for developing on containers and Kubernetes
       pods # A podman desktop application
       podman-tui
       podman-compose
