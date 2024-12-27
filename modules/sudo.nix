@@ -6,12 +6,13 @@
     configFile = ''
 # Command alias specification
 Cmnd_Alias TOMB = /run/current-system/sw/bin/tomb
+Cmnd_Alias VIRSH = /run/current-system/sw/bin/virsh
 Cmnd_Alias LOSETUP = /run/current-system/sw/bin/losetup
 
 # Avoid that tomb execution is logged by syslog
 Defaults!TOMB !syslog
 
-papanito ALL=NOPASSWD: TOMB, LOSETUP
+papanito ALL=(ALL:ALL) NOPASSWD: TOMB, LOSETUP, VIRSH
 '';
     extraRules = [{
       commands = [
@@ -33,6 +34,10 @@ papanito ALL=NOPASSWD: TOMB, LOSETUP
         }
         {
           command = "TOMB";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "VIRSH";
           options = [ "NOPASSWD" ];
         }
         {

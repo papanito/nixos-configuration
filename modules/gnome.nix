@@ -66,6 +66,7 @@ in
       gnomeExtensions.openweather-refined
       gnomeExtensions.task-widget
       gnomeExtensions.another-window-session-manager
+      gnomeExtensions.sermon # SerMon: an extension for monitoring and managing systemd services, cron jobs, docker and podman containers
       #gnomeExtensions.smartcard-lock #This extension just locks the screen whenever a smartcard token recognized by GNOME as used for login is removed.
       gnome-browser-connector # Native host connector for the GNOME Shell browser extension
       libgtop
