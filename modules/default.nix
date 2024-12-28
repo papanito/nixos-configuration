@@ -106,5 +106,6 @@
     clamav # Antivirus engine designed for detecting Trojans, viruses, malware and other malicious threats
     lynis # Security auditing tool for Linux, macOS, and UNIX-based systems
     vt-cli # VirusTotal Command Line Interface
+    vuls #Agent-less vulnerability scanner
   ];
 }
