@@ -43,6 +43,7 @@
     gtop # graphic top
     gum # a tool for glamorous shell scripts
     guake # Drop-down terminal for GNOME
+    hishtory # Your shell history: synced, queryable, and in context
     imgcat
     lsix # ls for images
     lsof # Tool to list open files

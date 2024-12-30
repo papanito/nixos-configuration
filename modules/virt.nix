@@ -22,7 +22,9 @@
     environment.systemPackages = with pkgs; [ 
       qemu
       virt-manager
-      gnome-boxes
+      virt-viewer
+      #gnome-boxes
+      #cockpit # Web-based graphical interface for servers
       #darling # Open-source Darwin/macOS emulation layer for Linux
     ];
   };

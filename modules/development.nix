@@ -19,6 +19,7 @@ in
   };
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
+      (pkgs.python3.withPackages my-python-packages)
       act # Run your GitHub Actions locally
       actionlint # Static checker for GitHub Actions workflow files
       bump # CLI tool to draft a GitHub Release for the next semantic version
@@ -57,7 +58,6 @@ in
       poppler # A PDF rendering library
       poppler_utils # A PDF rendering library
       python3
-      (pkgs.python3.withPackages my-python-packages)
       pipenv # Python Development Workflow for Humans
       shellcheck # Shell script analysis tool
       just # A handy way to save and run project-specific commands
