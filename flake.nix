@@ -56,7 +56,6 @@
           ./configuration.nix
           ./hosts/clawfinger # Include the results of the hardware scan.
           ./users.nix
-          inputs.pentesting.nixosModules.default
           inputs.sops-nix.nixosModules.sops
         ];
       };

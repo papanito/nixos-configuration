@@ -16,7 +16,7 @@ in
       gimp
       #gimpPlugins.gap
       gimpPlugins.gmic
-      gimpPlugins.bimp
+      #gimpPlugins.bimp
       gimpPlugins.fourier
       gimpPlugins.texturize
       gimpPlugins.lqrPlugin
@@ -35,6 +35,8 @@ in
       spotdl # Download your Spotify playlists and songs along with album art and metadata
       streamlink # CLI for extracting streams from various websites to video player of your choosing
       tesseract # OCR engine
+      upscayl # Free and Open Source AI Image Upscaler
+      upscaler # Upscale and enhance images
       vlc # Cross-platform media player and streaming server
       yt-dlp # Command-line tool to download videos from YouTube.com and other sites (youtube-dl fork)
       youtube-tui # An aesthetically pleasing YouTube TUI written in Rust

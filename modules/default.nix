@@ -37,14 +37,14 @@
     feh # A light-weight image viewer
     fq # jq for binary formats
     glow # Render markdown on the CLI, with pizzazz
-    helix
+    helix # Post-modern modal text editor
     jq # A lightweight and flexible command-line JSON processor
     gnupg # Modern release of the GNU Privacy Guard, a GPL OpenPGP implementation
     gtop # graphic top
     gum # a tool for glamorous shell scripts
     guake # Drop-down terminal for GNOME
     hishtory # Your shell history: synced, queryable, and in context
-    imgcat
+    imgcat # It's like cat, but for images
     lsix # ls for images
     lsof # Tool to list open files
     melt # Backup and restore Ed25519 SSH keys with seed words
@@ -55,19 +55,19 @@
     pueue # A daemon for managing long running shell commands
     ranger # File manager with minimalistic curses interface
     sad # CLI tool to search and replace
-    tomb
+    tomb # File encryption on GNU/Linux
     pinentry-tty # GnuPG’s interface to passphrase input
     timg # Terminal image and video viewer
-    steghide #Open source steganography program
+    #steghide #Open source steganography program
     terminator # Terminal emulator with support for tiling and tabs
     timg # Terminal image and video viewer
     thefuck # Magnificent app which corrects your previous console command
     w3m # A text-mode web browser
     watchman # Watches files and takes action when they change
-    wget
+    wget # Tool for retrieving files using HTTP, HTTPS, and FTP
     unzip
     xclip # Tool to access the X clipboard from a console application
-    xdg-ninja
+    xdg-ninja # Shell script which checks your $HOME for unwanted files and directories
     xz # A general-purpose data compression software, successor of LZMA
     yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
     zellij # A terminal workspace with batteries included
@@ -83,9 +83,9 @@
     cifs-utils # Tools for managing Linux CIFS client filesystems
     coreutils # The GNU Core Utilities
     cryfs # Cryptographic filesystem for the cloud
-    dnsutils
+    dnsutils # Domain name server
     file # A program that shows the type of files
-    home-manager
+    home-manager # Nix-based user environment configurator
     paper-age # Easy and secure paper backups of secrets
     parted
     psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
