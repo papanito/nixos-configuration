@@ -8,6 +8,7 @@
     ./container.nix
     ./development.nix
     ./fonts.nix
+    ./fun.nix
     ./kde.nix
     ./gnome.nix
     ./multimedia.nix

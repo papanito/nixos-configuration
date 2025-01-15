@@ -48,6 +48,7 @@
   development.enable = true;
   multimedia.enable = true;
   office.enable = true;
+  fun.enable = true;
 
   ## printing module
   printing.enable = true;
