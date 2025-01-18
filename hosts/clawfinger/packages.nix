@@ -49,7 +49,7 @@
   #   };
   # };
   
-  # pentesting = {
-  #   enable = false;
-  # };
+  pentesting = {
+    enable = false;
+  };
 }

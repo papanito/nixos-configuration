@@ -10,6 +10,9 @@
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
+    nixpkgs-stable = {
+      url = "github:NixOS/nixpkgs/nixos-24.11";
+    };
     disko.url = "github:nix-community/disko";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -23,7 +26,7 @@
 
     pentesting = {
       url = "/home/papanito/Workspaces/papanito/nix-pentesting";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
 
@@ -56,6 +59,7 @@
           ./configuration.nix
           ./hosts/clawfinger # Include the results of the hardware scan.
           ./users.nix
+          inputs.pentesting.nixosModules.default
           inputs.sops-nix.nixosModules.sops
         ];
       };
