@@ -42,6 +42,7 @@
     jq # A lightweight and flexible command-line JSON processor
     gnupg # Modern release of the GNU Privacy Guard, a GPL OpenPGP implementation
     gtop # graphic top
+    ghostty # Fast, native, feature-rich terminal emulator pushing modern features
     gum # a tool for glamorous shell scripts
     guake # Drop-down terminal for GNOME
     hishtory # Your shell history: synced, queryable, and in context
