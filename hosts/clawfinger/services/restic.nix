@@ -43,7 +43,6 @@
       environmentFile = "${config.sops.templates."restic.env".path}";
 
       exclude = [
-        "**/cs"
         "*/.android*"
         "*/.Android*"
         "*/.ansible/collections"
@@ -57,7 +56,6 @@
         "*/.dotnet"
         "*/.eclipse"
         "*/.gem"
-        "*/.local"
         "*/.m2/repository"
         "*/.mozilla"
         "*/.nuget"
