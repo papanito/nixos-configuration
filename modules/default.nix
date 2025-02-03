@@ -94,10 +94,6 @@
     ncdu # Disk usage analyzer with an ncurses interface
     power-profiles-daemon # Makes user-selected power profiles handling available over D-Bus
     gnomeExtensions.power-profile-switcher # Automatically switch between power profiles based on power supply and percentage.
-    sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
-    ssh-tools # Collection of various tools using ssh
-    nfstrace # NFS and CIFS tracing/monitoring/capturing/analyzing tool
-    s3fs # Mount an S3 bucket as filesystem through FUSE
     usbutils # Tools for working with USB devices, such as lsusb
     ventoy-full # A New Bootable USB Solution
     wireplumber # A modular session / policy manager for PipeWire
