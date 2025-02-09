@@ -35,7 +35,7 @@
     warp-terminal # Rust-based terminal
     xxh # Bring your favorite shell wherever you go through SSH
 
-    celeste # GUI file synchronization client that can sync with any cloud provider
+    #celeste # GUI file synchronization client that can sync with any cloud provider
     websocat # Command-line client for WebSockets (like netcat/socat)
     sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     ssh-tools # Collection of various tools using ssh
@@ -44,6 +44,7 @@
     openssl
     certbot
     mkcert # A simple tool for making locally-trusted development certificates
+    oh-my-posh # Prompt theme engine for any shell
     #xgixy # Nginx configuration static analyzer
   ];
 
