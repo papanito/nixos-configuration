@@ -6,19 +6,47 @@
     ./hardware.nix
     ./networking
   ];
+  nix.settings.trusted-users = [ "admin" ];
+  boot.loader = {
+    systemd-boot.enable = true; 
+    efi.canTouchEfiVariables = true;
+  };
+  services.openssh.enable = true;
+
+  users = {
+    groups ={
+      admin = {};
+    };
+    users = {
+      admin = {
+        openssh.authorizedKeys.keys = [
+          " ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFTCwPNpVjW6R9vqpKgNSWgGS5hZMZcHwexAMl7E/OI2 admin@envy from clawfinger"
+        ];
+        group = "admin";
+        isNormalUser = true;
+        extraGroups = [ "networkmanager" "wheel" ];
+        packages = with pkgs; [];
+      };
+    };
+  };
+
+  security = {
+    pam = {
+      rssh.enable     =  true;
+      services = {
+          sudo.rssh   =  true;
+      };
+    };
+    sudo = {
+      execWheelOnly  =  true;
+      wheelNeedsPassword = false;
+    };
+  };
+
 
   # Enable sound with pipewire.
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
   ## pam stuff
@@ -34,6 +62,7 @@
   cloud.enable = false;
   multimedia.enable = false;
   office.enable = false;
+  fun.enable = false;
 
   ## printing module
   printing.enable = false;

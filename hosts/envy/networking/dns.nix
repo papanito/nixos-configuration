@@ -4,7 +4,6 @@
   # Enable networking
   networking = {
     hostName = "envy"; # Define your hostname
-    wireless.enable = true;  # Enables wireless support via wpa_supplicant
 
     proxy = {
       # Configure network proxy if necessary
@@ -56,18 +55,4 @@
   systemd.services.dnscrypt-proxy2.serviceConfig = {
     StateDirectory = "dnscrypt-proxy";
   };
-
-  # services.stubby = {
-  #   enable = true;
-  #   settings = pkgs.stubby.passthru.settingsExample // {
-  #     upstream_recursive_servers = [{
-  #       address_data = "2a06:98c1:54::3cfe";
-  #       tls_auth_name = "cloudflare-dns.com";
-  #       tls_pubkey_pinset = [{
-  #         digest = "sha256";
-  #         value = "GP8Knf7qBae+aIfythytMbYnL+yowaWVeD6MoLHkVRg=";
-  #       }];
-  #     }];
-  #   };
-  # };
 }
