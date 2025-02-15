@@ -4,6 +4,7 @@
 { pkgs, ... }: {
   imports = [
     ./hardware.nix
+    ./packages.nix
     ./networking
   ];
   nix.settings.trusted-users = [ "admin" ];
