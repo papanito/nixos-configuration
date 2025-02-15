@@ -8,26 +8,6 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot = {
-    initrd = {
-      availableKernelModules = [
-        "xhci_pci"
-        "thunderbolt"
-        "nvme"
-        "usb_storage"
-        "usbhid"
-        "sd_mod"
-      ];
-      kernelModules = [
-      ];
-    };
-    runSize = "20%";
-    kernelModules = [ 
-      "kvm-intel"
-    ];
-    kernelPackages = pkgs.linuxPackages_6_12;
-  };  
-
   fileSystems."/" = { 
       device = "/dev/disk/by-uuid/0a81878c-2e28-4c73-8589-96446e93c6a4";
       fsType = "ext4";
@@ -37,8 +17,6 @@
       fsType = "btrfs";
   };
 
-  boot.initrd.luks.devices."luks-266811b8-953c-4007-9bbd-ed9a009f72ed".device = "/dev/disk/by-uuid/266811b8-953c-4007-9bbd-ed9a009f72ed";
-  boot.initrd.luks.devices."luks-361b9e74-4d96-49fa-9243-1676586caed0".device = "/dev/disk/by-uuid/361b9e74-4d96-49fa-9243-1676586caed0";
 
   fileSystems."/boot" ={ 
     device = "/dev/disk/by-uuid/B581-AD78";
@@ -50,6 +28,49 @@
       device = "/dev/disk/by-uuid/0b1951d8-e365-4f7a-a072-10c383407677";
     }
   ];
+
+  boot = {
+    kernelPackages = pkgs.linuxPackages_6_12;
+    initrd = {
+      availableKernelModules = [
+        "xhci_pci"
+        "thunderbolt"
+        "nvme"
+        "usb_storage"
+        "usbhid"
+        "sd_mod"
+      ];
+      kernelModules = [
+      ];
+      secrets = {
+        "/crypto_keyfile.bin" = null;
+      };
+      luks.devices = {
+        # Enable swap on luks
+        "luks-7f34b0ef-aa8a-412a-933c-a42414371fad".device = "/dev/disk/by-uuid/7f34b0ef-aa8a-412a-933c-a42414371fad";
+        "luks-7f34b0ef-aa8a-412a-933c-a42414371fad".keyFile = "/crypto_keyfile.bin";
+        "luks-266811b8-953c-4007-9bbd-ed9a009f72ed".device = "/dev/disk/by-uuid/266811b8-953c-4007-9bbd-ed9a009f72ed";
+        "luks-361b9e74-4d96-49fa-9243-1676586caed0".device = "/dev/disk/by-uuid/361b9e74-4d96-49fa-9243-1676586caed0";
+      };
+    };
+    runSize = "20%";
+    kernelModules = [ 
+      "kvm-intel"
+    ];
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    plymouth = {
+      enable = true;
+      #themePackages = [ nixos-boot ];
+      #theme = "load_unload";
+    };
+    kernel.sysctl = {
+      "vm.swappiness" = 10;
+    };
+  };  
+
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

@@ -46,6 +46,7 @@
     mkcert # A simple tool for making locally-trusted development certificates
 
     ### Shell stuff ###
+    feh # A light-weight image viewer
     guake # Drop-down terminal for GNOME
     mods # AI on the command line
     navi # An interactive cheatsheet tool for the command-line and application launchers
