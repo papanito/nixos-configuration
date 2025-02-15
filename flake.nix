@@ -58,7 +58,6 @@
         modules = [
           ./configuration.nix
           ./hosts/clawfinger # Include the results of the hardware scan.
-          ./users.nix
           inputs.sops-nix.nixosModules.sops
         ];
       };

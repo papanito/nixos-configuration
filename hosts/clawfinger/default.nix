@@ -8,7 +8,7 @@
     ./packages.nix
     ./services
     ./tuxedo.nix
-    ./user.nix
+    ./users.nix
   ];
 
   # Enable sound with pipewire.
