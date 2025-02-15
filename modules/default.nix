@@ -49,6 +49,7 @@
     xz # A general-purpose data compression software, successor of LZMA
     
     ### Shell stuff ###
+    vim
     zellij # A terminal workspace with batteries included
     zsh # zsh shell
     zoxide # A fast cd command that learns your habits

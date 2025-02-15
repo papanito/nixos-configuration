@@ -4,7 +4,6 @@
   # Enable networking
   networking = {
     hostName = "clawfinger"; # Define your hostname
-    # wireless.enable = true;  # Enables wireless support via wpa_supplicant
 
     proxy = {
       # Configure network proxy if necessary
