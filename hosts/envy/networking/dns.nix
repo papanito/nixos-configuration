@@ -5,12 +5,6 @@
   networking = {
     hostName = "envy"; # Define your hostname
 
-    proxy = {
-      # Configure network proxy if necessary
-      # default = "http://user:password@proxy:port/";
-      # noProxy = "127.0.0.1,localhost,internal.domain";
-    };
-
     extraHosts =
       ''
         10.0.0.10 yuno.home
@@ -48,7 +42,7 @@
         minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"; #gitleaks:allow
       };
 
-      forwarding_rules = "/etc/nixos/hosts/clawfinger/networking/forwarding-rules.txt";
+      forwarding_rules = "/etc/forwarding-rules.txt";
     };
   };
 

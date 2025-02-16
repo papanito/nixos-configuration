@@ -12,4 +12,13 @@
     jellyfin-web
     jellyfin-ffmpeg
   ];
+
+#   fileSystems."/media" = {
+#     device = "/dev/sda1";
+#     fsType = "ext4";
+#     options = [
+#       "defaults"
+#       "user"
+#     ];
+#   };
 }
