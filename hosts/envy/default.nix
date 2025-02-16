@@ -5,14 +5,12 @@
   imports = [
     ./hardware.nix
     ./packages.nix
-    ./user.nix
+    ./users.nix
     ./networking
   ];
+
   nix.settings.trusted-users = [ "admin" ];
-  boot.loader = {
-    systemd-boot.enable = true; 
-    efi.canTouchEfiVariables = true;
-  };
+
   services.openssh.enable = true;
 
   security = {
@@ -51,7 +49,6 @@
 
   ## printing module
   printing.enable = false;
-  printing.drivers = [ pkgs.hplipWithPlugin ];
 
   ## virtualisation module
   virtualisation.enable = false;
