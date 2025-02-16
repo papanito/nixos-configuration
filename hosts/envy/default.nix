@@ -6,7 +6,7 @@
     ./hardware.nix
     ./packages.nix
     ./users.nix
-    ./networking
+    ./networking.nix
   ];
 
   nix.settings.trusted-users = [ "admin" ];

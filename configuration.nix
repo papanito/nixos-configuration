@@ -5,7 +5,8 @@
 { lib, config, pkgs, inputs, ... }:
 
 {
-  imports = [ 
+  imports = [
+    ./common
     ./modules
   ];
 

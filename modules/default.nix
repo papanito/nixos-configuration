@@ -1,9 +1,6 @@
 { lib, config, pkgs, ... }:
 {
   imports = [
-    ./networking
-    #./services
-
     ./cloud.nix
     ./container.nix
     ./development.nix
@@ -13,13 +10,9 @@
     ./gnome.nix
     ./multimedia.nix
     ./office.nix
-    ./pam.nix
+    ./solokey.nix
     ./printing.nix
     ./security.nix
-    ./system.nix
-    ./sops.nix
-    ./sudo.nix
-    ./tmpfs.nix
     ./virt.nix
     ./wine.nix
   ];

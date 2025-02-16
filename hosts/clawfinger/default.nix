@@ -8,6 +8,8 @@
     ./packages.nix
     ./services
     ./tuxedo.nix
+    ./sops.nix
+    ./sudo.nix
     ./users.nix
   ];
 

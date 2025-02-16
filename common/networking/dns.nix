@@ -3,8 +3,6 @@
 {
   # Enable networking
   networking = {
-    hostName = "envy"; # Define your hostname
-
     extraHosts =
       ''
         10.0.0.10 yuno.home

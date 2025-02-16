@@ -5,7 +5,7 @@
   # You can avoid this by adding a string to the full path instead, i.e.
   # sops.defaultSopsFile = "/root/.sops/secrets/example.yaml";
   sops = {
-    defaultSopsFile = ../secrets/secrets.yaml;
+    defaultSopsFile = ./secrets.yaml;
     # This will automatically import SSH keys as age keys
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets.restic_password = {};
