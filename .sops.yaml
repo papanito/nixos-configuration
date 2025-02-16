@@ -2,15 +2,24 @@
 # for a more complex example.
 keys:
   - &admin_papanito age12q4dwh0zqgfxfswzydr3mq7ppm5htv73aqkrfpel9ppcmml3eqds5zzzhr
-  - &server_clawfinger age155ygrv7uzel70wp7tde2fp3xg9kjsht3kcu49rt3l89qw5j0tgsqsvccye 
+  - &admin_admin age1pu3n34surq08wa0xa7xrhd4ukcah8au6pqw5mj8mgpvypw8e4d0swhf9v2
+  - &server_clawfinger age155ygrv7uzel70wp7tde2fp3xg9kjsht3kcu49rt3l89qw5j0tgsqsvccye
+  - &server_envy age1fyvzwcvfv2s3s9jr7hdpkkdc3fup65rksgeu9uahvntnrvg243fs4lm0qz
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - age:
       - *admin_papanito
       - *server_clawfinger
+      - *server_envy
   - path_regex: secrets/clawfinger/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - age:
       - *admin_papanito
       - *server_clawfinger
+  - path_regex: secrets/envy/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_papanito
+      - *admin_admin
+      - *server_envy
