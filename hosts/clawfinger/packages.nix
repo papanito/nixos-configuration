@@ -34,7 +34,7 @@
     insync
     sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     ssh-tools # Collection of various tools using ssh
-    nfstrace # NFS and CIFS tracing/monitoring/capturing/analyzing tool
+    #nfstrace # NFS and CIFS tracing/monitoring/capturing/analyzing tool
     rclone # Command line program to sync files and directories to and from major cloud storage
     s3fs # Mount an S3 bucket as filesystem through FUSE
     warp # Fast and secure file transfer

@@ -50,5 +50,6 @@
     cryfs # Cryptographic filesystem for the cloud
     tomb # File encryption on GNU/Linux
     steghide #Open source steganography program
+    sops
   ];
 }

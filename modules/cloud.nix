@@ -20,6 +20,7 @@ in
       terraform
       terragrunt # A thin wrapper for Terraform that supports locking for Terraform state and enforces best practices
       terraform-docs # A utility to generate documentation from Terraform modules in various output formats
+      tflint
       wrangler_1 # A CLI tool designed for folks who are interested in using Cloudflare Workers
     ];
   };
