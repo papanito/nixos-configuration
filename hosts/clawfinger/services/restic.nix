@@ -49,6 +49,7 @@
         "*/.Apache*"
         "*/.BurpSuite"
         "*/.cache"
+        "*/.local/share"
         "*/.cargo"
         "*/.chrome"
         "*/.dartServer"
