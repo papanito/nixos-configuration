@@ -20,10 +20,12 @@
       #gnomeExtensions.battery-health-charging # Battery Health Charging: An extension to maximize the battery life of laptops by setting their charging threshold or modes.
       ticker # Terminal stock ticker with live updates and position tracking
       vhs # Tool for generating terminal GIFs with code
+      lutris # Open Source gaming platform for GNU/Linux
     ];
   };
 
   systemd.services."user@".serviceConfig.Delegate="cpu cpuset io memory pids";
+  #systemd.user.sessionVariables.SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
 
   systemd.packages = [(
     pkgs.writeTextFile {
