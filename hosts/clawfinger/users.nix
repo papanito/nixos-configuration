@@ -8,16 +8,23 @@
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
     packages = with pkgs; [
       chezmoi
+      gnomeExtensions.bing-wallpaper-changer
       gnomeExtensions.espresso
       gnomeExtensions.gsconnect
       gnomeExtensions.hue-lights
       gnomeExtensions.top-bar-organizer
-      #gnomeExtensions.resolution-and-refresh-rate-in-quick-settings
+      gnomeExtensions.tophat
+      #gnomeExtensions.window-state-manager
+      gnomeExtensions.power-profile-switcher # Automatically switch between power profiles based on power supply and percentage.
+      gnomeExtensions.just-perfection # Tweak Tool to Customize GNOME Shell, Change the Behavior and Disable UI Elements
+      gnomeExtensions.ip-finder # Displays useful information about your public IP Address and VPN status.
+      gnomeExtensions.forge # Tiling and window manager for GNOME
       #gnomeExtensions.vscode-search-provider
+      gnomeExtensions.another-window-session-manager # Close open windows gracefully and save them as a session. 
+      gnomeExtensions.tuxedo-fnlock-status # Show the FnLock status of TUXEDO devices.
+      gnomeExtensions.battery-health-charging # Set battery charging threshold / charging limit / charging mode
       gnomeExtensions.hue-lights # This extension controls Philips Hue compatible lights using Philips Hue Bridge on your local network, it also allows controlling Philips Hue Sync Box. I
-      #gnomeExtensions.stocks-extension # Stocks Extension brings stock quotes to your GNOME Shell Panel
       gnomeExtensions.topiconsfix # Shows legacy tray icons on top – the fixed version of https://extensions.gnome.org/extension/495/topicons/
-      #gnomeExtensions.battery-health-charging # Battery Health Charging: An extension to maximize the battery life of laptops by setting their charging threshold or modes.
       ticker # Terminal stock ticker with live updates and position tracking
       vhs # Tool for generating terminal GIFs with code
       lutris # Open Source gaming platform for GNU/Linux
@@ -44,4 +51,5 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
+
 }
