@@ -11,7 +11,7 @@
     ./tuxedo.nix
     ./sops.nix
     ./sound.nix
-    ./sudo.nix
+    ./security.nix
     ./users.nix
   ];
 
