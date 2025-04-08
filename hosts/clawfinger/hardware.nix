@@ -56,6 +56,7 @@
     runSize = "20%";
     kernelModules = [ 
       "kvm-intel"
+      "evdi"
     ];
     loader = {
       systemd-boot.enable = true;
