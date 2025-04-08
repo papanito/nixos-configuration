@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   # host-specific packages
   environment.systemPackages = with pkgs; [
-    
     ### UI Tools ###
     profile-sync-daemon
     deluge

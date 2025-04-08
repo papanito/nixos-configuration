@@ -32,6 +32,7 @@
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     initrd = {
+      # The set of kernel modules in the initial ramdisk used during the boot process.
       availableKernelModules = [
         "xhci_pci"
         "thunderbolt"
@@ -40,7 +41,9 @@
         "usbhid"
         "sd_mod"
       ];
+      # List of modules that are always loaded by the initrd.
       kernelModules = [
+        "evdi"
       ];
       secrets = {
         "/crypto_keyfile.bin" = null;
@@ -54,9 +57,9 @@
       };
     };
     runSize = "20%";
+    # The set of kernel modules to be loaded in the second stage of the boot process
     kernelModules = [ 
-      "kvm-intel"
-      "evdi"
+        "kvm-intel"
     ];
     loader = {
       systemd-boot.enable = true;
@@ -70,8 +73,19 @@
     kernel.sysctl = {
       "vm.swappiness" = 10;
     };
-  };  
+    # A list of additional packages supplying kernel modules.
+    extraModulePackages = [
+      # Add other modules here if you have any
+      config.boot.kernelPackages.evdi
+    ];
+  };
 
+  # host-specific packages
+  environment.systemPackages = with pkgs; [
+    displaylink # DisplayLink DL-7xxx, DL-6xxx, DL-5xxx, DL-41xx and DL-3x00 Driver for Linux
+  ];
+
+  #services.displaylink.enable = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
