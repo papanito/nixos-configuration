@@ -9,31 +9,32 @@ in
       = lib.mkEnableOption "enable gnome and install relatedd software";
   };
   config = lib.mkIf cfg.enable {
-    # Enable the X11 windowing system.
-    services.xserver.enable = true;
-
-    # Enable the GNOME Desktop Environment.
-    services.xserver.displayManager.gdm.enable = true;
-    services.xserver.desktopManager.gnome.enable = true;
-    services.xserver.videoDrivers = [ "displaylink" ];
+    services = {
+      udev.packages = with pkgs; [ gnome-settings-daemon ];
+      xserver = {
+        enable = true;
+        displayManager.gdm.enable = true;
+        desktopManager.gnome.enable = true;
+        videoDrivers = [ "displaylink" ];
+        # Configure keymap in X11
+        xkb = {
+          layout = "ch";
+          variant = "de_nodeadkeys";
+        };
+      };
+      gnome = {
+        gnome-user-share.enable= true;
+        gnome-online-accounts.enable = true;
+        gnome-browser-connector.enable = true;
+      };
+    };
     systemd.services.dlm.wantedBy = [ "multi-user.target" ];
 
-    # Configure keymap in X11
-    services.xserver.xkb = {
-      layout = "ch";
-      variant = "de_nodeadkeys";
+    programs = {
+      dconf.enable = true;
+      gpaste.enable = true;
+      seahorse.enable = true;
     };
-    
-    programs.dconf.enable = true;
-    services.udev.packages = with pkgs; [ gnome-settings-daemon ];
-    programs.gpaste.enable = true;
-
-    services.gnome = {
-      gnome-user-share.enable= true;
-      gnome-online-accounts.enable = true;
-      gnome-browser-connector.enable = true;
-    };
-    programs.seahorse.enable = true;
 
     environment.systemPackages = with pkgs; [
       cheese # webcam tool
