@@ -43,7 +43,6 @@
       ];
       # List of modules that are always loaded by the initrd.
       kernelModules = [
-        "evdi"
       ];
       secrets = {
         "/crypto_keyfile.bin" = null;
@@ -73,11 +72,6 @@
     kernel.sysctl = {
       "vm.swappiness" = 10;
     };
-    # A list of additional packages supplying kernel modules.
-    extraModulePackages = [
-      # Add other modules here if you have any
-      config.boot.kernelPackages.evdi
-    ];
   };
 
   # host-specific packages
