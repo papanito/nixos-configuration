@@ -26,7 +26,8 @@
     wl-clipboard
     xclip # Tool to access the X clipboard from a console application
     wiki-tui # A simple and easy to use Wikipedia Text User Interface
-
+    anytype # Note taking app
+    
     #celeste # GUI file synchronization client that can sync with any cloud provider
 
     ### File system, Storage, File Transfer ###
