@@ -26,6 +26,7 @@ in
         gnome-user-share.enable= true;
         gnome-online-accounts.enable = true;
         gnome-browser-connector.enable = true;
+        gnome-keyring.enable = true;
       };
     };
     systemd.services.dlm.wantedBy = [ "multi-user.target" ];
@@ -37,7 +38,6 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      cheese # webcam tool
       gnome-terminal
       epiphany # web browser
       geary # email reader
