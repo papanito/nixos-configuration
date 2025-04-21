@@ -20,6 +20,7 @@ in
       gnomeExtensions.containers
       kind
       k3s # lightweight Kubernetes distribution
+      k9s
       slirp4netns # User-mode networking for unprivileged network namespaces
       kubectl
       google-cloud-sdk

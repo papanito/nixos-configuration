@@ -1,25 +1,25 @@
 { pkgs, ... }: {
   # host-specific packages
   environment.systemPackages = with pkgs; [
+    ### Browser, Mail, ...
+    mutt
+    chromium
+    firefox
+    google-chrome
+    tor-browser-bundle-bin
+    element-desktop # A feature-rich client for Matrix.org
+    signal-desktop-bin
+
     ### UI Tools ###
     profile-sync-daemon
     deluge
     emacs
     irssi
-    mutt
-    chromium
     evince
-    firefox
-    google-chrome
-    #logseq # A local-first, non-linear, outliner notebook for organizing and sharing your personal knowledge base - disabled due to EOL electron
     ollama
     rpi-imager
-    element-desktop # A feature-rich client for Matrix.org
-    signal-desktop
     speechd # Common interface to speech synthesis
-    tor-browser-bundle-bin
     tailscale # The node agent for Tailscale, a mesh VPN built on WireGuard
-    gnomeExtensions.tailscale-qs # Add Tailscale to GNOME quick settings
     timeline #  Display and navigate information on a timeline
     xdg-ninja # Shell script which checks your $HOME for unwanted files and directories
     watchman # Watches files and takes action when they change
@@ -27,6 +27,11 @@
     xclip # Tool to access the X clipboard from a console application
     wiki-tui # A simple and easy to use Wikipedia Text User Interface
     anytype # Note taking app
+    nix-search-cli
+
+    ## GNOME Stuff
+    gnomeExtensions.tailscale-qs # Add Tailscale to GNOME quick settings
+    wike # Wikipedia Reader for the GNOME Desktop
     
     #celeste # GUI file synchronization client that can sync with any cloud provider
 
@@ -48,6 +53,7 @@
     ### Shell stuff ###
     feh # A light-weight image viewer
     guake # Drop-down terminal for GNOME
+    kb # Minimalist command line knowledge base manager
     mods # AI on the command line
     navi # An interactive cheatsheet tool for the command-line and application launchers
     oh-my-posh # Prompt theme engine for any shell
