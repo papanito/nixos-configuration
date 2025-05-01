@@ -54,6 +54,7 @@ in
       sushi
       gnome-characters
       bleachbit # A program to cleutiluan your computer
+      gdm-settings #   Settings app for GNOME's Login Manager
       gedit # text editor
       gnome-usage # A nice way to view information about use of system resources, like memory and disk space
       gnome-feeds # An RSS/Atom feed reader for GNOME
