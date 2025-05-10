@@ -23,6 +23,8 @@
       qemu
       virt-manager
       virt-viewer
+      packer
+      vagrant
       #gnome-boxes
       #cockpit # Web-based graphical interface for servers
       #darling # Open-source Darwin/macOS emulation layer for Linux
