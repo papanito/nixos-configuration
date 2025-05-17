@@ -20,12 +20,13 @@
   environment.systemPackages = with pkgs; [
     ### Shell and Terminal tools and apps ###
     bats # Bash Automated Testing System
+    duf # better df lternative
     direnv # A shell extension that manages your environment
     nix-direnv # A fast, persistent use_nix implementation for direnv
     ghostty # Fast, native, feature-rich terminal emulator pushing modern features
     glow # Render markdown on the CLI, with pizzazz
     gum # a tool for glamorous shell scripts
-    hishtory # Your shell history: synced, queryable, and in context
+    atuin # Your shell history: synced, queryable, and in context
     imgcat # It's like cat, but for images
     melt # Backup and restore Ed25519 SSH keys with seed words
     miller # Like awk, sed, cut, join, and sort for data formats such as CSV, TSV, JSON, JSON Lines, and positionally-indexed
