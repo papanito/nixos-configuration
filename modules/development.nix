@@ -25,7 +25,6 @@ in
       bump # CLI tool to draft a GitHub Release for the next semantic version
       ansible
       ansible-lint
-      # anytype # P2P note-taking tool
       bfg-repo-cleaner # removes large or troublesome blobs in a git repository like git-filter-branch does, but faster
       bruno # Open-source IDE For exploring and testing APIs
       buildkit # Concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit
@@ -43,6 +42,8 @@ in
       git-filter-repo # Quickly rewrite git repository history
       git-graph # Command line tool to show clear git graphs arranged for your branching model
       gitleaks # Scan git repos (or files) for secrets
+      gradle
+      xorriso
       pre-commit-hook-ensure-sops # pre-commit hook to ensure that files that should be encrypted with sops are
       lazygit # Simple terminal UI for git commands
       go
@@ -59,10 +60,11 @@ in
       poppler_utils # A PDF rendering library
       python3
       pipenv # Python Development Workflow for Humans
+      skaffold
       shellcheck # Shell script analysis tool
       just # A handy way to save and run project-specific commands
       uv #Extremely fast Python package installer and resolver, written in Rust
-      vscode # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
+      trivy
       vscodium # Open source source code editor developed by Microsoft for Windows, Linux and macOS (VS Code without MS branding/telemetry/licensing) 
 
       dbeaver-bin # Universal SQL Client for developers, DBA and analysts. Supports MySQL, PostgreSQL, MariaDB, SQLite, and more

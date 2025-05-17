@@ -27,24 +27,11 @@
       gnomeExtensions.battery-health-charging # Set battery charging threshold / charging limit / charging mode
       gnomeExtensions.hue-lights # This extension controls Philips Hue compatible lights using Philips Hue Bridge on your local network, it also allows controlling Philips Hue Sync Box. I
       ticker # Terminal stock ticker with live updates and position tracking
+      vivaldi
       vhs # Tool for generating terminal GIFs with code
       lutris # Open Source gaming platform for GNU/Linux
     ];
   };
-
-  systemd.services."user@".serviceConfig.Delegate="cpu cpuset io memory pids";
-  #systemd.user.sessionVariables.SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
-
-  systemd.packages = [(
-    pkgs.writeTextFile {
-      name = "delegate.conf";
-      text = ''
-      [Service]
-      Delegate=yes
-      '';
-      destination = "/etc/systemd/system/user@.service.d/delegate.conf";
-    }
-  )];
 
   programs.steam = {
     enable = true;

@@ -40,9 +40,11 @@
         "usb_storage"
         "usbhid"
         "sd_mod"
+        "ifb"
       ];
       # List of modules that are always loaded by the initrd.
       kernelModules = [
+        "evdi"
       ];
       secrets = {
         "/crypto_keyfile.bin" = null;

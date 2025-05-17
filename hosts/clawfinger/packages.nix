@@ -26,7 +26,7 @@
     wl-clipboard
     xclip # Tool to access the X clipboard from a console application
     wiki-tui # A simple and easy to use Wikipedia Text User Interface
-    anytype # Note taking app
+    #anytype # Note taking app
     nix-search-cli
 
     ## GNOME Stuff
@@ -77,7 +77,6 @@
     gnomeExtensions.power-profile-switcher # Automatically switch between power profiles based on power supply and percentage.
     mission-center #Monitor your CPU, Memory, Disk, Network and GPU usage
     usbutils # Tools for working with USB devices, such as lsusb
-    ventoy-full # A New Bootable USB Solution
     wireplumber # A modular session / policy manager for PipeWire
     # yubikey-touch-detector
   ];
