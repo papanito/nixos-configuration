@@ -64,6 +64,7 @@ in
       shellcheck # Shell script analysis tool
       just # A handy way to save and run project-specific commands
       uv #Extremely fast Python package installer and resolver, written in Rust
+      trivy
       vscodium # Open source source code editor developed by Microsoft for Windows, Linux and macOS (VS Code without MS branding/telemetry/licensing) 
 
       dbeaver-bin # Universal SQL Client for developers, DBA and analysts. Supports MySQL, PostgreSQL, MariaDB, SQLite, and more
