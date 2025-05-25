@@ -58,6 +58,7 @@ in
       openjdk21
       poppler # A PDF rendering library
       poppler_utils # A PDF rendering library
+      posting
       python3
       pipenv # Python Development Workflow for Humans
       skaffold
