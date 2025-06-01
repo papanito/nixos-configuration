@@ -28,6 +28,7 @@
       gnomeExtensions.hue-lights # This extension controls Philips Hue compatible lights using Philips Hue Bridge on your local network, it also allows controlling Philips Hue Sync Box. I
       ticker # Terminal stock ticker with live updates and position tracking
       vivaldi
+      rssguard
       vhs # Tool for generating terminal GIFs with code
       lutris # Open Source gaming platform for GNU/Linux
     ];
