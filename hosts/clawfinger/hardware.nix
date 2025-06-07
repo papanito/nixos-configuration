@@ -40,7 +40,6 @@
         "usb_storage"
         "usbhid"
         "sd_mod"
-        "ifb"
       ];
       # List of modules that are always loaded by the initrd.
       kernelModules = [
@@ -61,6 +60,7 @@
     # The set of kernel modules to be loaded in the second stage of the boot process
     kernelModules = [ 
         "kvm-intel"
+        "ifb"
     ];
     loader = {
       systemd-boot.enable = true;
@@ -76,6 +76,10 @@
     };
   };
 
+  # required for wondershapper
+  systemd.network.netdevs.ifb0 = {
+    enable = true;
+  };
   # host-specific packages
   environment.systemPackages = with pkgs; [
     displaylink # DisplayLink DL-7xxx, DL-6xxx, DL-5xxx, DL-41xx and DL-3x00 Driver for Linux

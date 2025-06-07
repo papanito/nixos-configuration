@@ -75,8 +75,8 @@
         192.in-addr.arpa 10.0.0.10
         
         ## Local resolve
-        local            127.0.0.1
-        internal         127.0.0.1
+        local            127.0.0.1:80
+        internal         127.0.0.1:80
 
         ## Forward queries for example.com and *.example.com to 9.9.9.9 and 8.8.8.8
         # example.com      9.9.9.9,8.8.8.8
