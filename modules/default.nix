@@ -35,7 +35,7 @@
     sad # CLI tool to search and replace
     pinentry-tty # GnuPG’s interface to passphrase input
     timg # Terminal image and video viewer
-    thefuck # Magnificent app which corrects your previous console command
+    pay-respects
     w3m # A text-mode web browser
     watchman # Watches files and takes action when they change
     wget # Tool for retrieving files using HTTP, HTTPS, and FTP
