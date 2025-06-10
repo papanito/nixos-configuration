@@ -1,33 +1,19 @@
 { config, pkgs, ... }:
 
 {
-  # networking.firewall = {
-  #   allowedTCPPorts = [
-  #     443
-  #   ];
-  #   allowedUDPPorts = [
-  #     53
-  #   ];
-  # };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults = {
-      email = "aedu@wyssmann.com";
-    };
+  networking.firewall = {
+    # allowedTCPPorts = [
+    #   443
+    # ];
+    checkReversePath = false;
+    allowedUDPPorts = [
+      53
+    ];
   };
 
-  services.nginx = {
-    enable = true;
-    virtualHosts = let
-      SSL = {
-        enableACME = true;
-        forceSSL = true;
-      }; in {
-        "webcheck.local" = (SSL // {
-          locations."/".proxyPass = "http://127.0.0.1:8888/";
 
-        });
-      };
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv4.ip_unprivileged_port_start" = 0;
   };
 }
