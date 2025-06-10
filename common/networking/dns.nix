@@ -80,7 +80,7 @@ in
       };
 
       forwarding_rules = "/etc/forwarding-rules.txt";
-      cloaking-rules = "/etc/cloaking-rules.txt";
+      cloaking_rules = "/etc/cloaking-rules.txt";
     };
   };
 
@@ -131,7 +131,7 @@ in
       '';
       mode = "0444";
     };
-      # Creates /etc/forwarding-rules.txt
+      # Creates /etc/cloaking-rules.txt
     "cloaking-rules.txt" = {
       text = ''
       '';
