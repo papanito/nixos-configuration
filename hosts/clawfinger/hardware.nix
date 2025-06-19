@@ -3,6 +3,30 @@
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, modulesPath, ... }:
 
+let
+  kernelVersion = "6.15.1";
+  # Find the sha256 for linux-6.15.1.tar.xz from kernel.org
+  # You can get this by running: nix-prefetch-url --unpack https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.1.tar.xz
+  kernelSha256 = "sha256-RPG7hP5RLnuv4ObchdOOwcbI/L6XzLUdjBmTC3mfDWQ="; # REPLACE WITH ACTUAL SHA256
+
+  myLinuxKernel = pkgs.linuxKernel.kernels.linux_6_15.override {
+    argsOverride = rec {
+      version = kernelVersion;
+      src = pkgs.fetchurl {
+        url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
+        sha256 = kernelSha256;
+      };
+      # This is important for kernel modules to find the correct directory
+      modDirVersion = kernelVersion;
+    };
+  };
+
+  # Create a linuxPackages set for your custom kernel
+  # This ensures modules are built against your custom kernel
+  myKernelPackages = pkgs.linuxPackagesFor myLinuxKernel;
+
+in
+
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -30,7 +54,7 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = myKernelPackages;
     initrd = {
       # The set of kernel modules in the initial ramdisk used during the boot process.
       availableKernelModules = [
@@ -43,7 +67,7 @@
       ];
       # List of modules that are always loaded by the initrd.
       kernelModules = [
-        "evdi"
+        #"evdi"
       ];
       secrets = {
         "/crypto_keyfile.bin" = null;
