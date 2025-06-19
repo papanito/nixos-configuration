@@ -11,16 +11,21 @@ in
 
   config = lib.mkIf cfg.enable {
     services = {
-      desktopManager.plasma6.enable = true;
+      desktopManager.plasma6 = {
+        enable = true;
+      };
       displayManager = {
         sddm.enable = true;
         sddm.wayland.enable = true;
         defaultSession = "plasma";
       };
+
     };
 
     # Add common KDE applications you want to install
     environment.systemPackages = with pkgs; [
+      libinput # So touchpad gestures work
+
       # Basic utilities
       kdePackages.discover          # Software Center (for Flatpak/firmware updates)
       kdePackages.kcalc             # Calculator
@@ -28,7 +33,7 @@ in
       kdePackages.kolourpaint       # Simple paint program
       kdePackages.ksystemlog        # System log viewer
       kdePackages.partitionmanager  # Disk partition manager
-      kdiff3            # File/directory comparison tool
+      kdiff3                        # File/directory comparison tool
       kdePackages.spectacle         # Screenshot tool
 
       # More advanced KDE applications (add as needed)
@@ -41,6 +46,7 @@ in
       kdePackages.gwenview          # Image viewer
       kdePackages.kfind             # File search tool
       kdePackages.ark               # Archiving tool
+      kdePackages.knewstuff
 
       kdePackages.sweeper           # Application that helps to clean unwanted traces the user leaves on the system
       kdePackages.kdeconnect-kde    # multi-platform app that allows your devices to communicate
