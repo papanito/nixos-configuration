@@ -23,7 +23,7 @@
     duf # better df lternative
     direnv # A shell extension that manages your environment
     nix-direnv # A fast, persistent use_nix implementation for direnv
-    ghostty # Fast, native, feature-rich terminal emulator pushing modern features
+    ptyxis
     glow # Render markdown on the CLI, with pizzazz
     gum # a tool for glamorous shell scripts
     atuin # Your shell history: synced, queryable, and in context

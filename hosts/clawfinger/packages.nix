@@ -28,6 +28,7 @@
     wiki-tui # A simple and easy to use Wikipedia Text User Interface
     #anytype # Note taking app
     nix-search-cli
+    flameshot
 
     ## GNOME Stuff
     gnomeExtensions.tailscale-qs # Add Tailscale to GNOME quick settings
