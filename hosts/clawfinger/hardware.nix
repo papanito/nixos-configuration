@@ -86,6 +86,20 @@
     displaylink # DisplayLink DL-7xxx, DL-6xxx, DL-5xxx, DL-41xx and DL-3x00 Driver for Linux
   ];
 
+  hardware = {
+    # Enable hardware graphics acceleration (crucial for Wayland performance)
+    graphics.enable = true;
+
+    # For AMD GPUs (uncomment if you have one)
+    # hardware.opengl.extraPackages = with pkgs; [ mesa.amdgpu-pro-vulkan-driver ];
+    # For Intel GPUs (uncomment if you have one)
+    graphics.extraPackages = with pkgs; [ intel-media-driver ];
+
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+  };
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
