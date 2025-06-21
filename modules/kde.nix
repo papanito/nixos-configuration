@@ -10,16 +10,45 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    environment.variables = {
+      KWIN_DRM_PREFER_COLOR_DEPTH = "24";
+    };
+
     services = {
       desktopManager.plasma6 = {
         enable = true;
       };
       displayManager = {
-        sddm.enable = true;
-        sddm.wayland.enable = true;
+        sddm = {
+          enable = true;
+          wayland.enable = true;
+        };
         defaultSession = "plasma";
       };
 
+    };
+
+    # systemd.services.dlm.wantedBy = [ "multi-user.target" ];
+    # --- THIS IS THE CRUCIAL PART FOR ENABLING THE SERVICE ---
+    systemd.services.displaylink-server = {
+      enable = true;
+      # Ensure it starts after udev has done its work
+      requires = [ "systemd-udevd.service" ];
+      after = [ "systemd-udevd.service" ];
+      wantedBy = [ "multi-user.target" ]; # Start at boot
+      # *** THIS IS THE CRITICAL 'serviceConfig' BLOCK ***
+      serviceConfig = {
+        Type = "simple"; # Or "forking" if it forks (simple is common for daemons)
+        # The ExecStart path points to the DisplayLinkManager binary provided by the package
+        ExecStart = "${pkgs.displaylink}/bin/DisplayLinkManager";
+        # User and Group to run the service as (root is common for this type of daemon)
+        User = "root";
+        Group = "root";
+        # Environment variables that the service itself might need
+        # Environment = [ "DISPLAY=:0" ]; # Might be needed in some cases, but generally not for this
+        Restart = "on-failure";
+        RestartSec = 5; # Wait 5 seconds before restarting
+      };
     };
 
     # Add common KDE applications you want to install
@@ -65,5 +94,15 @@ in
     #   kdepim-runtime             # Unneeded if you use Thunderbird, etc.
       konsole                    # If you prefer another terminal
     ];
+
+
+    # For SDDM, these lines are usually already present, but it's good to be explicit
+    # if you have issues, you might need to use `services.pam.services.sddm.text`
+    # similar to the FIDO key setup to ensure pam_kwallet5.so is correctly ordered.
+    security.pam.services = {
+      sddm.enableKwallet = true;
+      login.enableKwallet = true; # For console logins too
+      sudo.enableKwallet = true; # If you want sudo to unlock kwallet
+    };
   };
 }

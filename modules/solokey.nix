@@ -10,9 +10,30 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+
+    environment.systemPackages = with pkgs; [
+     solo2-cli
+     pam_u2f
+    ];
+  
+    # Enable the pam_u2f module globally
+    security.pam.u2f = {
+      enable = true;
+      # "sufficient" means if u2f auth succeeds, PAM chain stops. If it fails or is not used, PAM continues.
+      control = "sufficient";
+      # # Point to the generated u2f_keys file.
+      # # We use pkgs.writeText so the file is managed by Nix and available for all users.
+      # # Make sure to replace <your_username> and the content with your actual generated key data.
+      # authFile = pkgs.writeText "u2f_keys" ''
+      #   yourusername:keyHandle,userKey,coseType,options # Replace with content from ~/.config/Yubico/u2f_keys
+      #   # Add more lines if you have multiple users or keys
+      # '';
+    };
+
     security.pam.services = {
       login.u2fAuth = true;
       sudo.u2fAuth = true;
+      sddm.u2fAuth = true;
     };
 
     # https://github.com/solokeys/solo2-cli/blob/main/70-solo2.rules
@@ -42,11 +63,6 @@ in
           ENV{ID_VENDOR}=="Yubico",\
           RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
       '';
-
-    environment.systemPackages = with pkgs; [
-     solo2-cli
-     pam_u2f
-    ];
   };
 }
 
