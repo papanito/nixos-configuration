@@ -45,7 +45,6 @@
   cloud.enable = false;
   multimedia.enable = false;
   office.enable = false;
-  fun.enable = false;
 
   ## printing module
   printing.enable = false;

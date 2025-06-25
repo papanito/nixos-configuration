@@ -29,7 +29,6 @@
   development.enable = true;
   multimedia.enable = true;
   office.enable = true;
-  fun.enable = true;
   security.enable = true;
 
   ## printing module

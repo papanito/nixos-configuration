@@ -26,7 +26,6 @@ in
       kubectl
       google-cloud-sdk
       kubernetes-helm
-      wrangler_1
       nova # Find outdated or deprecated Helm charts running in your cluster
     ];
 

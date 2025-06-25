@@ -38,7 +38,6 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      gnome-terminal
       epiphany # web browser
       geary # email reader
       seahorse
@@ -71,6 +70,7 @@ in
       #gnomeExtensions.sermon # SerMon: an extension for monitoring and managing systemd services, cron jobs, docker and podman containers
       gnome-browser-connector # Native host connector for the GNOME Shell browser extension
       libgtop
+      rhythmbox # A music playing application for GNOME
     ];
 
     environment.variables = {

@@ -5,7 +5,6 @@
     ./container.nix
     ./development.nix
     ./fonts.nix
-    ./fun.nix
     ./kde.nix
     ./gnome.nix
     ./multimedia.nix
@@ -22,6 +21,7 @@
     bats # Bash Automated Testing System
     duf # better df lternative
     direnv # A shell extension that manages your environment
+    findutils # GNU Find Utilities, the basic directory searching utilities of the GNU operating system
     nix-direnv # A fast, persistent use_nix implementation for direnv
     ptyxis
     glow # Render markdown on the CLI, with pizzazz
@@ -34,12 +34,9 @@
     pueue # A daemon for managing long running shell commands
     sad # CLI tool to search and replace
     pinentry-tty # GnuPG’s interface to passphrase input
-    timg # Terminal image and video viewer
-    pay-respects
-    w3m # A text-mode web browser
     watchman # Watches files and takes action when they change
-    wget # Tool for retrieving files using HTTP, HTTPS, and FTP
     xz # A general-purpose data compression software, successor of LZMA
+    sshfs
     
     ### Shell stuff ###
     vim
@@ -48,9 +45,6 @@
     zoxide # A fast cd command that learns your habits
 
     ### Encryption ###
-    cryfs # Cryptographic filesystem for the cloud
-    tomb # File encryption on GNU/Linux
-    steghide #Open source steganography program
     sops
   ];
 }

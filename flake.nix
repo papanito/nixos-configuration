@@ -1,12 +1,5 @@
 {
   inputs = {
-    # nixpkgs = {
-    #   type = "github";
-    #   owner = "NixOS";
-    #   repo = "nixpkgs";
-    #   ref = "master";
-    #   rev = "4fee2cde561f5a37354d74cd3b34208127eb6f7d";
-    # };
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };

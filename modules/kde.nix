@@ -80,6 +80,8 @@ in
       kdePackages.sweeper           # Application that helps to clean unwanted traces the user leaves on the system
       kdePackages.kdeconnect-kde    # multi-platform app that allows your devices to communicate
 
+      pinentry-qt
+      kwalletcli # Useful for command-line KWallet interaction if needed
       # If you want a more "complete" set of default KDE apps, you can look at the plasma6 module's source:
       # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/desktop-managers/plasma6.nix
       # and add packages from its `environment.systemPackages` list or `excludePackages` list.
@@ -103,6 +105,13 @@ in
       sddm.enableKwallet = true;
       login.enableKwallet = true; # For console logins too
       sudo.enableKwallet = true; # If you want sudo to unlock kwallet
+    };
+
+    # Environment variable for pinentry-kwallet to signal KWallet use
+    environment.sessionVariables = {
+      PINENTRY_KDE_USE_WALLET = "1";
+      # Ensure GPG_TTY is set when launching graphical sessions
+      GPG_TTY = "$HOME/.tty"; # This will be set by the session
     };
   };
 }

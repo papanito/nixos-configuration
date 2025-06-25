@@ -2,9 +2,10 @@
 
 {
   networking.firewall = {
-    # allowedTCPPorts = [
-    #   443
-    # ];
+    allowedTCPPorts = [
+      80
+      443
+    ];
     # checkReversePath = false;
     # allowedUDPPorts = [
     #   53
@@ -20,7 +21,7 @@
     # Creates /etc/cloaking-rules.txt
     "cloaking-rules.txt" = {
       text = ''
-        cluster 127.0.0.2
+        *.cluster 127.0.0.2
       '';
       mode = "0444";
     };
