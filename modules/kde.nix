@@ -80,6 +80,9 @@ in
       kdePackages.sweeper           # Application that helps to clean unwanted traces the user leaves on the system
       kdePackages.kdeconnect-kde    # multi-platform app that allows your devices to communicate
 
+      #kdePackages.skanlite          # Lite image scanning application
+      kdePackages.skanpage          # utility to scan images and multi-page documents
+
       pinentry-qt
       kwalletcli # Useful for command-line KWallet interaction if needed
       # If you want a more "complete" set of default KDE apps, you can look at the plasma6 module's source:

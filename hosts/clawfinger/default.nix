@@ -21,8 +21,8 @@
   '';
 
   # modules
-  gnome.enable = false;
-  kde.enable = true;
+  gnome.enable = true;
+  kde.enable = false;
   solokey.enable = true;
   container.enable = true;
   cloud.enable = true;
