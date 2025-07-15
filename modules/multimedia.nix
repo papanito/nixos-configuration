@@ -13,16 +13,6 @@ in
       audacity #Sound editor with graphical UI
       ffmpeg-full
       gst_all_1.gstreamer # Open source multimedia framework
-      gimp
-      #gimpPlugins.gap
-      gimpPlugins.gmic
-      #gimpPlugins.bimp
-      gimpPlugins.fourier
-      gimpPlugins.texturize
-      gimpPlugins.lqrPlugin
-      gimpPlugins.lightning
-      gimpPlugins.gimplensfun
-      gimpPlugins.waveletSharpen
       ghostscript # PostScript interpreter (mainline version)
       gnome-frog # Intuitive text extraction tool (OCR) for GNOME desktop
       imaginer # Imaginer with AI
