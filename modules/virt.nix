@@ -1,13 +1,6 @@
 { lib, config, pkgs, ... }:
 
 {
-  #environment = {
-  #  (pkgs.writeShellScriptBin "qemu-system-x86_64-uefi" 
-  #    qemu-system-x86_64 \
-  #      -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
-  #      "$@"
-  #  )
-  #};
   options = {
     virtualisation.enable 
       = lib.mkEnableOption "enable libvirtd and install related software";
@@ -23,8 +16,6 @@
       qemu
       virt-manager
       virt-viewer
-      packer
-      vagrant
     ];
   };
 }
