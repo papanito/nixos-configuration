@@ -43,6 +43,8 @@
     zellij # A terminal workspace with batteries included
     zsh # zsh shell
     zoxide # A fast cd command that learns your habits
+    nushell
+    carapace # Multi-shell multi-command argument completer
 
     ### Encryption ###
     sops
