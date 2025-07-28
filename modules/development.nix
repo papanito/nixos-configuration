@@ -23,6 +23,8 @@ in
       openjdk21
       python3
       pipenv # Python Development Workflow for Humans
+      gcc
+      zig
     ];
   };
 }
