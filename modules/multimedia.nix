@@ -10,7 +10,6 @@ in
   };
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      audacity #Sound editor with graphical UI
       ffmpeg-full
       gst_all_1.gstreamer # Open source multimedia framework
       ghostscript # PostScript interpreter (mainline version)
