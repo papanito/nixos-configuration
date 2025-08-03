@@ -10,7 +10,6 @@ in
   };
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      ### Security ###
       chkrootkit # Locally checks for signs of a rootkit
       clamav # Antivirus engine designed for detecting Trojans, viruses, malware and other malicious threats
       lynis # Security auditing tool for Linux, macOS, and UNIX-based systems

@@ -12,10 +12,15 @@
     users.groups.libvirtd.members = ["papanito"];
     virtualisation.spiceUSBRedirection.enable = true;
     
-    environment.systemPackages = with pkgs; [ 
+    networking.firewall.interfaces."virbr0" = {
+      allowedUDPPorts = [ 67 68 ]; # Allow DHCP
+    };
+
+    environment.systemPackages = with pkgs; [
       qemu
       virt-manager
       virt-viewer
     ];
   };
 }
+
