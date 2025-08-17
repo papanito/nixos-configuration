@@ -23,7 +23,7 @@
     direnv # A shell extension that manages your environment
     findutils # GNU Find Utilities, the basic directory searching utilities of the GNU operating system
     nix-direnv # A fast, persistent use_nix implementation for direnv
-    ptyxis
+    ptyxis # Terminal
     glow # Render markdown on the CLI, with pizzazz
     gum # a tool for glamorous shell scripts
     atuin # Your shell history: synced, queryable, and in context
@@ -43,7 +43,7 @@
     zellij # A terminal workspace with batteries included
     zsh # zsh shell
     zoxide # A fast cd command that learns your habits
-    nushell
+    nushell # terminal
     carapace # Multi-shell multi-command argument completer
 
     ### Encryption ###

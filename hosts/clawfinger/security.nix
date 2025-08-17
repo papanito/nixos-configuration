@@ -5,16 +5,16 @@
     enable = true;
     configFile = ''
 # Command alias specification
-Cmnd_Alias TOMB = /run/current-system/sw/bin/tomb
+Cmnd_Alias TOMB = /home/papanito/.nix-profile/bin/tomb
 Cmnd_Alias VIRSH = /run/current-system/sw/bin/virsh
 Cmnd_Alias LOSETUP = /run/current-system/sw/bin/losetup
 
 # Avoid that tomb execution is logged by syslog
 Defaults!TOMB !syslog
 
-papanito ALL=(ALL:ALL) NOPASSWD: TOMB, LOSETUP, VIRSH
 '';
-    extraRules = [{
+   extraRules = [{
+      groups = [ "wheel" ];
       commands = [
         {
           command = "${pkgs.systemd}/bin/systemctl suspend";
@@ -33,27 +33,32 @@ papanito ALL=(ALL:ALL) NOPASSWD: TOMB, LOSETUP, VIRSH
           options = [ "NOPASSWD" ];
         }
         {
-          command = "TOMB";
+          command = "${pkgs.cryptsetup}/bin/cryptsetup";
           options = [ "NOPASSWD" ];
         }
         {
-          command = "VIRSH";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/mount";
+          command = "${pkgs.util-linux}/bin/mount";
           options = [ "NOPASSWD" ];
         }
       ];
-      groups = [ "wheel" ];
-    # },{ 
-    #   commands = [
-    #     {
-    #       command = "TOMB";
-    #       options = [ "NOPASSWD" ];
-    #     }
-    #   ];
-    #   users = [ "papanito" ];
+    }
+    {
+      # Specific NOPASSWD rules for the user 'papanito'.
+      users = [ "papanito" ];
+      commands = [
+        {
+           command = "${pkgs.tomb}/bin/tomb";
+           options = [ "NOPASSWD" ];
+        }
+        {
+           command = "${pkgs.libvirt}/bin/virsh";
+           options = [ "NOPASSWD" ];
+        }
+        {
+           command = "${pkgs.util-linux}/bin/losetup";
+           options = [ "NOPASSWD" ];
+         }
+      ];
     }];
     extraConfig = with pkgs; ''
       Defaults:picloud secure_path="${lib.makeBinPath [
