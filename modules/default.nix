@@ -32,6 +32,7 @@
     miller # Like awk, sed, cut, join, and sort for data formats such as CSV, TSV, JSON, JSON Lines, and positionally-indexed
     nq # Unix command line queue utility
     pueue # A daemon for managing long running shell commands
+    ripgrep
     sad # CLI tool to search and replace
     pinentry-tty # GnuPG’s interface to passphrase input
     watchman # Watches files and takes action when they change

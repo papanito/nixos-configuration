@@ -25,5 +25,8 @@ in
     # for a WiFi printer
     services.avahi.openFirewall = true;
     services.printing.drivers = cfg.drivers;
+    environment.systemPackages = with pkgs; [
+      hplip
+    ];
   };
 }
