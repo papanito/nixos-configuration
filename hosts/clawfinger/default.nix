@@ -15,10 +15,10 @@
     ./users.nix
   ];
 
-  services.logind.extraConfig = ''
-    RuntimeDirectorySize=32G
-    HandleLidSwitchDocked=ignore
-  '';
+  services.logind.settings.Login = {
+    RuntimeDirectorySize ="32G";
+    HandleLidSwitchDocked = "ignore";
+  };
 
   # modules
   gnome.enable = true;

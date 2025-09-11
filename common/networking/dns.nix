@@ -60,7 +60,7 @@ in
   # };
   services.resolved.enable = false;
 
-  services.dnscrypt-proxy2 = {
+  services.dnscrypt-proxy = {
     enable = true;
     settings = {
       listen_addresses = [

@@ -9,6 +9,7 @@
     mediaDir = "/home/papanito/paperless-ngx/";
     consumptionDir = "/home/papanito/paperless-ngx/consume";
     user = "papanito";
+    domain = "paperless.home";
 
     settings = {
       PAPERLESS_OCR_LANGUAGE = "deu+eng";
