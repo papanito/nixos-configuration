@@ -2,23 +2,12 @@
   # host-specific packages
   environment.systemPackages = with pkgs; [
     ### Browser, Mail, ...
-    mutt
     chromium
     firefox
     google-chrome
     tor-browser-bundle-bin
-    element-desktop # A feature-rich client for Matrix.org
-    signal-desktop-bin
 
     ### UI Tools ###
-    profile-sync-daemon
-    deluge
-    emacs
-    irssi
-    evince
-    ollama
-    rpi-imager
-    speechd # Common interface to speech synthesis
     tailscale # The node agent for Tailscale, a mesh VPN built on WireGuard
     timeline #  Display and navigate information on a timeline
     xdg-ninja # Shell script which checks your $HOME for unwanted files and directories
@@ -30,10 +19,6 @@
     nix-search-cli
     flameshot
 
-    ## GNOME Stuff
-    gnomeExtensions.tailscale-qs # Add Tailscale to GNOME quick settings
-    wike # Wikipedia Reader for the GNOME Desktop
-    
     #celeste # GUI file synchronization client that can sync with any cloud provider
 
     ### File system, Storage, File Transfer ###
