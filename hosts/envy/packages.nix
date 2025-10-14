@@ -11,6 +11,7 @@
     jellyfin # Free Software Media System
     jellyfin-web
     jellyfin-ffmpeg
+    sqlite
   ];
 
   fileSystems."/media" = {
