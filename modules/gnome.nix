@@ -62,7 +62,6 @@ in
       gnomecast # A native Linux GUI for Chromecasting local files
       denaro # Personal finance manager for GNOME
       nautilus-open-any-terminal
-      gradience # Customize libadwaita and GTK3 apps (with adw-gtk3)
       gnomeExtensions.appindicator
       gnomeExtensions.task-widget
       #gnomeExtensions.sermon # SerMon: an extension for monitoring and managing systemd services, cron jobs, docker and podman containers
@@ -75,7 +74,7 @@ in
     };
     
     qt = {
-      enable = true;
+      enable = false;
       platformTheme = "gnome";
       style = "adwaita-dark";
     };
