@@ -12,8 +12,6 @@ in
   networking = {
     extraHosts =
       ''
-        10.0.0.10 yuno.home
-        10.0.0.10 jf.home
       '';
 
     # If using dhcpcd:
@@ -34,7 +32,9 @@ in
     ];
   };
 
-  # # Define a new network configuration for the route.
+  services.resolved.enable = false;
+  networking.resolvconf.enable = false;
+
   # # This creates a .network file in /etc/systemd/network/
   # systemd.network.networks = {
   #   # You can name this file anything descriptive
@@ -58,7 +58,6 @@ in
   #     ];
   #   };
   # };
-  services.resolved.enable = false;
 
   services.dnscrypt-proxy = {
     enable = true;

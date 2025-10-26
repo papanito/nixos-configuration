@@ -12,6 +12,7 @@
     jellyfin-web
     jellyfin-ffmpeg
     sqlite
+    adguardhome
   ];
 
   fileSystems."/media" = {

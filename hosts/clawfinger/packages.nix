@@ -50,6 +50,7 @@
     
     ### Security and Testing Tools ###
     websocat # Command-line client for WebSockets (like netcat/socat)
+    adguardian # Terminal-based, real-time traffic monitoring and statistics for your AdGuard Home instance
     #xgixy # Nginx configuration static analyzer
 
     ### System ###
