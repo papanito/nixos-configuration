@@ -3,6 +3,7 @@
 #
 { pkgs, ... }: {
   imports = [
+    ./adguard.nix
     ./hardware.nix
     ./packages.nix
     ./users.nix
