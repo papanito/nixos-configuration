@@ -11,7 +11,6 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice
-      nextcloud-client
       onlyoffice-bin
       pdftk # Command-line tool for working with PDFs
       pdfchain # A graphical user interface for the PDF Toolkit (PDFtk)

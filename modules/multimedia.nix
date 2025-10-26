@@ -13,7 +13,6 @@ in
       ffmpeg-full
       gst_all_1.gstreamer # Open source multimedia framework
       ghostscript # PostScript interpreter (mainline version)
-      gnome-frog # Intuitive text extraction tool (OCR) for GNOME desktop
       imagemagick # A software suite to create, edit, compose, or convert bitmap images
       ncspot # Cross-platform ncurses Spotify client written in Rust, inspired by ncmpc and the likes
       parabolic # Download web video and audio
