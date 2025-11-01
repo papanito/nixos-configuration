@@ -30,6 +30,7 @@
       filtering = {
         protection_enabled = true;
         filtering_enabled = true;
+        whitelist_enabled = true;
 
         parental_enabled = false;  # Parental control-based DNS requests filtering.
         safe_search = {
@@ -61,10 +62,34 @@
         "https://adguardteam.github.io/HostlistsRegistry/assets/filter_59.txt" # AdGuard DNS Popup Hosts filter
         "https://adguardteam.github.io/HostlistsRegistry/assets/filter_5.txt"  # OISD Blocklist Small
         "https://adguardteam.github.io/HostlistsRegistry/assets/filter_48.txt" # HaGeZi's Pro Blocklist
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_4.txt"  # Dan Pollock's List
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_47.txt" # HaGeZi's Gambling Blocklist
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_57.txt" # ShadowWhisperer's Dating List
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_46.txt" # HaGeZi's Anti-Piracy Blocklist
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_18.txt" # Phishing Army
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_63.txt" # HaGeZi's Windows/Office Tracker Blocklist
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_62.txt" # Ukrainian Security Filter
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_7.txt"  # Perflyst and Dandelion Sprout's Smart-TV Blocklist
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_6.txr"  # Dandelion Sprout's Game Console Adblock List
+        "https://adguardteam.github.io/HostlistsRegistry/assets/filter_61.txt" # HaGeZi's Samsung Tracker Blocklist
       ];
-
+      #whitelist_filters = map(url: { enabled = true; url = url; name = "Allowlist";}) [
+      #  "https://gitlab.com/papanito/adguard-filters/-/raw/main/allowlist.txt"
+      #];
+      whitelist_filters = [
+      {
+        enabled = true;
+        name = "Local Allowlist";
+        url = "file:///etc/adguardhome/allowlist.txt";
+      }
+      ];
     };
     # Ensure the firewall is open (see next step)
     openFirewall = true;
   };
+
+  # Provide the file via Nix
+  environment.etc."adguardhome/allowlist.txt".text = ''
+    swisslos.ch
+  '';
 }
