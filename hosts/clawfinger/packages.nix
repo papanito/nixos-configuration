@@ -5,7 +5,7 @@
     chromium
     firefox
     google-chrome
-    tor-browser-bundle-bin
+    tor-browser
 
     ### UI Tools ###
     tailscale # The node agent for Tailscale, a mesh VPN built on WireGuard
@@ -31,7 +31,7 @@
     warp # Fast and secure file transfer
     
     ### Cert and Security ###
-    bitwarden
+    bitwarden-desktop
     bitwarden-cli
     certbot
     mkcert # A simple tool for making locally-trusted development certificates

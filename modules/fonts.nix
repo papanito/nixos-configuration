@@ -13,7 +13,7 @@
       nerd-fonts.dejavu-sans-mono
       nerd-fonts.terminess-ttf
       noto-fonts
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       open-sans
       powerline-fonts
     ];
