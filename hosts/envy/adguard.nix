@@ -79,17 +79,12 @@
       whitelist_filters = [
       {
         enabled = true;
-        name = "Local Allowlist";
-        url = "file:///etc/adguardhome/allowlist.txt";
+        name = "papanito's Allowlist";
+        url = "https://gitlab.com/papanito/adguard-filters/-/raw/main/allowlist.txt";
       }
       ];
     };
     # Ensure the firewall is open (see next step)
     openFirewall = true;
   };
-
-  # Provide the file via Nix
-  environment.etc."adguardhome/allowlist.txt".text = ''
-    swisslos.ch
-  '';
 }
