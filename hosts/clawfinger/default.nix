@@ -20,6 +20,15 @@
     HandleLidSwitchDocked = "ignore";
   };
 
+  # Create a library path that only applies to unpackaged programs by using nix-ld. Add this to your configuration.nix:
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      # Add any missing dynamic libraries for unpackaged programs
+      # here, NOT in environment.systemPackages
+    ];
+  };
+
   # modules
   gnome.enable = true;
   kde.enable = false;
