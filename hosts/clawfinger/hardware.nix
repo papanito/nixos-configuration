@@ -31,7 +31,7 @@
 
   boot = {
     extraModulePackages = [ config.boot.kernelPackages.evdi ];
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_6_17;
     initrd = {
       # The set of kernel modules in the initial ramdisk used during the boot process.
       availableKernelModules = [
