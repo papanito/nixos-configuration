@@ -20,7 +20,7 @@
       kernelModules = [ ];
     };
     kernelModules = [ "kvm-intel" ];
-    kernelPackages = pkgs.linuxPackages_6_9;
+    kernelPackages = pkgs.linuxPackages_latest;
     extraModulePackages = [ ];
   };  
   
