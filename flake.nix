@@ -11,19 +11,21 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    # follow `main` branch of this repository, considered being stable
+    nixos-raspberrypi = {
+      url = "github:nvmd/nixos-raspberrypi/main";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     pentesting = {
       url = "/home/papanito/Workspaces/papanito/nix-pentesting";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
 
-  outputs = { self, nixpkgs, disko, pentesting, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, disko, pentesting, sops-nix, nixos-raspberrypi, ... }@inputs:
     let
       # System types to support.
       supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
@@ -36,12 +38,12 @@
 
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+
     in
     {
-    pkgs = forAllSystems (system:
-      let pkgs = nixpkgs.legacyPackages.${system};
-      #in { default = import ./pkgs { inherit pkgs; }; }
-      in { inherit pkgs; }
+      pkgs = forAllSystems (system:
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in { inherit pkgs; }
     );
 
     nixosConfigurations = {
@@ -63,6 +65,25 @@
           inputs.sops-nix.nixosModules.sops
         ];
       };
+      rpi4-demo = nixos-raspberrypi.lib.nixosInstaller {
+        specialArgs = inputs;
+        modules = [
+          {
+            # Hardware specific configuration, see section below for a more complete
+            # list of modules
+            imports = with nixos-raspberrypi.nixosModules; [
+              raspberry-pi-4.base
+              raspberry-pi-4.page-size-16k
+              raspberry-pi-4.bluetooth
+              ./modules/rpi
+            ];
+          }
+          ./hosts/rpi4-demo # Include the results of the hardware scan.
+        ];
+      };
+      # Add this to create a shortcut
+      packages.x86_64-linux.rpi4-image = self.nixosConfigurations.rpi4-demo.config.system.build.sdImage;
+
       hetzner-cloud = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
@@ -88,6 +109,5 @@
         ];
       };
     };
-    #devShells.x86_64-linux.default = (import ./shells/cloud.nix { inherit pkgs; });
   };
 }
