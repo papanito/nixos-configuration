@@ -28,7 +28,11 @@
       #
       passwordFile = "${config.sops.secrets.restic_password.path}";
       # what to backup.
-      paths = ["/home/papanito"];
+      paths = [
+        "/home/papanito"
+        "/var/lib/paperless/"
+        "/var/lib/redis-paperless/"
+      ];
       # the name of your repository.
       repository = "b2:papanito-private-backup:/clawfinger";
       timerConfig = {
@@ -109,7 +113,11 @@
       #
       passwordFile = "${config.sops.secrets.restic_password.path}";
       # what to backup.
-      paths = ["/home/papanito"];
+      paths = [
+        "/home/papanito"
+        "/var/lib/paperless/"
+        "/var/lib/redis-paperless/"
+      ];
       # the name of your repository.
       repository = "/home/backup/backup/clawfinger";
       timerConfig = {
