@@ -53,6 +53,8 @@
         modules = [
           ./configuration.nix
           ./hosts/clawfinger # Include the results of the hardware scan.
+          ./common
+          ./modules
           inputs.sops-nix.nixosModules.sops
         ];
       };
@@ -61,6 +63,8 @@
         inherit system;
         modules = [
           ./configuration.nix
+          ./common
+          ./modules
           ./hosts/envy # Include the results of the hardware scan.
           inputs.sops-nix.nixosModules.sops
         ];
@@ -73,17 +77,16 @@
             # list of modules
             imports = with nixos-raspberrypi.nixosModules; [
               raspberry-pi-4.base
-              raspberry-pi-4.page-size-16k
+                #raspberry-pi-4.page-size-16k
               raspberry-pi-4.bluetooth
+              ./configuration.nix
               ./modules/rpi
+              inputs.sops-nix.nixosModules.sops
             ];
           }
           ./hosts/rpi4-demo # Include the results of the hardware scan.
         ];
       };
-      # Add this to create a shortcut
-      packages.x86_64-linux.rpi4-image = self.nixosConfigurations.rpi4-demo.config.system.build.sdImage;
-
       hetzner-cloud = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [

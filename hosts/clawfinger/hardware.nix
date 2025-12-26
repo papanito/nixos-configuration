@@ -57,6 +57,8 @@
         "luks-361b9e74-4d96-49fa-9243-1676586caed0".device = "/dev/disk/by-uuid/361b9e74-4d96-49fa-9243-1676586caed0";
       };
     };
+    # Enable binfmt emulation for aarch64
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
     runSize = "20%";
     # The set of kernel modules to be loaded in the second stage of the boot process
     kernelModules = [ 
