@@ -1,10 +1,5 @@
 { lib, config, pkgs, ... }:
 {
-  services.openssh = {
-    enable = true;
-    settings.PermitRootLogin = "yes";
-  };
-
   # allow nix-copy to live system
   nix.settings.trusted-users = [ "nixos" ];
 
@@ -29,12 +24,6 @@
     systemd-resolved.stopIfChanged = false;
   };
 
-  # Force unblock the radio (Sometimes RPi starts with Wi-Fi disabled)
-  system.activationScripts.rfkillUnblockWlan = {
-    text = ''
-      ${pkgs.rfkill}/bin/rfkill unblock wlan
-    '';
-  };
   # Use iwd instead of wpa_supplicant. It has a user friendly CLI
   networking.wireless = {
     enable = false;

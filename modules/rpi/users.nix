@@ -7,14 +7,15 @@
       "networkmanager"
       "video"
     ];
-    # Allow the graphical user to login without password
-    initialHashedPassword = "";
+    password = "$6$/f0v6HdHFSMjukeZ$0/QeGATuWXvhYcU60XPo6Vsqfb1hwIajKGsp90ZthLH8ionsXMFTBXyRXDA119.Ej0ldc35gT9ua0pePtwILI1";
+    hashedPasswordFile = config.sops.secrets.defaul:w_password.path;
   };
 
-  # Allow the user to log in as root without a password.
-  users.users.root.initialHashedPassword = "";
-
-  # Don't require sudo/root to `reboot` or `poweroff`.
+  users.users.root = {
+    password = "$6$/f0v6HdHFSMjukeZ$0/QeGATuWXvhYcU60XPo6Vsqfb1hwIajKGsp90ZthLH8ionsXMFTBXyRXDA119.Ej0ldc35gT9ua0pePtwILI1";
+    hashedPasswordFile = config.sops.secrets.default_password.path;
+  };
+  
   security.polkit.enable = true;
 
   # Allow passwordless sudo from nixos user
@@ -22,9 +23,6 @@
     enable = true;
     wheelNeedsPassword = false;
   };
-
-  # Automatically log in at the virtual consoles.
-  services.getty.autologinUser = "nixos";
 
   # allow nix-copy to live system
   nix.settings.trusted-users = [ "nixos" ];
