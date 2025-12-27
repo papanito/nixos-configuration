@@ -7,6 +7,9 @@
   sops = {
     defaultSopsFile = ../secrets/secrets.yaml;
     secrets.GODSMACK = {};
+    secrets.default_password = {
+      neededForUsers = true; # Critical: decrypts before users are created
+    };
     templates."GODSMACK.psk" = {
       path = "/var/lib/iwd/GODSMACK.psk";
       content = ''
