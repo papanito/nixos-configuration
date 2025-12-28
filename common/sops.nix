@@ -6,6 +6,7 @@
   # sops.defaultSopsFile = "/root/.sops/secrets/example.yaml";
   sops = {
     defaultSopsFile = ../secrets/secrets.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets.GODSMACK = {};
     secrets.default_password = {
       neededForUsers = true; # Critical: decrypts before users are created
