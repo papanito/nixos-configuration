@@ -44,13 +44,4 @@
     "net.ipv4.ip_forward" = 1;
     "net.ipv4.ip_unprivileged_port_start" = 0;
   };
-
-  services.dnscrypt-proxy2 = {
-    settings = {
-      listen_addresses = [
-        "127.0.0.1:51"
-        "[::1]:51"
-      ];
-    };
-  };
 }
