@@ -1,6 +1,7 @@
 { lib, config, pkgs, ... }:
 {
   imports = [
+    ./rpi # raspberry pi specific stuff
     ./cloud.nix
     ./container.nix
     ./development.nix
@@ -24,10 +25,8 @@
     fusermount.source  = "${pkgs.fuse}/bin/fusermount";
   };
 
-  services.envfs.enable = true;
-
   environment.systemPackages = with pkgs; [
-  ## Essential system tools
+    ## Essential system tools
     age # Modern encryption tool with small explicit keys
     bat # A cat(1) clone with syntax highlighting and Git integration
     btop # A monitor of resources
@@ -41,7 +40,6 @@
     fzf # A command-line fuzzy finder written in Go
     fd # A simple, fast and user-friendly alternative to find
     fq # jq for binary formats
-    helix # Post-modern modal text editor
     jq # A lightweight and flexible command-line JSON processor
     gnupg # Modern release of the GNU Privacy Guard, a GPL OpenPGP implementation
     gtop # graphic top
@@ -84,8 +82,5 @@
     zoxide # A fast cd command that learns your habits
     nushell # terminal
     carapace # Multi-shell multi-command argument completer
-
-    ### Encryption ###
-    sops
   ];
 }

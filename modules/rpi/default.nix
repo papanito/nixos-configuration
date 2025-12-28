@@ -1,11 +1,16 @@
 { lib, config, pkgs, ... }:
+let
+  isArm = pkgs.stdenv.hostPlatform.isAarch64;
+in
 {
-  imports = [
+  imports = lib.optional isArm [
     ./networking.nix
     ./users.nix
   ];
 
-  environment.systemPackages = with pkgs; [
-    tree
-  ];
+  environment.systemPackages = lib.optionals isArm (
+    with pkgs; [
+      tree
+    ]
+  );
 }

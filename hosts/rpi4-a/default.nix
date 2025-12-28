@@ -4,8 +4,6 @@
 { config, pkgs, lib, ... }: {
   imports = [
   ];
-    networking.hostName = "rpi4-demo";
-
     system.nixos.tags = let
       cfg = config.boot.loader.raspberryPi;
     in [

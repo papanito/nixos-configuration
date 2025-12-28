@@ -39,7 +39,7 @@
     };
   };
 
-  networking.hostName = "rpi${config.boot.loader.raspberryPi.variant}-demo";
+  #networking.hostName = "rpi${config.boot.loader.raspberryPi.variant}-demo";
 
   services.udev.extraRules = ''
     # Ignore partitions with "Required Partition" GPT partition attribute

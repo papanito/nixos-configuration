@@ -51,9 +51,9 @@
         specialArgs = { inherit inputs; };
         inherit system;
         modules = [
-          ./hosts/clawfinger # Include the results of the hardware scan.
           ./common
           ./modules
+          ./hosts/clawfinger # Include the results of the hardware scan.
           inputs.sops-nix.nixosModules.sops
         ];
       };
@@ -67,18 +67,17 @@
           inputs.sops-nix.nixosModules.sops
         ];
       };
-      rpi4-demo = nixos-raspberrypi.lib.nixosInstaller {
+      rpi4-a = nixos-raspberrypi.lib.nixosInstaller {
         specialArgs = inputs;
         modules = [
           {
             # Hardware specific configuration, see section below for a more complete
             # list of modules
             imports = with nixos-raspberrypi.nixosModules; [
-              raspberry-pi-4.base
-                #raspberry-pi-4.page-size-16k
-              raspberry-pi-4.bluetooth
               ./common
-              ./modules/rpi
+              ./modules
+              raspberry-pi-4.base
+              raspberry-pi-4.bluetooth
               inputs.sops-nix.nixosModules.sops
             ];
           }

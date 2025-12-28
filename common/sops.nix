@@ -22,4 +22,7 @@
       mode = "0600";
     };
   };
+  environment.systemPackages = with pkgs; [
+    sops
+  ];
 }
