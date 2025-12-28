@@ -48,8 +48,11 @@
 
     nixosConfigurations = {
       clawfinger = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
         inherit system;
+        specialArgs = { 
+          inherit inputs; 
+          isArm = false; 
+        };
         modules = [
           ./common
           ./modules
@@ -58,7 +61,10 @@
         ];
       };
       envy = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
+        specialArgs = { 
+          inherit inputs; 
+          isArm = false; 
+        };
         inherit system;
         modules = [
           ./common
@@ -68,20 +74,24 @@
         ];
       };
       rpi4-a = nixos-raspberrypi.lib.nixosInstaller {
-        specialArgs = inputs;
+        specialArgs = { 
+          inherit inputs;
+          nixos-raspberrypi = inputs.nixos-raspberrypi;
+          isArm = true;
+        };
         modules = [
           {
             # Hardware specific configuration, see section below for a more complete
             # list of modules
             imports = with nixos-raspberrypi.nixosModules; [
               ./common
-              ./modules
+              ./modules/rpi
               raspberry-pi-4.base
               raspberry-pi-4.bluetooth
               inputs.sops-nix.nixosModules.sops
             ];
           }
-          ./hosts/rpi4-demo # Include the results of the hardware scan.
+          ./hosts/rpi4-a # Include the results of the hardware scan.
         ];
       };
       hetzner-cloud = nixpkgs.lib.nixosSystem {

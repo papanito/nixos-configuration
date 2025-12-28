@@ -6,7 +6,7 @@ in
 {
   options.gnome = {
     enable 
-      = lib.mkEnableOption "enable gnome and install relatedd software";
+      = lib.mkEnableOption "enable gnome and install related software";
   };
   config = lib.mkIf cfg.enable {
     services = {
@@ -30,6 +30,7 @@ in
       };
     };
     systemd.services.dlm.wantedBy = [ "multi-user.target" ];
+    services.envfs.enable = true;
 
     programs = {
       dconf.enable = true;

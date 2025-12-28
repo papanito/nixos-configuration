@@ -1,7 +1,6 @@
 { lib, config, pkgs, ... }:
 {
   imports = [
-    ./rpi # raspberry pi specific stuff
     ./cloud.nix
     ./container.nix
     ./development.nix
