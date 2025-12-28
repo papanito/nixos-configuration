@@ -6,6 +6,7 @@ let
   # CONFIRMED Service CIDR (where kube-dns ClusterIP is)
   kindServiceCIDR = "10.96.0.0/16";
   dockerBridgeInterface = "podman0";
+  isArm = pkgs.stdenv.hostPlatform.isAarch64;
 in
 {
   # Enable networking
@@ -17,7 +18,7 @@ in
     # If using dhcpcd:
     dhcpcd.extraConfig = "nohook resolv.conf";
     networkmanager = {
-      enable = true;
+      enable = if isArm then false else true;
       dns = "none";
     };
     # extraHostConfig = ''
