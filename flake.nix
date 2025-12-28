@@ -51,7 +51,6 @@
         specialArgs = { inherit inputs; };
         inherit system;
         modules = [
-          ./configuration.nix
           ./hosts/clawfinger # Include the results of the hardware scan.
           ./common
           ./modules
@@ -62,7 +61,6 @@
         specialArgs = { inherit inputs; };
         inherit system;
         modules = [
-          ./configuration.nix
           ./common
           ./modules
           ./hosts/envy # Include the results of the hardware scan.
@@ -79,7 +77,7 @@
               raspberry-pi-4.base
                 #raspberry-pi-4.page-size-16k
               raspberry-pi-4.bluetooth
-              ./configuration.nix
+              ./common
               ./modules/rpi
               inputs.sops-nix.nixosModules.sops
             ];
@@ -92,7 +90,7 @@
         modules = [
           ({modulesPath, ... }: {
             imports = [
-              ./configuration.nix
+              ./common
               "${modulesPath}/installer/scan/not-detected.nix"
               "${modulesPath}/profiles/qemu-guest.nix"
               disko.nixosModules.disko

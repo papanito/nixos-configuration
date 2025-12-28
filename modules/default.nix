@@ -15,6 +15,16 @@
     ./virt.nix
     ./wine.nix
   ];
+  
+  environment.etc."fuse.conf".text = ''
+    user_allow_other
+  '';
+
+  security.wrappers = {
+    fusermount.source  = "${pkgs.fuse}/bin/fusermount";
+  };
+
+  services.envfs.enable = true;
 
   environment.systemPackages = with pkgs; [
   ## Essential system tools
