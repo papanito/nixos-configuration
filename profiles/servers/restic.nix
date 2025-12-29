@@ -31,16 +31,14 @@
 
   services.restic.backups = {
     b2 = {
-      initialize = false;
+      initialize = true;
       #
       #user = "restic";
       #
       passwordFile = "${config.sops.secrets.restic_password.path}";
       # what to backup.
       paths = [
-        "/home/papanito"
-        "/var/lib/paperless/"
-        "/var/lib/redis-paperless/"
+        "/var/lib"
       ];
       # the name of your repository.
       repository = "b2:papanito-private-backup:/${name}";
@@ -56,6 +54,10 @@
       environmentFile = "${config.sops.templates."restic.env".path}";
 
       exclude = [
+        "nixos"
+        "systemd"
+        "*log"
+        "Network*"
       ];
 
       # keep 7 daily, 5 weekly, and 10 annual backups
