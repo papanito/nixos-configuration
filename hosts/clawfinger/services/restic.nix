@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-
+{ config, pkgs, name, ... }:
 {
   environment.systemPackages = with pkgs; [
     restic
@@ -56,7 +55,7 @@
         "/var/lib/redis-paperless/"
       ];
       # the name of your repository.
-      repository = "b2:papanito-private-backup:/clawfinger";
+      repository = "b2:papanito-private-backup:/${name}";
       timerConfig = {
         # backup every 1d
         OnCalendar = "daily";
@@ -141,7 +140,7 @@
         "/var/lib/redis-paperless/"
       ];
       # the name of your repository.
-      repository = "/home/backup/backup/clawfinger";
+      repository = "/home/backup/backup/${name}";
       timerConfig = {
         # backup every 1d
         OnCalendar = "daily";

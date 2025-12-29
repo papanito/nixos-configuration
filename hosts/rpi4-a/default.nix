@@ -1,9 +1,10 @@
 #
 # Contains modules for configuring systems.
 #
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, name, ... }: {
   imports = [
   ];
+
     system.nixos.tags = let
       cfg = config.boot.loader.raspberryPi;
     in [

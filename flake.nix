@@ -1,123 +1,113 @@
 {
   inputs = {
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
-    };
-    nixpkgs-stable = {
-      url = "github:NixOS/nixpkgs/nixos-25.05";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
     disko.url = "github:nix-community/disko";
+    
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # follow `main` branch of this repository, considered being stable
-    nixos-raspberrypi = {
-      url = "github:nvmd/nixos-raspberrypi/main";
-    };
+    
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
+    
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
     pentesting = {
       url = "/home/papanito/Workspaces/papanito/nix-pentesting";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
 
-  outputs = { self, nixpkgs, disko, pentesting, sops-nix, nixos-raspberrypi, ... }@inputs:
+  outputs = { self, nixpkgs, disko, sops-nix, nixos-raspberrypi, ... }@inputs:
     let
-      # System types to support.
-      supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
-
-      # Helper function to generate an attrset '{ x86_64-linux = f "x86_64-linux"; ... }'.
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
-      # Nixpkgs instantiated for supported system types.
-      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; overlays = [ self.overlay ]; });
+# Instantiate pkgs with overlays for use in CLI (nix build .#hello)
+      nixpkgsFor = forAllSystems (system: import nixpkgs {
+        inherit system;
+        overlays = [ (final: prev: { pentesting = inputs.pentesting.packages.${system}; }) ];
+        config.allowUnfree = true;
+      });
 
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      # --- HOST FACTORY ---
+      mkSystem = name: { type, system ? "x86_64-linux", device ? "/dev/sda" }: 
+        let
+          isRpi = type == "rpi";
+          isCloud = type == "cloud";
+          isServer = type == "server";
+      
+          # Use nixpkgs lib for convenience
+          lib = nixpkgs.lib;
 
+          # 1. Define modules common to all hosts
+          moduleList = [
+            # Programmatically set hostname using the 'name' variable
+            { networking.hostName = name; }
+            
+            # Programmatically find the host configuration directory
+            ./hosts/${name}
+            
+            ./common
+            ./modules
+            sops-nix.nixosModules.sops
+
+            # Archetype-specific modules
+            # Instead of a top-level 'if' which causes recursion in 'imports',
+            # we pass a module that conditionally imports based on the variables.
+            ({ ... }: {
+              imports = lib.optionals isRpi (with nixos-raspberrypi.nixosModules; [
+                ./modules/rpi
+                raspberry-pi-4.base
+                raspberry-pi-4.bluetooth
+              ]) ++ lib.optionals isCloud [
+                disko.nixosModules.disko
+                (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
+              ] ++ lib.optionals isServer [
+                ./modules/servers
+              ];
+            })
+          ];
+
+          # SpecialArgs: safe place for extra variables
+          specialArgs = { 
+            inherit self inputs name isRpi isCloud;
+            isArm = isRpi;
+            nixos-raspberrypi = inputs.nixos-raspberrypi;
+          };
+        in
+          # Strictly isolated builder calls
+          if isRpi then 
+            nixos-raspberrypi.lib.nixosInstaller {
+              inherit system specialArgs;
+              inherit (inputs) nixos-raspberrypi; # Installer requires this at top-level
+              modules = moduleList;
+            }
+          else 
+            nixpkgs.lib.nixosSystem {
+              inherit system specialArgs;
+              modules = moduleList;
+            };
     in
     {
-      pkgs = forAllSystems (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in { inherit pkgs; }
-    );
+      # Export pkgs for use in shells/scripts
+      legacyPackages = forAllSystems (system: nixpkgs.legacyPackages.${system});
 
-    nixosConfigurations = {
-      clawfinger = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { 
-          inherit inputs; 
-          isArm = false; 
-        };
-        modules = [
-          ./common
-          ./modules
-          ./hosts/clawfinger # Include the results of the hardware scan.
-          inputs.sops-nix.nixosModules.sops
-        ];
-      };
-      envy = nixpkgs.lib.nixosSystem {
-        specialArgs = { 
-          inherit inputs; 
-          isArm = false; 
-        };
-        inherit system;
-        modules = [
-          ./common
-          ./modules
-          ./hosts/envy # Include the results of the hardware scan.
-          inputs.sops-nix.nixosModules.sops
-        ];
-      };
-      rpi4-a = nixos-raspberrypi.lib.nixosInstaller {
-        specialArgs = { 
-          inherit inputs;
-          nixos-raspberrypi = inputs.nixos-raspberrypi;
-          isArm = true;
-        };
-        modules = [
-          {
-            # Hardware specific configuration, see section below for a more complete
-            # list of modules
-            imports = with nixos-raspberrypi.nixosModules; [
-              ./common
-              ./modules/rpi
-              raspberry-pi-4.base
-              raspberry-pi-4.bluetooth
-              inputs.sops-nix.nixosModules.sops
-            ];
-          }
-          ./hosts/rpi4-a # Include the results of the hardware scan.
-        ];
-      };
-      hetzner-cloud = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ({modulesPath, ... }: {
-            imports = [
-              ./common
-              "${modulesPath}/installer/scan/not-detected.nix"
-              "${modulesPath}/profiles/qemu-guest.nix"
-              disko.nixosModules.disko
-            ];
-            disko.devices = import ./single-gpt-disk-fullsize-ext4.nix "/dev/sda";
-            boot.loader.grub = {
-              devices = [ "/dev/sda" ];
-              efiSupport = true;
-              efiInstallAsRemovable = true;
-            };
-            services.openssh.enable = true;
+      nixosConfigurations = {
+        # Standard PCs
+        clawfinger = mkSystem "clawfinger" { type = "pc"; };
+        # Serverv
+        envy       = mkSystem "envy"       { type = "server"; };
 
-            users.users.root.openssh.authorizedKeys.keys = [
-              "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDDW6I1hIPUBCGNCLa7Rfb++19kqgWwz3oKoyOCGE8csP8W83VNCiNnDxOZf3uASpUtz9ObP67IV7YiSFKOKksC6jt8SpLFCITD2n9EdC1j7Aii6eX/oF4OeFLadi5iOvsnw4Y7exoon4U6FlGlc6PdfBOKTRyB3W+69QT7N0RDuWS7s2M6+lTOxGhlWP+qeYDh5aT8/GVIFXzJCk+0aEShzXvF23BnrfCfDj7owfxNayDCMpTw6wnDQCB535sQtTkK4UtLoOQVAzMOj3h7ErEVPkpYbxLaE36xal55kEWhyLdCwqoDOfEGvB+PSqIJ0WxMYsoRi7b2EazTzyj+TKJ0oUAlw8RecWiJjnqfxIf+fR2bx4fmhurTiVzXm/Iq9dJAO0dOr4YsZlpxeh8G6Cm6TlqbtRF9ULoNrx1bL5hz2aEgTlWEyvFzztap19o0UA8h67uu6YGwpQe4KUh8GO44pxtI0ZqLFTwNhqTYu/jX94g35+X+YflydKCE3nTl3x2Jyg6hzjAALziZmMxY3JfeSD8Y9+TFfJ9P3Vr+Ag6XSX9Vrc30fBOeD9gpNlcZybQBiQSPGPNWd/54R3ob3I6w4IgGhN7T4lqE6THxEOmCwkBzMt/9jo7MePG4qPD7rxsECa+Nf4X6cLCWg7rbZ2AvIqtEhcGOQ+dwRBG9WP+5DQ=="
-            ];
-          })
-        ];
+        # Raspberry Pi
+        rpi4-a     = mkSystem "rpi4-a"     { type = "rpi"; system = "aarch64-linux"; };
+
+        # Cloud
+        #hetzner-cloud = mkSystem "hetzner-cloud" { type = "cloud"; device = "/dev/sda"; };
       };
     };
-  };
 }
