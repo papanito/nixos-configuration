@@ -46,12 +46,9 @@
 
           # 1. Define modules common to all hosts
           moduleList = [
-            # Programmatically set hostname using the 'name' variable
-            { networking.hostName = name; }
-            
             # Programmatically find the host configuration directory
             ./hosts/${name}
-            
+
             ./common
             ./modules
             sops-nix.nixosModules.sops
@@ -61,14 +58,14 @@
             # we pass a module that conditionally imports based on the variables.
             ({ ... }: {
               imports = lib.optionals isRpi (with nixos-raspberrypi.nixosModules; [
-                ./modules/rpi
+                ./profiles/rpi
                 raspberry-pi-4.base
                 raspberry-pi-4.bluetooth
               ]) ++ lib.optionals isCloud [
                 disko.nixosModules.disko
                 (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
               ] ++ lib.optionals isServer [
-                ./modules/servers
+                ./profiles/servers
               ];
             })
           ];
