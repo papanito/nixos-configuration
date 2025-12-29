@@ -7,4 +7,5 @@
     PasswordAuthentication = false;
     PermitRootLogin = "no";
   };
+  #services.openssh.enable = true;
 }

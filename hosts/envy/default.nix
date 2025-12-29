@@ -5,28 +5,10 @@
   imports = [
     ./adguard.nix
     ./hardware.nix
-    ./packages.nix
+    ./jellyfin.nix
     ./users.nix
     ./networking.nix
   ];
-
-  nix.settings.trusted-users = [ "admin" ];
-
-  services.openssh.enable = true;
-
-  security = {
-    pam = {
-      rssh.enable     =  true;
-      services = {
-          sudo.rssh   =  true;
-      };
-    };
-    sudo = {
-      execWheelOnly  =  true;
-      wheelNeedsPassword = false;
-    };
-  };
-
 
   # Enable sound with pipewire.
   services.pipewire = {

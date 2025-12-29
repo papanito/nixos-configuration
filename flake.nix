@@ -27,7 +27,7 @@
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
-# Instantiate pkgs with overlays for use in CLI (nix build .#hello)
+      # Instantiate pkgs with overlays for use in CLI (nix build .#hello)
       nixpkgsFor = forAllSystems (system: import nixpkgs {
         inherit system;
         overlays = [ (final: prev: { pentesting = inputs.pentesting.packages.${system}; }) ];
@@ -50,7 +50,7 @@
             ./hosts/${name}
 
             ./common
-            ./modules
+
             sops-nix.nixosModules.sops
 
             # Archetype-specific modules
@@ -58,14 +58,17 @@
             # we pass a module that conditionally imports based on the variables.
             ({ ... }: {
               imports = lib.optionals isRpi (with nixos-raspberrypi.nixosModules; [
-                ./profiles/rpi
                 raspberry-pi-4.base
                 raspberry-pi-4.bluetooth
+                ./profiles/rpi
+                ./profiles/servers
               ]) ++ lib.optionals isCloud [
                 disko.nixosModules.disko
+                ./modules
                 (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
               ] ++ lib.optionals isServer [
                 ./profiles/servers
+                ./modules
               ];
             })
           ];
@@ -81,7 +84,6 @@
           if isRpi then 
             nixos-raspberrypi.lib.nixosInstaller {
               inherit system specialArgs;
-              inherit (inputs) nixos-raspberrypi; # Installer requires this at top-level
               modules = moduleList;
             }
           else 
