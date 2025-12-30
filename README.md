@@ -46,3 +46,13 @@ Follows <https://github.com/nvmd/nixos-raspberrypi?tab=readme-ov-file>
   ```shell
   sudo dd if=nixos-sd-image-rpi4-uboot.img of=/dev/sda bs=4M status=progress
   ```
+
+## Sops keys
+
+Run
+
+```shell
+sops updatekeys profiles/servers/secrets.yaml
+sops updatekeys secrets/secrets.yaml
+...
+```
