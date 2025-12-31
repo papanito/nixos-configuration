@@ -40,7 +40,8 @@
           isRpi = type == "rpi";
           isCloud = type == "cloud";
           isServer = type == "server";
-      
+          isPC = type == "pc";
+
           # Use nixpkgs lib for convenience
           lib = nixpkgs.lib;
 
@@ -68,6 +69,8 @@
                 (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
               ] ++ lib.optionals isServer [
                 ./profiles/servers
+                ./modules
+              ] ++ lib.optionals isPC [
                 ./modules
               ];
             })
