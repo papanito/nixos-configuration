@@ -8,9 +8,6 @@
     defaultSopsFile = ../secrets/secrets.yaml;
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets.GODSMACK = {};
-    secrets.default_password = {
-      neededForUsers = true; # Critical: decrypts before users are created
-    };
     templates."GODSMACK.psk" = {
       path = "/var/lib/iwd/GODSMACK.psk";
       content = ''
