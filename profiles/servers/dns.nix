@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, isRpi, ... }:
 {
 services.resolved = {
     enable = true;
@@ -16,7 +16,7 @@ services.resolved = {
     resolvconf.enable = false;
     
     networkmanager = {
-      enable = true;
+      enable = lib.mkDefault (!isRpi);
       dns = "systemd-resolved";
     };
 

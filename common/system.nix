@@ -65,12 +65,4 @@
     dates = "02:00";
     randomizedDelaySec = "45min";
   };
-
-
-  nixpkgs.config = {
-    permittedInsecurePackages = [
-      "electron"
-    ];
-    allowUnfree = true;
-  };
 }
