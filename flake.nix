@@ -77,12 +77,12 @@
             ./hosts/${name}
             ./common
             sops-nix.nixosModules.sops
+            disko.nixosModules.disko 
             
             ({ ... }: {
               imports = lib.optionals (type == "pc") [ ./modules ]
                      ++ lib.optionals (type == "server") [ ./profiles/servers ./modules ]
                      ++ lib.optionals (type == "cloud") [ 
-                          disko.nixosModules.disko 
                           (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
                         ];
             })
@@ -137,6 +137,13 @@
           type = "server"; 
           deployment = {
             targetHost = "10.0.0.10";
+            targetUser = "nixos";
+          };
+        };
+        lenovo = mkSystem "lenovo" { 
+          type = "server"; 
+          deployment = {
+            targetHost = "10.0.0.61";
             targetUser = "nixos";
           };
         };
