@@ -5,6 +5,7 @@ keys:
   - &admin_nixos age1pu3n34surq08wa0xa7xrhd4ukcah8au6pqw5mj8mgpvypw8e4d0swhf9v2
   - &server_clawfinger age155ygrv7uzel70wp7tde2fp3xg9kjsht3kcu49rt3l89qw5j0tgsqsvccye
   - &server_envy age1fyvzwcvfv2s3s9jr7hdpkkdc3fup65rksgeu9uahvntnrvg243fs4lm0qz
+  - &server_lenovo age1j6h04s7tknqy5mv3yuw06ve3p2tcqyn02yzga5hsprs33qy3dehqzjs7c8
   - &server_rpi4_a age1nrd7t79qrpa4trvwgtxjx9safsalypyhsq0xmrz98plrvzg4u40s6xk32m
 creation_rules:
   - path_regex: profiles/servers/[^/]+\.(yaml|json|env|ini)$
@@ -14,6 +15,7 @@ creation_rules:
           - *admin_nixos
           - *server_clawfinger
           - *server_envy
+          - *server_lenovo
           - *server_rpi4_a
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
@@ -22,6 +24,7 @@ creation_rules:
           - *admin_nixos
           - *server_clawfinger
           - *server_envy
+          - *server_lenovo
           - *server_rpi4_a
   - path_regex: secrets/clawfinger/[^/]+\.(yaml|json|env|ini)$
     key_groups:
@@ -34,4 +37,3 @@ creation_rules:
           - *admin_papanito
           - *admin_nixos
           - *server_envy
-
