@@ -7,4 +7,7 @@
     ./notifications.nix
     ./users.nix 
   ];
+  services.logind = {
+    lidSwitch = "ignore";
+  };
 }
