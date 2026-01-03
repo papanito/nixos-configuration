@@ -78,6 +78,7 @@
             ./common
             sops-nix.nixosModules.sops
             disko.nixosModules.disko 
+            inputs.home-manager.nixosModules.home-manager
             
             ({ ... }: {
               imports = lib.optionals (type == "pc") [ ./modules ]

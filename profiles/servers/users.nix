@@ -1,5 +1,7 @@
-{ lib, config, pkgs, sops-nix, ...}:
-{
+{ lib, config, pkgs, home-manager, sops-nix, ...}:
+let
+  myZshConfig = import ../../common/zsh-config.nix { inherit pkgs; };
+in {
   # allow nix-copy to live system
   nix.settings.trusted-users = [ "nixos" ];
   services.getty.autologinUser = lib.mkForce null;
@@ -11,6 +13,11 @@
     };
   };
 
+  # Enable Zsh as a system shell
+  home-manager.users.nixos = { pkgs, ... }: {
+    programs.zsh = myZshConfig;
+    home.stateVersion = "25.11";
+  };
   users.users.nixos = {
     isNormalUser = true;
     extraGroups = [

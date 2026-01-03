@@ -1,35 +1,18 @@
 { config, lib, pkgs, ... }:
-
-{
+let
+  myZshConfig = import ./zsh-config.nix { inherit pkgs; };
+in {
   users.defaultUserShell = pkgs.zsh;
 
-  # 1. Enable Zsh as a system shell
+  # Enable Zsh as a system shell
+  #programs.zsh = myZshConfig;
   programs.zsh = {
     enable = true;
-    
-    # Enable interactive features
     enableCompletion = true;
-    autosuggestions.enable = true;
+    enableAutosuggestions = true;
     syntaxHighlighting.enable = true;
 
-    # Default shell aliases
-    shellAliases = {
-      ll = "ls -l";
-      update = "sudo nixos-rebuild switch";
-    };
-
-    # Custom configuration for the .zshrc
-    interactiveShellInit = ''
-      # Add custom zsh logic here
-      export EDITOR='vim'
-    '';
-
-    # Configure Oh-My-Zsh (Optional but very common)
-    ohMyZsh = {
-      enable = true;
-      plugins = [ "git" "docker" "sudo" ];
-      theme = "robbyrussell";
-    };
+    ohMyZsh = myZshConfig.oh-my-zsh;
   };
 
   # To add the zsh package to /etc/shells you must update environment.shells.
