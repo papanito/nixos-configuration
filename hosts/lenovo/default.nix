@@ -5,6 +5,7 @@
   imports = [
     ./hardware.nix
     ./disko.nix
+    ./paperless-ngx.nix
   ];
 
   # Enable sound with pipewire.
