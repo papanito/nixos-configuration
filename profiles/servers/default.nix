@@ -1,10 +1,10 @@
 { lib, config, pkgs, ... }:
 {
   imports = [
-    ./restic.nix
-    ./notifications.nix
     ./dns.nix
     ./networking.nix
+    ./restic.nix
+    ./notifications.nix
     ./users.nix 
   ];
 }

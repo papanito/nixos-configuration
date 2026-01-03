@@ -14,7 +14,7 @@
       "systemd-googlechat-notifier@" = {
          enable = true;
          description = "Send notifications to google chat endpoint";
-         wantedBy = [ "default.target" ];
+        #wantedBy = [ "default.target" ];
          after = [ "network.target" ];
          serviceConfig = {
             Type = "oneshot";
