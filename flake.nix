@@ -81,15 +81,23 @@
             inputs.home-manager.nixosModules.home-manager
             
             ({ ... }: {
-              imports = lib.optionals (type == "pc") [ ./modules ]
-                     ++ lib.optionals (type == "server") [ ./profiles/servers ./modules ]
+              imports = lib.optionals (type == "pc") [
+                          ./modules
+                        ]
+                     ++ lib.optionals (type == "server") [
+                          ./profiles/servers
+                          ./modules
+                        ]
                      ++ lib.optionals (type == "cloud") [ 
                           (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
-                        ];
+                        ]
+                     ++ lib.optionals (type == "rpi") [
+                        rpiShim
+                     ];
             })
           ];
 
-          # 2. RPi-Specific Shim Module
+          # RPi-Specific Shim Module
           # This only exists during RPi evaluation to prevent the 'rename.nix' conflict.
           rpiShim = { lib, ... }: {
             imports = with nixos-raspberrypi.nixosModules; [
@@ -118,9 +126,7 @@
           nixosConfig = if isRpi 
             then nixos-raspberrypi.lib.nixosInstaller { 
               inherit system specialArgs; 
-              # We combine the base modules with our shim
-              modules = moduleList ++ [ rpiShim 
-              ]; 
+              modules = moduleList;
             }
             else nixpkgs.lib.nixosSystem { 
               inherit system specialArgs; 
@@ -176,7 +182,9 @@
           nodeSpecialArgs = builtins.mapAttrs (name: h: h.specialArgs) self.hosts;
         };
       } // (builtins.mapAttrs (name: h: {
-        imports = h.moduleList;
+        # We reach into the evaluated nixosConfiguration and grab the module list
+  # This ensures 1:1 parity with your working nixos-rebuild setup.
+  imports = self.nixosConfigurations.${name}._module.args.modules;
         deployment = h.deployment;
         # Ensure Colmena uses the correct architecture
         nixpkgs.system = h.system;
