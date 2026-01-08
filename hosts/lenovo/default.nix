@@ -1,11 +1,9 @@
-#
-# Contains modules for configuring systems.
-#
 { pkgs, ... }: {
   imports = [
     ./hardware.nix
     ./disko.nix
     ./paperless-ngx.nix
+    ./fileserver.nix
   ];
 
   # Enable sound with pipewire.
