@@ -6,8 +6,6 @@
     address = "0.0.0.0";
     port = 58080;
     consumptionDirIsPublic = true;
-    mediaDir = "/var/lib/paperless-ngx/";
-    consumptionDir = "/var/lib/paperless-ngx/consume";
     user = "svc-worker";
     domain = "paperless.home";
 
@@ -17,12 +15,18 @@
       PAPERLESS_FILENAME_FORMAT = "{document_type}/{correspondent}/{created_year}/{correspondent}_{created_year}{created_month}{created_day}_{title}";
       PAPERLESS_CONSUMER_RECURSIVE =  true;
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = true;
-      PAPERLESS_TRASH_DIR = "/var/lib/paperless-ngx/trash";
-      PAPERLESS_CONVERT_TMPDIR = "/var/tmp/paperless";
-      PAPERLESS_SCRATCH_DIR = "/var/tmp/paperless-scratch";
     };
   };
   systemd.services.paperless-scheduler.after = ["var-lib-paperless.mount"];
   systemd.services.paperless-consumer.after = ["var-lib-paperless.mount"];
   systemd.services.paperless-web.after = ["var-lib-paperless.mount"];
+
+  networking.firewall.allowedTCPPorts = [ 58080 ];
+
+  # This ensures that every time the system boots or you run nixos-rebuild, the permissions are enforced
+  systemd.tmpfiles.rules = [
+    # Type | Path | Mode | User | Group | Age | Argument
+    "d /var/lib/paperless 0750 svc-worker svc-worker -"
+    "Z /var/lib/paperless - svc-worker svc-worker -"
+  ];
 }
