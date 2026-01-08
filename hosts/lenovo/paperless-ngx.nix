@@ -8,7 +8,7 @@
     consumptionDirIsPublic = true;
     mediaDir = "/var/lib/paperless-ngx/";
     consumptionDir = "/var/lib/paperless-ngx/consume";
-    user = "nixos";
+    user = "svc-worker";
     domain = "paperless.home";
 
     settings = {

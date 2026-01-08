@@ -34,6 +34,19 @@ in {
     ];
   };
 
+  users.users.svc-worker = {
+    isSystemUser = true;
+    group = "svc-worker";
+    description = "Service account for non-privileged tasks";
+    # Prevents interactive login
+    shell = pkgs.shadow; 
+    # If the service needs a home directory for config/state
+    createHome = true;
+    home = "/var/lib/svc-worker";
+  };
+
+# Corresponding group
+users.groups.svc-worker = {};
   security.polkit.enable = true;
 
   # Allow passwordless sudo from nixos user

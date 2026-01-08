@@ -1,8 +1,7 @@
 { config, pkgs, ... }:
 let
   printer_ip = "10.0.0.100";
-  target_dir = "/var/tmp/scans";
-  username = "admin";
+  target_dir = "/var/lib/svc-worker";
 in
 {
   environment.systemPackages = with pkgs; [
@@ -18,11 +17,31 @@ in
     description = "HP Scan-to-Computer Push Listener";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
+
+    # Ensure the service has the necessary binaries in its environment
+    path = with pkgs; [ 
+      bash 
+      coreutils 
+      nodejs 
+    ];
+
     serviceConfig = {
       # We use npx to run the tool without 'installing' it globally
       ExecStart = "${pkgs.nodejs}/bin/npx node-hp-scan-to -a ${printer_ip} -d ${target_dir}";
-      User = username;
+      User = "svc-worker";
+      Group = "svc-worker";
+      # Hardening: prevent the service from gaining new privileges
+      NoNewPrivileges = true;
+      ProtectSystem = "strict";
+
+      # This creates a virtual /tmp just for this service
+      PrivateTmp = true;
+
+      StateDirectory = "svc-worker"; # Creates /var/lib/svc-worker with correct perms
       Restart = "always";
+
+      # This environment variable helps npm/npx know where to store its cache
+      Environment = "HOME=/var/lib/svc-worker";
     };
   };
 }
