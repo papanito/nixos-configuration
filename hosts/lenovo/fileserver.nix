@@ -27,7 +27,7 @@ in
 
     serviceConfig = {
       # We use npx to run the tool without 'installing' it globally
-      ExecStart = "${pkgs.nodejs}/bin/npx node-hp-scan-to -a ${printer_ip} -d ${target_dir}";
+      ExecStart = "${pkgs.nodejs}/bin/npx node-hp-scan-to adf-autoscan -n'HP ENVY Inspire 7900e' -a ${printer_ip} -d ${target_dir} -p 'scan'_yyyymmdd_hhMMdss";
       User = "svc-worker";
       Group = "svc-worker";
       # Hardening: prevent the service from gaining new privileges
