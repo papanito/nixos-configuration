@@ -14,7 +14,14 @@
 
   # Corresponding group
   users.groups.paperless = {};
-  
+  users.users.nixos = {
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "video"
+      "paperless"
+    ];
+  };
   services.paperless = {
     enable = true;
     address = "0.0.0.0";

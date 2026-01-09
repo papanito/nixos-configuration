@@ -41,7 +41,7 @@ in
       Restart = "always";
 
       # This environment variable helps npm/npx know where to store its cache:with ; ;
-      Environment = "HOME=/var/lib/paperless";
+      Environment = "HOME=/var/lib/home/paperless";
     };
   };
 }
