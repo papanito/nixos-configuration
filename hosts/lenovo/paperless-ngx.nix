@@ -1,12 +1,26 @@
 { config, pkgs, ... }:
 
 {
+  users.users.paperless = {
+    isSystemUser = true;
+    group = "paperless";
+    description = "Service account for non-privileged tasks";
+    # Prevents interactive login
+    shell = pkgs.shadow; 
+    # If the service needs a home directory for config/state
+    createHome = true;
+    home = "/var/lib/paperless";
+  };
+
+  # Corresponding group
+  users.groups.paperless = {};
+  
   services.paperless = {
     enable = true;
     address = "0.0.0.0";
     port = 58080;
     consumptionDirIsPublic = true;
-    user = "svc-worker";
+    user = "paperless";
     domain = "paperless.home";
 
     settings = {
@@ -26,7 +40,7 @@
   # This ensures that every time the system boots or you run nixos-rebuild, the permissions are enforced
   systemd.tmpfiles.rules = [
     # Type | Path | Mode | User | Group | Age | Argument
-    "d /var/lib/paperless 0750 svc-worker svc-worker -"
-    "Z /var/lib/paperless - svc-worker svc-worker -"
+    "d /var/lib/paperless 0750 paperless paperless -"
+    "Z /var/lib/paperless - paperless paperless -"
   ];
 }
