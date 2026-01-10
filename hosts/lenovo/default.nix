@@ -4,6 +4,7 @@
     ./disko.nix
     ./paperless-ngx.nix
     ./fileserver.nix
+    ./gitlab-runner.nix
   ];
 
   # Enable sound with pipewire.
