@@ -36,6 +36,8 @@
       PAPERLESS_FILENAME_FORMAT = "{document_type}/{correspondent}/{created_year}/{correspondent}_{created_year}{created_month}{created_day}_{title}";
       PAPERLESS_CONSUMER_RECURSIVE =  true;
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = true;
+      # UMASK 0027 allows the group to read/list, but keeps 'others' blocked.
+      PAPERLESS_UMASK = "0027";
     };
   };
   systemd.services.paperless-scheduler.after = ["var-lib-paperless.mount"];
@@ -48,6 +50,7 @@
   systemd.tmpfiles.rules = [
     # Type | Path | Mode | User | Group | Age | Argument
     "d /var/lib/paperless 0750 paperless paperless -"
+    "d /var/lib/paperless/media/documents 0750 paperless paperless -"
     "Z /var/lib/paperless - paperless paperless -"
   ];
 }
