@@ -110,6 +110,8 @@
 
           specialArgs = { 
             inherit self inputs name isRpi;
+            # Add this line to pass your host database to all modules
+            hosts = self.hosts;
             isCloud = type == "cloud";
             isArm = isRpi;
             disko = inputs.disko;
