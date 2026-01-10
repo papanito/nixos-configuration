@@ -31,6 +31,7 @@ in {
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOrOn3Kj/+ztMtQAaq4pVvXgTsIs1ZOqQDbsA+nJMuRM nixos@envy from clawfinger"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFTCwPNpVjW6R9vqpKgNSWgGS5hZMZcHwexAMl7E/OI2 nixos@envy from clawfinger"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBg5bQkBtD05Qbef79LtcEwgwfOOiO/02mVFg9kmB32f nixos@homelab from clawfinger"
     ];
   };
 
