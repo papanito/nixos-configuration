@@ -27,6 +27,7 @@
     let
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      pkgs = nixpkgs.legacyPackages."x86_64-linux";
 
       # Instantiate pkgs with overlays for use in CLI (nix build .#hello)
       nixpkgsFor = forAllSystems (system: import nixpkgs {
@@ -81,19 +82,20 @@
             inputs.home-manager.nixosModules.home-manager
             
             ({ ... }: {
-              imports = lib.optionals (type == "pc") [
-                          ./modules
-                        ]
-                     ++ lib.optionals (type == "server") [
-                          ./profiles/servers
-                          ./modules
-                        ]
-                     ++ lib.optionals (type == "cloud") [ 
-                          (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
-                        ]
-                     ++ lib.optionals (type == "rpi") [
-                        rpiShim
-                     ];
+              imports =
+                lib.optionals (type == "pc") [
+                    ./modules
+                  ]
+                ++ lib.optionals (type == "server") [
+                    ./profiles/servers
+                    ./modules
+                  ]
+                ++ lib.optionals (type == "cloud") [ 
+                    (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
+                  ]
+                ++ lib.optionals (type == "rpi") [
+                  rpiShim
+                ];
             })
           ];
 
@@ -170,7 +172,13 @@
 
       # Standard NixOS Configurations
       nixosConfigurations = builtins.mapAttrs (name: h: h.nixosConfig) self.hosts;
-
+ 
+      devShells."x86_64-linux".default = pkgs.mkShell {
+        buildInputs = [ 
+          # Your development dependencies 
+        ];
+      };
+      
       # Colmena Integration
       colmena = {
         meta = {
