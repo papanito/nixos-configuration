@@ -20,7 +20,7 @@
     cat = "bat";
   };
 
-  initExtra = ''
+  initContent = ''
     # Personal zsh configuration
     export EDITOR=nvim
     export PATH=$HOME/bin:$PATH
