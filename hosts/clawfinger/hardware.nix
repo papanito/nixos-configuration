@@ -30,8 +30,8 @@
   ];
 
   boot = {
-    extraModulePackages = [ config.boot.kernelPackages.evdi ];
-    kernelPackages = pkgs.linuxPackages_6_12;
+    #extraModulePackages = [ config.boot.kernelPackages.evdi ];
+    kernelPackages = pkgs.linuxPackages_latest;
     initrd = {
       # The set of kernel modules in the initial ramdisk used during the boot process.
       availableKernelModules = [
@@ -43,9 +43,9 @@
         "sd_mod"
       ];
       # List of modules that are always loaded by the initrd.
-      kernelModules = [
-        "evdi"
-      ];
+      # kernelModules = [
+      #   "evdi"
+      # ];
       secrets = {
         "/crypto_keyfile.bin" = null;
       };
