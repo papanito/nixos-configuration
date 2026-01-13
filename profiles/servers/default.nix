@@ -10,4 +10,9 @@
   services.logind.settings.Login = {
     HandleLidSwitch = "ignore";
   };
+  nix = {
+    gc = {
+      options = lib.mkDefault "--delete-older-than 10d";
+    };
+  };
 }
