@@ -1,7 +1,7 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-25.05";
     disko.url = "github:nix-community/disko";
     colmena.url = "github:zhaofengli/colmena";
     
@@ -19,7 +19,7 @@
     
     pentesting = {
       url = "/home/papanito/Workspaces/papanito/nix-pentesting";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
