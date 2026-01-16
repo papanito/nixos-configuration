@@ -4,6 +4,7 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     disko.url = "github:nix-community/disko";
     colmena.url = "github:zhaofengli/colmena";
+    terranix.url = "github:terranix/terranix";
     
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -23,13 +24,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, disko, sops-nix, nixos-raspberrypi, colmena, ... }@inputs:
+  outputs = { self, nixpkgs, disko, sops-nix, nixos-raspberrypi, colmena,terranix, ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
       version = "25.11";
-
+      
       # Instantiate pkgs with overlays for use in CLI (nix build .#hello)
       nixpkgsFor = forAllSystems (system: import nixpkgs {
         inherit system;
@@ -175,12 +176,24 @@
 
       # Standard NixOS Configurations
       nixosConfigurations = builtins.mapAttrs (name: h: h.nixosConfig) self.hosts;
+      # --- TERRANIX INJECTION ---
+      # This generates the terraform JSON configuration
+      packages = forAllSystems (system: {
+        hcloud-infra = terranix.lib.terranixConfiguration {
+          inherit system;
+          modules = [ ./infra/hcloud.nix ]; # Path to your Hetzner resources
+        };
+      });
  
-      devShells."x86_64-linux".default = pkgs.mkShell {
-        buildInputs = [ 
-          # Your development dependencies 
-        ];
-      };
+      # Add terranix & terraform to your devShell
+      devShells = forAllSystems (system: {
+        default = nixpkgsFor.${system}.mkShell {
+          buildInputs = [
+            nixpkgsFor.${system}.terraform
+            terranix.packages.${system}.terranix
+          ];
+        };
+      });
       
       # Colmena Integration
       colmena = {
