@@ -28,6 +28,7 @@
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      version = "25.11";
 
       # Instantiate pkgs with overlays for use in CLI (nix build .#hello)
       nixpkgsFor = forAllSystems (system: import nixpkgs {
@@ -201,7 +202,7 @@
               build.toplevel = lib.mkOption { type = lib.types.unspecified; };
               systemBuilderCommands = lib.mkOption { type = lib.types.unspecified; };
               activatableSystemBuilderCommands = lib.mkOption { type = lib.types.unspecified; };
-              stateVersion = lib.mkOption { type = lib.types.str; default = "25.11"; };
+              stateVersion = lib.mkOption { type = lib.types.str; default = version; };
             };
 
             # 3. Everything else goes into 'config'
@@ -216,7 +217,7 @@
               system.activatableSystemBuilderCommands = h.nixosConfig.config.system.activatableSystemBuilderCommands;
               
               # Dummies to satisfy the minimal evaluation requirements
-              system.stateVersion = "25.11";
+              system.stateVersion = version;
               boot.loader.grub.enable = lib.mkForce false;
               fileSystems."/".device = lib.mkForce "/dev/null";
               
