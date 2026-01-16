@@ -1,4 +1,4 @@
-{ lib, config, pkgs, home-manager, sops-nix, ...}:
+{ lib, config, pkgs,  home-manager, sops-nix, ...}:
 let
   myZshConfig = import ../../common/zsh-config.nix { inherit pkgs; };
 in {
@@ -14,9 +14,12 @@ in {
   };
 
   # Enable Zsh as a system shell
-  home-manager.users.nixos = { pkgs, ... }: {
-    programs.zsh = myZshConfig;
-    home.stateVersion = "25.11";
+  home-manager = {
+    backupFileExtension = "backup";
+    users.nixos = { pkgs, ... }: {
+      programs.zsh = myZshConfig;
+      home.stateVersion = "25.11";
+    };
   };
   users.users.nixos = {
     isNormalUser = true;
@@ -29,9 +32,8 @@ in {
     # Kill the empty string fallback
     initialHashedPassword = lib.mkForce null;
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOrOn3Kj/+ztMtQAaq4pVvXgTsIs1ZOqQDbsA+nJMuRM nixos@envy from clawfinger"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFTCwPNpVjW6R9vqpKgNSWgGS5hZMZcHwexAMl7E/OI2 nixos@envy from clawfinger"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBg5bQkBtD05Qbef79LtcEwgwfOOiO/02mVFg9kmB32f nixos@homelab from clawfinger"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOrOn3Kj/+ztMtQAaq4pVvXgTsIs1ZOqQDbsA+nJMuRM nixos@homelab from clawfinger"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFTCwPNpVjW6R9vqpKgNSWgGS5hZMZcHwexAMl7E/OI2 nixos@homelab from clawfinger"
     ];
   };
 
