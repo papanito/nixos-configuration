@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     disko.url = "github:nix-community/disko";
     colmena.url = "github:zhaofengli/colmena";
     
@@ -38,9 +38,6 @@
         };
         # ALL YOUR OVERLAYS GO HERE
         overlays = [ 
-          # External Flake Overlays (e.g., from your pentesting input)
-          # inputs.pentesting.overlays.default 
-
           # Custom Local Overlays
           (final: prev: {
             pentesting = inputs.pentesting.packages.${system};
@@ -102,6 +99,10 @@
           # RPi-Specific Shim Module
           # This only exists during RPi evaluation to prevent the 'rename.nix' conflict.
           rpiShim = { lib, ... }: {
+            disabledModules = [ 
+              "system/boot/loader/raspberrypi/raspberrypi.nix"
+              "misc/rename.nix" 
+            ];
             imports = with nixos-raspberrypi.nixosModules; [
               raspberry-pi-4.base
               raspberry-pi-4.bluetooth
@@ -113,6 +114,7 @@
           specialArgs = { 
             inherit self inputs name isRpi;
             # Add this line to pass your host database to all modules
+            type = type;
             hosts = self.hosts;
             isCloud = type == "cloud";
             isArm = isRpi;
@@ -124,7 +126,7 @@
           };
         in
         {
-          inherit deployment moduleList specialArgs system;
+          inherit deployment moduleList specialArgs system type;
           pkgs = nixpkgsFor.${system};
 
           nixosConfig = if isRpi 
@@ -162,7 +164,7 @@
           type = "rpi"; 
           system = "aarch64-linux";
           deployment = {
-            targetHost = "10.0.0.1";
+            targetHost = "10.0.0.11";
             targetUser = "nixos";
             # Allows x86_64 machine to build for aarch64 (needs binfmt)
             allowLocalDeployment = true;
@@ -182,22 +184,47 @@
       # Colmena Integration
       colmena = {
         meta = {
-          # Use the nixpkgs from the first x86 host as a default for evaluation
-          nixpkgs = import nixpkgs { 
-            system = "x86_64-linux"; 
-            #config.allowUnfree = true;
-          };
+          nixpkgs = nixpkgsFor."x86_64-linux"; # Use your pre-defined instance
           nodeNixpkgs = builtins.mapAttrs (name: h: h.pkgs) self.hosts;
           # Pass specialArgs to Colmena nodes
           nodeSpecialArgs = builtins.mapAttrs (name: h: h.specialArgs) self.hosts;
         };
       } // (builtins.mapAttrs (name: h: {
-        # We reach into the evaluated nixosConfiguration and grab the module list
-  # This ensures 1:1 parity with your working nixos-rebuild setup.
-  imports = self.nixosConfigurations.${name}._module.args.modules;
-        deployment = h.deployment;
-        # Ensure Colmena uses the correct architecture
-        nixpkgs.system = h.system;
-      }) (nixpkgs.lib.filterAttrs (name: h: h.deployment != null) self.hosts));
+         deployment = h.deployment;
+         imports = if h.type == "rpi" then [
+          ({ lib, ... }: {
+            # 1. We keep the disabledModules here
+            disabledModules = [ "system/activation/top-level.nix" ];
+
+            # 2. We define the schema (the 'slots')
+            options.system = {
+              build.toplevel = lib.mkOption { type = lib.types.unspecified; };
+              systemBuilderCommands = lib.mkOption { type = lib.types.unspecified; };
+              activatableSystemBuilderCommands = lib.mkOption { type = lib.types.unspecified; };
+              stateVersion = lib.mkOption { type = lib.types.str; default = "25.11"; };
+            };
+
+            # 3. Everything else goes into 'config'
+            config = {
+              # This is the fix: _module.check belongs inside the config block 
+              # when using the explicit options/config split.
+              _module.check = false; 
+
+              # Inject the real derivation from your flake
+              system.build.toplevel = h.nixosConfig.config.system.build.toplevel;
+              system.systemBuilderCommands = h.nixosConfig.config.system.systemBuilderCommands;
+              system.activatableSystemBuilderCommands = h.nixosConfig.config.system.activatableSystemBuilderCommands;
+              
+              # Dummies to satisfy the minimal evaluation requirements
+              system.stateVersion = "25.11";
+              boot.loader.grub.enable = lib.mkForce false;
+              fileSystems."/".device = lib.mkForce "/dev/null";
+              
+              # Turn off docs to avoid further attribute-missing errors
+              documentation.enable = lib.mkForce false;
+            };
+          })
+        ] else h.moduleList;
+        }) (nixpkgs.lib.filterAttrs (name: h: h.deployment != null) self.hosts));
     };
 }
