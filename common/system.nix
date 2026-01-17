@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, version, ... }:
 {
   services.journald.extraConfig = ''
     SystemMaxUse=2G
@@ -36,7 +36,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
+  system.stateVersion = version; # Did you read the comment?
 
   nix = {
     #package = pkgs.nixFlakes;

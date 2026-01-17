@@ -58,6 +58,7 @@
       # --- HOST FACTORY ---
       mkSystem = name: { 
           type,
+          version,
           system ? "x86_64-linux", 
           device ? "/dev/sda",
           deployment ? null # New optional argument
@@ -114,7 +115,7 @@
           };
 
           specialArgs = { 
-            inherit self inputs name isRpi;
+            inherit self inputs name isRpi version;
             # Add this line to pass your host database to all modules
             type = type;
             hosts = self.hosts;
@@ -128,7 +129,7 @@
           };
         in
         {
-          inherit deployment moduleList specialArgs system type;
+          inherit deployment moduleList specialArgs system type version;
           pkgs = nixpkgsFor.${system};
 
           nixosConfig = if isRpi 

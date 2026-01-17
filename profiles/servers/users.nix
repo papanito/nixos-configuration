@@ -1,4 +1,4 @@
-{ lib, config, pkgs,  home-manager, sops-nix, ...}:
+{ lib, config, pkgs, version, home-manager, sops-nix, ...}:
 let
   myZshConfig = import ../../common/zsh-config.nix { inherit pkgs; };
 in {
@@ -18,7 +18,7 @@ in {
     backupFileExtension = "backup";
     users.nixos = { pkgs, ... }: {
       programs.zsh = myZshConfig;
-      home.stateVersion = "25.11";
+      home.stateVersion = version;
     };
   };
   users.users.nixos = {
