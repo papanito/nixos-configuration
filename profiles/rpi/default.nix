@@ -4,11 +4,8 @@
     ./networking.nix
     ./users.nix
   ];
-                  # We disable GRUB at the root level of the config
-                  boot.loader.grub.enable = lib.mkForce false;
-                  boot.loader.grub.devices = lib.mkForce [ "nodev" ];
-  #boot.loader.generic-extlinux-compatible.enable = lib.mkForce false;
-                  
-                  # If your 'profiles/servers' is enabling GRUB, we kill it here
-                  boot.loader.systemd-boot.enable = lib.mkForce false;
+  # 1. Disable the X11 library stack globally
+  # This is the modern replacement for noXlibs
+  environment.variables.NIXOS_OZONE_WL = "0"; # Optional: helps with some wayland-aware libs
+  documentation.nixos.enable = false;
 }
