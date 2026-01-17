@@ -131,33 +131,15 @@
           inherit deployment moduleList specialArgs system type;
           pkgs = nixpkgsFor.${system};
 
-          # FOR COLMENA: Use standard nixosSystem (No SD Image Logic)
-          nixosConfig = nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            # We manually add the RPi modules here instead of using the installer wrapper
-            modules = moduleList ++ lib.optionals isRpi [
-              inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4
-              rpiShim # Your shim that handles options/assertion killing
-              # Ensure Colmena doesn't try to build the image
-              { sdImage.compressImage = false; }
-            ];
-          };
-
-          # FOR INITIAL FLASHING: Use the installer wrapper separately
-          # You only build this with 'nix build .#packages.x86_64-linux.rpi4-a-image'
-          sdImage = if isRpi 
-            then (inputs.nixos-raspberrypi.lib.nixosInstaller {
-              inherit system specialArgs;
-              modules = moduleList ++ [ rpiShim ];
-            }).config.system.build.sdImage
-            else null;
-
-          # FOR QEMU: The .qcow2 builder
-          qemuImage = if type == "qemu" then inputs.nixos-generators.nixosGenerate {
-            inherit system specialArgs;
-            modules = moduleList;
-            format = "qcow2";
-          } else null;
+          nixosConfig = if isRpi 
+            then nixos-raspberrypi.lib.nixosSystemFull { 
+              inherit system specialArgs; 
+              modules = moduleList;
+            }
+            else nixpkgs.lib.nixosSystem { 
+              inherit system specialArgs; 
+              modules = moduleList; 
+            };
         };
     in
     {
