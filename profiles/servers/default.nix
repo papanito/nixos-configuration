@@ -7,8 +7,17 @@
     ./notifications.nix
     ./users.nix 
   ];
+  # modules
+  solokey.enable = false;
+  container.enable = false;
+  cloud.enable = false;
+  printing.enable = false;
+  virtualisation.enable = false;
+  
+  fonts.fontconfig.enable = lib.mkForce false;
+  # some servers are notebooks
   services.logind.settings.Login = {
-    HandleLidSwitch = "ignore";
+     HandleLidSwitch = "ignore";
   };
   nix = {
     gc = {
@@ -19,11 +28,11 @@
   services.pipewire = {
     enable = true;
   };
-
-  ## pam stuff
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-curses;
-  };
+  #
+  # ## pam stuff
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  #   pinentryPackage = pkgs.pinentry-curses;
+  # };
 }

@@ -10,10 +10,6 @@
     "99-wireless-client-dhcp".networkConfig.MulticastDNS = "yes";
   };
 
-  # This is the "Magic" line to stop NM from pulling in GUI bloat
-  # It prevents NetworkManager from including its default 'extra' packages
-  networking.networkmanager.packages = [ pkgs.networkmanager ];
-
   # This comment was lifted from `srvos`
   # Do not take down the network for too long when upgrading,
   # This also prevents failures of services that are restarted instead of stopped.

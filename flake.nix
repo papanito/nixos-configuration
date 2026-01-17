@@ -76,6 +76,7 @@
           moduleList = [
             ./hosts/${name}
             ./common
+            ./modules
             sops-nix.nixosModules.sops
             disko.nixosModules.disko 
             inputs.home-manager.nixosModules.home-manager
@@ -83,11 +84,10 @@
             ({ ... }: {
               imports =
                 lib.optionals (type == "pc") [
-                    ./modules
+                    ./profiles/pc
                   ]
                 ++ lib.optionals (type == "server") [
                     ./profiles/servers
-                    ./modules
                   ]
                 ++ lib.optionals (type == "cloud") [ 
                     (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")

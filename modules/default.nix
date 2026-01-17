@@ -3,32 +3,11 @@
   imports = [
     ./cloud.nix
     ./container.nix
-    ./development.nix
-    ./fonts.nix
-    ./kde.nix
-    ./gnome.nix
-    ./multimedia.nix
-    ./office.nix
     ./solokey.nix
     ./printing.nix
     ./security.nix
     ./virt.nix
-    ./wine.nix
   ];
-  # modules
-  gnome.enable = false;
-  solokey.enable = false;
-  container.enable = false;
-  cloud.enable = false;
-  multimedia.enable = false;
-  office.enable = false;
-
-  ## printing module
-  printing.enable = false;
-
-  ## virtualisation module
-  virtualisation.enable = false;
-  windows-support.enable = false;
   
   environment.etc."fuse.conf".text = ''
     user_allow_other
@@ -55,8 +34,6 @@
     fq # jq for binary formats
     jq # A lightweight and flexible command-line JSON processor
     gnupg # Modern release of the GNU Privacy Guard, a GPL OpenPGP implementation
-    gtop # graphic top
-    lsix # ls for images
     lsof # Tool to list open files
     ncdu # Disk usage analyzer with an ncurses interface
     parted
@@ -72,19 +49,14 @@
     direnv # A shell extension that manages your environment
     findutils # GNU Find Utilities, the basic directory searching utilities of the GNU operating system
     nix-direnv # A fast, persistent use_nix implementation for direnv
-    ptyxis # Terminal
     glow # Render markdown on the CLI, with pizzazz
     gum # a tool for glamorous shell scripts
     atuin # Your shell history: synced, queryable, and in context
-    imgcat # It's like cat, but for images
     melt # Backup and restore Ed25519 SSH keys with seed words
     miller # Like awk, sed, cut, join, and sort for data formats such as CSV, TSV, JSON, JSON Lines, and positionally-indexed
     nq # Unix command line queue utility
-    pueue # A daemon for managing long running shell commands
     ripgrep
     sad # CLI tool to search and replace
-    pinentry-tty # GnuPG’s interface to passphrase input
-    watchman # Watches files and takes action when they change
     xz # A general-purpose data compression software, successor of LZMA
     sshfs
     
@@ -93,7 +65,5 @@
     zellij # A terminal workspace with batteries included
     zsh # zsh shell
     zoxide # A fast cd command that learns your habits
-    nushell # terminal
-    carapace # Multi-shell multi-command argument completer
   ];
 }
