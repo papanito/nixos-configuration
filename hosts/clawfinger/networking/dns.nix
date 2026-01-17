@@ -1,4 +1,4 @@
-{lib, config, pkgs, isArm, ... }:
+{lib, config, pkgs, isRpi, ... }:
 
 let
   # Define the shared settings in a variable to avoid repetition
@@ -67,15 +67,15 @@ in
       };
     }
     # --- NON-ARM: Uses 'dnscrypt-proxy' ---
-    (lib.mkIf (!isArm) {
+    (lib.mkIf (!isRpi) {
       services.dnscrypt-proxy = dnscryptSettings;
       systemd.services.dnscrypt-proxy.serviceConfig.StateDirectory = "dnscrypt-proxy";
     })
 
     # --- ARM: Uses 'dnscrypt2-proxy' ---
     # We use optionalAttrs so the key 'dnscrypt2-proxy' literally doesn't 
-    # exist in the set when isArm is false.
-    (lib.mkIf isArm (lib.optionalAttrs isArm {
+    # exist in the set when isRpi is false.
+    (lib.mkIf isRpi (lib.optionalAttrs isRpi {
       services.dnscrypt-proxy2 = dnscryptSettings;
       systemd.services.dnscrypt-proxy2.serviceConfig.StateDirectory = "dnscrypt-proxy";
     }))

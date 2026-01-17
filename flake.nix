@@ -65,7 +65,6 @@
         }: 
         let
           isRpi = type == "rpi";
-          isArm = isRpi;
           isCloud = type == "cloud";
           isServer = type == "server";
           isPC = type == "pc";
