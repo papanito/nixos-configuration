@@ -138,6 +138,8 @@
             modules = moduleList ++ lib.optionals isRpi [
               inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4
               rpiShim # Your shim that handles options/assertion killing
+              # Ensure Colmena doesn't try to build the image
+              { sdImage.compressImage = false; }
             ];
           };
 
