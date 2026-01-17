@@ -132,7 +132,7 @@
           pkgs = nixpkgsFor.${system};
 
           nixosConfig = if isRpi 
-            then nixos-raspberrypi.lib.nixosSystemFull { 
+            then nixos-raspberrypi.lib.nixosInstaller { 
               inherit system specialArgs; 
               modules = moduleList;
             }
