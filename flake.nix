@@ -58,7 +58,7 @@
       # --- HOST FACTORY ---
       mkSystem = name: { 
           type,
-          version,
+          version ? "25.11",
           system ? "x86_64-linux", 
           device ? "/dev/sda",
           deployment ? null # New optional argument
