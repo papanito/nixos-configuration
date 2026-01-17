@@ -24,7 +24,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, disko, sops-nix, nixos-raspberrypi, colmena,terranix, ... }@inputs:
+  outputs = { self, nixpkgs, disko, sops-nix, nixos-raspberrypi, colmena, terranix, ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -59,6 +59,7 @@
       mkSystem = name: { 
           type,
           version ? "25.11",
+          rpiVersion ? "4",
           system ? "x86_64-linux", 
           device ? "/dev/sda",
           deployment ? null # New optional argument
@@ -105,21 +106,20 @@
               "system/boot/loader/raspberrypi/raspberrypi.nix"
               "misc/rename.nix" 
             ];
-            imports = with nixos-raspberrypi.nixosModules; [
-              raspberry-pi-4.base
-              raspberry-pi-4.bluetooth
+            imports =[
+              nixos-raspberrypi.nixosModules."raspberry-pi-${toString rpiVersion}".base
+              nixos-raspberrypi.nixosModules."raspberry-pi-${toString rpiVersion}".bluetooth
               ./profiles/rpi
               ./profiles/servers
             ];
           };
 
           specialArgs = { 
-            inherit self inputs name isRpi version;
+            inherit self inputs name isRpi version rpiVersion;
             # Add this line to pass your host database to all modules
             type = type;
             hosts = self.hosts;
             isCloud = type == "cloud";
-            isArm = isRpi;
             disko = inputs.disko;
             home-manager = inputs.home-manager;
           }
@@ -128,7 +128,7 @@
           };
         in
         {
-          inherit deployment moduleList specialArgs system type version;
+          inherit deployment moduleList specialArgs system type version rpiVersion;
           pkgs = nixpkgsFor.${system};
 
           nixosConfig = if isRpi 
