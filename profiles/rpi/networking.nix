@@ -5,9 +5,27 @@
   networking.useNetworkd = true;
   # mdns
   networking.firewall.allowedUDPPorts = [ 5353 ];
-  systemd.network.networks = {
-    "99-ethernet-default-dhcp".networkConfig.MulticastDNS = "yes";
-    "99-wireless-client-dhcp".networkConfig.MulticastDNS = "yes";
+  systemd.network = {
+    wait-online.ignoredInterfaces = [ "wlan0" ];
+    # explicitly link those configurations to your hardware. Since this is an RPi4, we can match by name or type.
+    networks = {
+      "99-ethernet-default-dhcp" = {
+        # Match any ethernet interface (like end0)
+        matchConfig.Name = "en* eth* end*"; 
+        networkConfig = {
+          DHCP = "yes";
+          MulticastDNS = "yes";
+        };
+      };
+      "99-wireless-client-dhcp" = {
+        # Match the wireless interface
+        matchConfig.Name = "wlan*";
+        networkConfig = {
+          DHCP = "yes";
+          MulticastDNS = "yes";
+        };
+      };
+    };
   };
 
   # This comment was lifted from `srvos`
