@@ -184,14 +184,14 @@
           modules = [ ./infra/hcloud.nix ]; # Path to your Hetzner resources
         };
       });
- 
-      # Add terranix & terraform to your devShell
+
       devShells = forAllSystems (system: {
-        default = nixpkgsFor.${system}.mkShell {
-          buildInputs = [
-            nixpkgsFor.${system}.terraform
-            terranix.packages.${system}.terranix
-          ];
+        default = import ./shells/default.nix {
+          pkgs = nixpkgsFor.${system};
+          system = system;
+          inputs = inputs;      # Explicitly pass the @inputs set
+          terranix = terranix;  # Pass the terranix input specifically
+          nixpkgsFor = nixpkgsFor;
         };
       });
       

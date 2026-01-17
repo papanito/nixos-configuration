@@ -1,3 +1,6 @@
 result
 **.img
 **.zst
+
+# Terraform stuff
+*.tf.json
