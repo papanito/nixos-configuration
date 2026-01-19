@@ -2,9 +2,6 @@
 
 let
   pkgs = nixpkgsFor.${system};
-  # Access terranix and colmena from the inputs attribute
-  terranix = inputs.terranix.packages.${system}.terranix;
-  colmena = inputs.colmena.packages.${system}.colmena;
 in
 pkgs.mkShell {
   # Tools available in the environment
@@ -17,6 +14,7 @@ pkgs.mkShell {
   ];
   shellHook = ''
     echo "NixOS Cloud Expert Shell Loaded"
+    alias fu="nix flake update && git add flake.lock && git commit -m'Update flake'"
     alias deploy-hetzner='
       set -e
       export OUT_FILE=infra.tf.json
