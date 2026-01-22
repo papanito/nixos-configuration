@@ -21,6 +21,10 @@ in {
       home.stateVersion = version;
     };
   };
+  users.users.root = {
+    openssh.authorizedKeys.keys = lib.mkForce [ ];
+    hashedPasswordFile = config.sops.secrets.default_password.path;
+  };
   users.users.nixos = {
     isNormalUser = true;
     extraGroups = [
