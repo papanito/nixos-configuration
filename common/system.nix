@@ -50,7 +50,7 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
-    setting = {
+    settings = {
       # Tells Nix this machine can natively run these architectures (via binfmt)
       extra-platforms = [ "aarch64-linux" "armv7l-linux" ];
       
