@@ -50,6 +50,21 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
+    setting = {
+      # Tells Nix this machine can natively run these architectures (via binfmt)
+      extra-platforms = [ "aarch64-linux" "armv7l-linux" ];
+      
+      # Crucial: Allow the daemon to download substitutes for these platforms
+      builders-use-substitutes = true;
+      substituters = [
+        "https://cache.nixos.org"
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+    };
   };
 
   # https://discourse.nixos.org/t/best-practices-for-auto-upgrades-of-flake-enabled-nixos-systems/31255
