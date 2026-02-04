@@ -30,6 +30,7 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
       version = "25.11";
+      system = pkgs.stdenv.hostPlatform.system;
       
       # Instantiate pkgs with overlays for use in CLI (nix build .#hello)
       nixpkgsFor = forAllSystems (system: import nixpkgs {
