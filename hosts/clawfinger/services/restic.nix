@@ -51,8 +51,7 @@
       # what to backup.
       paths = [
         "/home/papanito"
-        "/var/lib/paperless/"
-        "/var/lib/redis-paperless/"
+        "/home/nix/im"
       ];
       # the name of your repository.
       repository = "b2:papanito-private-backup:/${name}";

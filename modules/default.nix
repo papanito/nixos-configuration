@@ -21,6 +21,7 @@
     ## Essential system tools
     age # Modern encryption tool with small explicit keys
     bat # A cat(1) clone with syntax highlighting and Git integration
+    bws # BItwarden Secret Manager cli
     btop # A monitor of resources
     btrfs-progs
     coreutils # The GNU Core Utilities

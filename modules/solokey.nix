@@ -14,8 +14,10 @@ in
     environment.systemPackages = with pkgs; [
      solo2-cli
      pam_u2f
+     libfido2
     ];
   
+
     # Enable the pam_u2f module globally
     security.pam.u2f = {
       enable = true;
@@ -38,6 +40,7 @@ in
 
     # https://github.com/solokeys/solo2-cli/blob/main/70-solo2.rules
     services.udev.packages = [
+      pkgs.libfido2
       pkgs.yubikey-personalization
       (pkgs.writeTextFile {
         name = "wally_udev";
