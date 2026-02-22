@@ -9,5 +9,6 @@
   ];
   networking = {
     hostName = "clawfinger"; # Define your hostname
+    interfaces.wlo1.mtu = 1492;
   };
 }
