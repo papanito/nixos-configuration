@@ -17,12 +17,11 @@
     wiki-tui # A simple and easy to use Wikipedia Text User Interface
     #anytype # Note taking app
     nix-search-cli
-    flameshot
 
     #celeste # GUI file synchronization client that can sync with any cloud provider
 
     ### File system, Storage, File Transfer ###
-    insync
+    insync # sync google drive
     sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     ssh-tools # Collection of various tools using ssh
     #nfstrace # NFS and CIFS tracing/monitoring/capturing/analyzing tool
@@ -38,14 +37,12 @@
 
     ### Shell stuff ###
     feh # A light-weight image viewer
-    guake # Drop-down terminal for GNOME
     kb # Minimalist command line knowledge base manager
     mods # AI on the command line
     navi # An interactive cheatsheet tool for the command-line and application launchers
     oh-my-posh # Prompt theme engine for any shell
     ranger # File manager with minimalistic curses interface
     slides # Terminal based presentation tool
-    warp-terminal # Rust-based terminal
     xxh # Bring your favorite shell wherever you go through SSH
     
     ### Security and Testing Tools ###
@@ -65,6 +62,14 @@
     mission-center #Monitor your CPU, Memory, Disk, Network and GPU usage
     usbutils # Tools for working with USB devices, such as lsusb
     wireplumber # A modular session / policy manager for PipeWire
+    gaphor # Simple UML and SysML modeling tool
+    identity # A program for comparing multiple versions of an image or video
+    gnome-obfuscate # Obfuscate lets you redact your private information from any image.
+    bustle # Visualize D-Bus activity
+    raider # Permanently delete your files
+    forge-sparks # Get Git forges notifications
+    gradia # Annotate your screenshots
+
     # yubikey-touch-detector
   ];
 
