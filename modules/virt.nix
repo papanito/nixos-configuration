@@ -1,19 +1,34 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 {
   options = {
-    virtualisation.enable 
-      = lib.mkEnableOption "enable libvirtd and install related software";
+    virtualisation.enable = lib.mkEnableOption "enable libvirtd and install related software";
   };
 
   config = lib.mkIf config.virtualisation.enable {
-    virtualisation.libvirtd.enable = true;
+    virtualisation.libvirtd = {
+      enable = true;
+      qemu = {
+        package = pkgs.qemu_kvm;
+        runAsRoot = true; # Helpful for FUSE/rclone permission passthrough
+        # Ensure virtiofsd is visible to QEMU
+        vhostUserPackages = [ pkgs.virtiofsd ];
+      };
+    };
     programs.virt-manager.enable = true;
-    users.groups.libvirtd.members = ["papanito"];
+    users.groups.libvirtd.members = [ "papanito" ];
     virtualisation.spiceUSBRedirection.enable = true;
-    
+
     networking.firewall.interfaces."virbr0" = {
-      allowedUDPPorts = [ 67 68 ]; # Allow DHCP
+      allowedUDPPorts = [
+        67
+        68
+      ]; # Allow DHCP
     };
 
     environment.systemPackages = with pkgs; [
@@ -21,6 +36,6 @@
       virt-manager
       virt-viewer
     ];
+
   };
 }
-
