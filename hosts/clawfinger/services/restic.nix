@@ -1,4 +1,9 @@
-{ config, pkgs, name, ... }:
+{
+  config,
+  pkgs,
+  name,
+  ...
+}:
 {
   environment.systemPackages = with pkgs; [
     restic
@@ -6,8 +11,8 @@
   ];
 
   # If you want to back up your system without running restic as root, you can create a user and security wrapper to give restic the capability to read anything on the filesystem as if it were running as root. The following will create the wrapper at /run/wrappers/bin/restic
-  
-   sops = {
+
+  sops = {
     secrets.restic_password = {
       sopsFile = ../secrets.yaml;
     };
@@ -51,14 +56,13 @@
       # what to backup.
       paths = [
         "/home/papanito"
-        "/home/nix/im"
       ];
       # the name of your repository.
       repository = "b2:papanito-private-backup:/${name}";
       timerConfig = {
         # backup every 1d
         OnCalendar = "daily";
-        Persistent = true; 
+        Persistent = true;
         OnSuccess = "systemd-googlechat-notifier@%N.service";
         OnFailure = "systemd-googlechat-notifier@%N.service";
       };
@@ -143,7 +147,7 @@
       timerConfig = {
         # backup every 1d
         OnCalendar = "daily";
-        Persistent = true; 
+        Persistent = true;
       };
 
       exclude = [
