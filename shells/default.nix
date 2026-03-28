@@ -19,11 +19,11 @@ pkgs.mkShell {
       set -e
       export OUT_FILE=infra.tf.json
       echo "--- 1. Generating Infrastructure Code ---"
-      nix build .#hcloud-infra --out-link $OUT_FILE 
-      
+      nix build .#hcloud-infra --out-link $OUT_FILE
+
       echo "--- 2. Synchronizing Cloud State (TF Cloud) ---"
-      terraform apply 
-      
+      terraform apply
+
       echo "--- 3. Deploying NixOS via Colmena ---"
       colmena apply
     '

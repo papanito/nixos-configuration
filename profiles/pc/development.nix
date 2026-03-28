@@ -5,7 +5,7 @@ let
 in
 {
   options.development = {
-    enable 
+    enable
       = lib.mkEnableOption "enable development tooling";
   };
   config = lib.mkIf cfg.enable {

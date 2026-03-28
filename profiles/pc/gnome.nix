@@ -5,7 +5,7 @@ let
 in
 {
   options.gnome = {
-    enable 
+    enable
       = lib.mkEnableOption "enable gnome and install related software";
   };
   config = lib.mkIf cfg.enable {
@@ -73,7 +73,7 @@ in
     environment.variables = {
       GI_TYPELIB_PATH = "/run/current-system/sw/lib/girepository-1.0";
     };
-    
+
     qt = {
       enable = false;
       platformTheme = "gnome";

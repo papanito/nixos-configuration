@@ -5,7 +5,7 @@
     ./networking.nix
     ./restic.nix
     ./notifications.nix
-    ./users.nix 
+    ./users.nix
   ];
   # modules
   solokey.enable = false;
@@ -13,7 +13,7 @@
   cloud.enable = false;
   printing.enable = false;
   virtualisation.enable = false;
-  
+
   fonts.fontconfig.enable = lib.mkForce false;
   # some servers are notebooks
   services.logind.settings.Login = {

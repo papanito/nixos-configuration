@@ -25,7 +25,7 @@
         home.arpa        10.0.0.10
         localdomain      10.0.0.10
         192.in-addr.arpa 10.0.0.10
-        
+
         # Forward queries for .local domains to your Kind cluster's CoreDNS IP
         # Replace 10.96.0.10 with your actual Kind cluster's CoreDNS Cluster IP
         #cluster 10.89.0.11 # Or the actual ingress IP of your Kind cluster

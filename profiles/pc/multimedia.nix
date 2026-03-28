@@ -5,7 +5,7 @@ let
 in
 {
   options.multimedia = {
-    enable 
+    enable
       = lib.mkEnableOption "enable multimedia module";
   };
   config = lib.mkIf cfg.enable {

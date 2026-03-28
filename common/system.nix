@@ -3,7 +3,7 @@
   services.journald.extraConfig = ''
     SystemMaxUse=2G
   '';
-  
+
   # Set your time zone.
   time.timeZone = "Europe/Zurich";
 
@@ -53,7 +53,7 @@
     settings = {
       # Tells Nix this machine can natively run these architectures (via binfmt)
       extra-platforms = [ "aarch64-linux" "armv7l-linux" ];
-      
+
       # Crucial: Allow the daemon to download substitutes for these platforms
       builders-use-substitutes = true;
       substituters = [

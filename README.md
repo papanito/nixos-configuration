@@ -42,7 +42,7 @@ Alternatively you can also run:
 ```shell
 sudo -E nixos-rebuild switch --flake '.#envy' \
   --upgrade --target-host \
-  nixosn@10.0.0.11 --sudo 
+  nixosn@10.0.0.11 --sudo
 ```
 
 If there is a problem with ssh, you can specify the key to use:

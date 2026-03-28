@@ -11,7 +11,7 @@
     networks = {
       "99-ethernet-default-dhcp" = {
         # Match any ethernet interface (like end0)
-        matchConfig.Name = "en* eth* end*"; 
+        matchConfig.Name = "en* eth* end*";
         networkConfig = {
           DHCP = "yes";
           MulticastDNS = "yes";

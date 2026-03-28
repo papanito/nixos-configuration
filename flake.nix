@@ -5,19 +5,19 @@
     disko.url = "github:nix-community/disko";
     colmena.url = "github:zhaofengli/colmena";
     terranix.url = "github:terranix/terranix";
-    
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
-    
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     pentesting = {
       url = "/home/papanito/Workspaces/papanito/nix-pentesting";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,7 +31,7 @@
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
       version = "25.11";
       system = pkgs.stdenv.hostPlatform.system;
-      
+
       # Instantiate pkgs with overlays for use in CLI (nix build .#hello)
       nixpkgsFor = forAllSystems (system: import nixpkgs {
         inherit system;
@@ -40,7 +40,7 @@
           permittedInsecurePackages = [ "electron" ]; # Centralized here
         };
         # ALL YOUR OVERLAYS GO HERE
-        overlays = [ 
+        overlays = [
           # Custom Local Overlays
           (final: prev: {
             pentesting = inputs.pentesting.packages.${system};
@@ -49,22 +49,22 @@
           (final: prev: nixpkgs.lib.optionalAttrs prev.stdenv.hostPlatform.isAarch64 {
               # Only override if it actually exists in the upstream nixpkgs
               # Or, if you are trying to pull it from a specific input:
-              raspberrypi-utils = if prev ? raspberrypi-utils 
-                                  then prev.raspberrypi-utils 
+              raspberrypi-utils = if prev ? raspberrypi-utils
+                                  then prev.raspberrypi-utils
                                   else prev.libraspberrypi; # Fallback for older nixpkgs structures
           })
         ];
       });
 
       # --- HOST FACTORY ---
-      mkSystem = name: { 
+      mkSystem = name: {
           type,
           version ? "25.11",
           rpiVersion ? "4",
-          system ? "x86_64-linux", 
+          system ? "x86_64-linux",
           device ? "/dev/sda",
           deployment ? null # New optional argument
-        }: 
+        }:
         let
           isRpi = type == "rpi";
           isCloud = type == "cloud";
@@ -73,16 +73,16 @@
 
           # Use nixpkgs lib for convenience
           lib = nixpkgs.lib;
-          # 1. Define modules common to all, but keep RPi-specific 
+          # 1. Define modules common to all, but keep RPi-specific
           # declarations out of the global scope.
           moduleList = [
             ./hosts/${name}
             ./common
             ./modules
             sops-nix.nixosModules.sops
-            disko.nixosModules.disko 
+            disko.nixosModules.disko
             inputs.home-manager.nixosModules.home-manager
-            
+
             ({ ... }: {
               imports =
                 lib.optionals (type == "pc") [
@@ -91,7 +91,7 @@
                 ++ lib.optionals (type == "server") [
                     ./profiles/servers
                   ]
-                ++ lib.optionals (type == "cloud") [ 
+                ++ lib.optionals (type == "cloud") [
                     (nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
                   ]
                 ++ lib.optionals (type == "rpi") [
@@ -103,9 +103,9 @@
           # RPi-Specific Shim Module
           # This only exists during RPi evaluation to prevent the 'rename.nix' conflict.
           rpiShim = { lib, ... }: {
-            disabledModules = [ 
+            disabledModules = [
               "system/boot/loader/raspberrypi/raspberrypi.nix"
-              "misc/rename.nix" 
+              "misc/rename.nix"
             ];
             imports =[
               nixos-raspberrypi.nixosModules."raspberry-pi-${toString rpiVersion}".base
@@ -115,7 +115,7 @@
             ];
           };
 
-          specialArgs = { 
+          specialArgs = {
             inherit self inputs name isRpi version rpiVersion;
             # Add this line to pass your host database to all modules
             type = type;
@@ -132,39 +132,39 @@
           inherit deployment moduleList specialArgs system type version rpiVersion;
           pkgs = nixpkgsFor.${system};
 
-          nixosConfig = if isRpi 
-            then nixos-raspberrypi.lib.nixosInstaller { 
-              inherit system specialArgs; 
+          nixosConfig = if isRpi
+            then nixos-raspberrypi.lib.nixosInstaller {
+              inherit system specialArgs;
               modules = moduleList;
             }
-            else nixpkgs.lib.nixosSystem { 
-              inherit system specialArgs; 
-              modules = moduleList; 
+            else nixpkgs.lib.nixosSystem {
+              inherit system specialArgs;
+              modules = moduleList;
             };
         };
     in
     {
       # Helper to define our hosts in one place
       hosts = {
-        clawfinger = mkSystem "clawfinger" { 
-          type = "pc"; 
+        clawfinger = mkSystem "clawfinger" {
+          type = "pc";
         };
-        envy = mkSystem "envy" { 
-          type = "server"; 
+        envy = mkSystem "envy" {
+          type = "server";
           deployment = {
             targetHost = "10.0.0.10";
             targetUser = "nixos";
           };
         };
-        lenovo = mkSystem "lenovo" { 
-          type = "server"; 
+        lenovo = mkSystem "lenovo" {
+          type = "server";
           deployment = {
             targetHost = "10.0.0.61";
             targetUser = "nixos";
           };
         };
-        rpi4-a = mkSystem "rpi4-a" { 
-          type = "rpi"; 
+        rpi4-a = mkSystem "rpi4-a" {
+          type = "rpi";
           system = "aarch64-linux";
           deployment = {
             targetHost = "10.0.0.11";
@@ -195,7 +195,7 @@
           nixpkgsFor = nixpkgsFor;
         };
       });
-      
+
       # Colmena Integration
       colmena = {
         meta = {
@@ -221,20 +221,20 @@
 
             # 3. Everything else goes into 'config'
             config = {
-              # This is the fix: _module.check belongs inside the config block 
+              # This is the fix: _module.check belongs inside the config block
               # when using the explicit options/config split.
-              _module.check = false; 
+              _module.check = false;
 
               # Inject the real derivation from your flake
               system.build.toplevel = h.nixosConfig.config.system.build.toplevel;
               system.systemBuilderCommands = h.nixosConfig.config.system.systemBuilderCommands;
               system.activatableSystemBuilderCommands = h.nixosConfig.config.system.activatableSystemBuilderCommands;
-              
+
               # Dummies to satisfy the minimal evaluation requirements
               system.stateVersion = version;
               boot.loader.grub.enable = lib.mkForce false;
               fileSystems."/".device = lib.mkForce "/dev/null";
-              
+
               # Turn off docs to avoid further attribute-missing errors
               documentation.enable = lib.mkForce false;
             };

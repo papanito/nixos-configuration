@@ -6,7 +6,7 @@
     group = "paperless";
     description = "Service account for non-privileged tasks";
     # Prevents interactive login
-    shell = pkgs.shadow; 
+    shell = pkgs.shadow;
     # If the service needs a home directory for config/state
     createHome = true;
     home = "/var/lib/paperless";

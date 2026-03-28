@@ -5,7 +5,7 @@ let
 in
 {
   options.security = {
-    enable 
+    enable
       = lib.mkEnableOption "enable security related software";
   };
   config = lib.mkIf cfg.enable {

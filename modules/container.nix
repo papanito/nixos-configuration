@@ -5,7 +5,7 @@ let
 in
 {
   options.container = {
-    enable 
+    enable
       = lib.mkEnableOption "enable container backend and tooling";
   };
   config = lib.mkIf cfg.enable {

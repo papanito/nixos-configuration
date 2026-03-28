@@ -23,12 +23,12 @@
   # Use the well-cached mainline kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Disable the vendor-specific loader module 
+  # Disable the vendor-specific loader module
   # (This prevents the "grub.devices" requirement)
   boot.loader.raspberryPi.enable = lib.mkForce false;
 
-  # Refactored Tags 
-  # We manually set these because 'config.boot.loader.raspberryPi' 
+  # Refactored Tags
+  # We manually set these because 'config.boot.loader.raspberryPi'
   # is no longer being populated.
   system.nixos.tags = [
     "rpi-mainline"

@@ -28,7 +28,7 @@
     rclone # Command line program to sync files and directories to and from major cloud storage
     s3fs # Mount an S3 bucket as filesystem through FUSE
     warp # Fast and secure file transfer
-    
+
     ### Cert and Security ###
     bitwarden-desktop
     bitwarden-cli
@@ -44,7 +44,7 @@
     ranger # File manager with minimalistic curses interface
     slides # Terminal based presentation tool
     xxh # Bring your favorite shell wherever you go through SSH
-    
+
     ### Security and Testing Tools ###
     websocat # Command-line client for WebSockets (like netcat/socat)
     adguardian # Terminal-based, real-time traffic monitoring and statistics for your AdGuard Home instance
@@ -75,14 +75,14 @@
 
   # programs.go = {
   #   enable = true;
-  #   packages = { 
+  #   packages = {
   #     "golang.org/x/tools/mksub" = builtins.fetchGit {
   #       url = "https://github.com/trickest/mksub";
   #       rev = "c90cbdc254378cdcee972198f878435da79103af";
   #     };
   #   };
   # };
-  
+
   # pentesting = {
   #   enable = false;
   # };

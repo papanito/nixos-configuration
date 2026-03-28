@@ -8,7 +8,7 @@
     ./security.nix
     ./virt.nix
   ];
-  
+
   environment.etc."fuse.conf".text = ''
     user_allow_other
   '';
@@ -60,7 +60,7 @@
     sad # CLI tool to search and replace
     xz # A general-purpose data compression software, successor of LZMA
     sshfs
-    
+
     ### Shell stuff ###
     vim
     zellij # A terminal workspace with batteries included

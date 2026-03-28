@@ -19,10 +19,10 @@ in
     wantedBy = [ "multi-user.target" ];
 
     # Ensure the service has the necessary binaries in its environment
-    path = with pkgs; [ 
-      bash 
-      coreutils 
-      nodejs 
+    path = with pkgs; [
+      bash
+      coreutils
+      nodejs
     ];
 
     serviceConfig = {

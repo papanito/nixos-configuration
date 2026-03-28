@@ -9,7 +9,7 @@
       secrets.GOOGLE_CHAT_KEY = {
         sopsFile = ../secrets.yaml;
       };
-   
+
       templates."googlechat.env".content = ''
         GOOGLE_CHAT_KEY=${config.sops.placeholder.GOOGLE_CHAT_KEY}
       '';

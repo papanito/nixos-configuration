@@ -73,7 +73,7 @@ in
     })
 
     # --- ARM: Uses 'dnscrypt2-proxy' ---
-    # We use optionalAttrs so the key 'dnscrypt2-proxy' literally doesn't 
+    # We use optionalAttrs so the key 'dnscrypt2-proxy' literally doesn't
     # exist in the set when isRpi is false.
     (lib.mkIf isRpi (lib.optionalAttrs isRpi {
       services.dnscrypt-proxy2 = dnscryptSettings;

@@ -5,7 +5,7 @@ let
 in
 {
   options.office = {
-    enable 
+    enable
       = lib.mkEnableOption "enable office module";
   };
   config = lib.mkIf cfg.enable {

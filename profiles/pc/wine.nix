@@ -7,7 +7,7 @@
   };
 
   config = lib.mkIf config.windows-support.enable {
-    environment.systemPackages = with pkgs; [ 
+    environment.systemPackages = with pkgs; [
       (wine.override { wineBuild = "wine64"; })
       # wine-staging (version with experimental features)
       # wineWowPackages.staging

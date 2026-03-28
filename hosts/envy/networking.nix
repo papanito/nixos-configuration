@@ -27,7 +27,7 @@
     nameservers = [
       "127.0.0.1:51"
       "[::1]:51"
-    ]; 
+    ];
     # Disable the conflict-prone options
     resolvconf.enable = lib.mkForce false;
 

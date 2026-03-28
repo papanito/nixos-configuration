@@ -5,7 +5,7 @@ let
 in
 {
   options.solokey = {
-    enable 
+    enable
       = lib.mkEnableOption "enable pam using solokey";
   };
 
@@ -16,7 +16,7 @@ in
      pam_u2f
      libfido2
     ];
-  
+
 
     # Enable the pam_u2f module globally
     security.pam.u2f = {

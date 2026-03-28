@@ -22,13 +22,13 @@
     kernelModules = [ "kvm-intel" ];
     kernelPackages = pkgs.linuxPackages_latest;
     extraModulePackages = [ ];
-  };  
-  
-  fileSystems."/" = { 
+  };
+
+  fileSystems."/" = {
       device = "/dev/disk/by-uuid/0a81878c-2e28-4c73-8589-96446e93c6a4";
       fsType = "ext4";
   };
-  fileSystems."/home" = { 
+  fileSystems."/home" = {
       device = "/dev/disk/by-uuid/a308663e-a262-448d-bfdf-16cd450cf246";
       fsType = "btrfs";
   };
@@ -36,13 +36,13 @@
   boot.initrd.luks.devices."luks-266811b8-953c-4007-9bbd-ed9a009f72ed".device = "/dev/disk/by-uuid/266811b8-953c-4007-9bbd-ed9a009f72ed";
   boot.initrd.luks.devices."luks-361b9e74-4d96-49fa-9243-1676586caed0".device = "/dev/disk/by-uuid/361b9e74-4d96-49fa-9243-1676586caed0";
 
-  fileSystems."/boot" ={ 
+  fileSystems."/boot" ={
     device = "/dev/disk/by-uuid/B581-AD78";
       fsType = "vfat";
   };
 
   swapDevices = [
-    { 
+    {
       device = "/dev/disk/by-uuid/0b1951d8-e365-4f7a-a072-10c383407677";
     }
   ];

@@ -23,10 +23,10 @@
     group = "paperless";
     description = "Service account for gitlab-runner";
     # Prevents interactive login
-    shell = pkgs.shadow; 
+    shell = pkgs.shadow;
     # If the serv ftice needs a home directory for config/state
     createHome = true;
-        
+
     home = "/var/lib/gitlab-runner";
   };
 
@@ -42,10 +42,10 @@
         # Get your token from GitLab: Settings > CI/CD > Runners > New project runner
         #authenticationTokenConfigFile = "${config.sops.secrets.gitlab_runner_token.path}";
         registrationConfigFile = config.sops.templates."gitlab-runner-env".path;
-        
+
         executor = "docker";
         dockerImage = "golang:1.25-bookworm"; # Default image if not specified in YAML
-        
+
         # Tags are crucial! Use this in your .gitlab-ci.yml
         tagList = [ "homelab" ];
 

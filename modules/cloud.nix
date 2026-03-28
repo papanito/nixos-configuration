@@ -5,7 +5,7 @@ let
 in
 {
   options.cloud = {
-    enable 
+    enable
       = lib.mkEnableOption "enable cloud backend and tooling";
   };
   config = lib.mkIf cfg.enable {

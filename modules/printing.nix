@@ -5,7 +5,7 @@ let
 in
 {
   options.printing = {
-    enable 
+    enable
       = lib.mkEnableOption "enable printing module";
 
     drivers = lib.mkOption {

@@ -5,7 +5,7 @@ let
 in
 {
   options.kde = {
-    enable 
+    enable
       = lib.mkEnableOption "enable kde and install related software";
   };
 

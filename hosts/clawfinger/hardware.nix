@@ -8,23 +8,23 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  fileSystems."/" = { 
+  fileSystems."/" = {
       device = "/dev/disk/by-uuid/0a81878c-2e28-4c73-8589-96446e93c6a4";
       fsType = "ext4";
   };
-  fileSystems."/home" = { 
+  fileSystems."/home" = {
       device = "/dev/disk/by-uuid/a308663e-a262-448d-bfdf-16cd450cf246";
       fsType = "btrfs";
   };
 
 
-  fileSystems."/boot" ={ 
+  fileSystems."/boot" ={
     device = "/dev/disk/by-uuid/B581-AD78";
       fsType = "vfat";
   };
 
   swapDevices = [
-    { 
+    {
       device = "/dev/disk/by-uuid/0b1951d8-e365-4f7a-a072-10c383407677";
     }
   ];
@@ -61,7 +61,7 @@
     binfmt.emulatedSystems = [ "aarch64-linux" ];
     runSize = "20%";
     # The set of kernel modules to be loaded in the second stage of the boot process
-    kernelModules = [ 
+    kernelModules = [
         "kvm-intel"
         "ifb"
     ];
