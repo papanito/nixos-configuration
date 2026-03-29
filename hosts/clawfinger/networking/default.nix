@@ -11,4 +11,5 @@
     hostName = "clawfinger"; # Define your hostname
     interfaces.wlo1.mtu = 1492;
   };
+  services.opensnitch.enable = true;
 }
