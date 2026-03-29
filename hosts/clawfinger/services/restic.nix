@@ -13,14 +13,16 @@
   # If you want to back up your system without running restic as root, you can create a user and security wrapper to give restic the capability to read anything on the filesystem as if it were running as root. The following will create the wrapper at /run/wrappers/bin/restic
 
   sops = {
-    secrets.restic_password = {
-      sopsFile = ../secrets.yaml;
-    };
-    secrets.B2_ACCOUNT_ID = {
-      sopsFile = ../secrets.yaml;
-    };
-    secrets.B2_ACCOUNT_KEY = {
-      sopsFile = ../secrets.yaml;
+    secrets = {
+      restic_password = {
+        sopsFile = ../secrets.yaml;
+      };
+      B2_ACCOUNT_ID = {
+        sopsFile = ../secrets.yaml;
+      };
+      B2_ACCOUNT_KEY = {
+        sopsFile = ../secrets.yaml;
+      };
     };
     templates."restic.env".content = ''
       B2_ACCOUNT_ID=${config.sops.placeholder.B2_ACCOUNT_ID}
@@ -79,6 +81,7 @@
         "*/.cache"
         "*/.local/share"
         "*/.cargo"
+        "*/.ollama/models"
         "*/.chrome"
         "*/.dartServer"
         "*/.donet"
