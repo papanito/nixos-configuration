@@ -37,7 +37,21 @@
 
   boot = {
     #extraModulePackages = [ config.boot.kernelPackages.evdi ];
-    kernelPackages = pkgs.linuxPackages_6_12; # linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_6_12;
+    kernelPackages = pkgs.linuxPackages_latest.extend (
+      lfinal: lprev: {
+        opensnitch-ebpf = lprev.opensnitch-ebpf.overrideAttrs (
+          old:
+          # Fixed in 1.7.3: https://github.com/evilsocket/opensnitch/pull/1554
+          assert lib.versionOlder old.version "1.7.3";
+          {
+            preBuild = old.preBuild or "" + ''
+              makeFlagsArray+=(EXTRA_FLAGS="-Wno-microsoft-anon-tag -fms-extensions")
+            '';
+          }
+        );
+      }
+    );
     initrd = {
       # The set of kernel modules in the initial ramdisk used during the boot process.
       availableKernelModules = [
@@ -50,7 +64,7 @@
       ];
       # List of modules that are always loaded by the initrd.
       kernelModules = [
-        "evdi"
+        #"evdi"
       ];
       secrets = {
         "/crypto_keyfile.bin" = null;
