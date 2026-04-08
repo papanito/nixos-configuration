@@ -315,8 +315,8 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1748201488,
-        "narHash": "sha256-eKA+rab+JWeC0hU/hfqXR4P8TnbXgOv5J9SZJUUAiQ0=",
+        "lastModified": 1775462650,
+        "narHash": "sha256-kAQCL+6DwmhyOQYSDg5RTpvpeegmMkPJ1S6vnXP1JH0=",
         "path": "/home/papanito/Workspaces/papanito/nix-pentesting",
         "type": "path"
       },

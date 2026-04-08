@@ -1,4 +1,9 @@
-{ config, pkgs, version, ... }:
+{
+  config,
+  pkgs,
+  version,
+  ...
+}:
 {
   services.journald.extraConfig = ''
     SystemMaxUse=2G
@@ -38,21 +43,27 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = version; # Did you read the comment?
 
+  # Limit nixos entries for systemd-boot to not fill the boot partition
+  boot.loader.systemd-boot.configurationLimit = 5;
   nix = {
     #package = pkgs.nixFlakes;
     #package = pkgs.nixVersions.git;
-    extraOptions= ''
+    extraOptions = ''
       experimental-features = nix-command flakes
     '';
     # Automatic Garbage Collection
     gc = {
       automatic = true;
+      persistent = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
     settings = {
       # Tells Nix this machine can natively run these architectures (via binfmt)
-      extra-platforms = [ "aarch64-linux" "armv7l-linux" ];
+      extra-platforms = [
+        "aarch64-linux"
+        "armv7l-linux"
+      ];
 
       # Crucial: Allow the daemon to download substitutes for these platforms
       builders-use-substitutes = true;

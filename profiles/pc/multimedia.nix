@@ -1,12 +1,16 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
-   cfg = config.office;
+  cfg = config.office;
 in
 {
   options.multimedia = {
-    enable
-      = lib.mkEnableOption "enable multimedia module";
+    enable = lib.mkEnableOption "enable multimedia module";
   };
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
@@ -16,7 +20,7 @@ in
       imagemagick # A software suite to create, edit, compose, or convert bitmap images
       ncspot # Cross-platform ncurses Spotify client written in Rust, inspired by ncmpc and the likes
       parabolic # Download web video and audio
-      peertube # A free software to take back control of your videos
+      #peertube # A free software to take back control of your videos
       spotify
       spotify-tray # Adds a tray icon to the Spotify Linux client application.
       spotdl # Download your Spotify playlists and songs along with album art and metadata
