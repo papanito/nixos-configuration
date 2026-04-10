@@ -1,12 +1,16 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
-   cfg = config.gnome;
+  cfg = config.gnome;
 in
 {
   options.gnome = {
-    enable
-      = lib.mkEnableOption "enable gnome and install related software";
+    enable = lib.mkEnableOption "enable gnome and install related software";
   };
   config = lib.mkIf cfg.enable {
     services = {
@@ -23,7 +27,7 @@ in
         };
       };
       gnome = {
-        gnome-user-share.enable= true;
+        gnome-user-share.enable = true;
         gnome-online-accounts.enable = true;
         gnome-browser-connector.enable = true;
         gnome-keyring.enable = true;
@@ -54,7 +58,7 @@ in
       sushi
       gnome-characters
       bleachbit # A program to cleutiluan your computer
-      gdm-settings #   Settings app for GNOME's Login Manager
+      gdm-settings # Settings app for GNOME's Login Manager
       gedit # text editor
       gnome-usage # A nice way to view information about use of system resources, like memory and disk space
       gnome-feeds # An RSS/Atom feed reader for GNOME
