@@ -24,12 +24,39 @@ in
 {
   config = lib.mkMerge [
     {
+      systemd.services."lo-alias" = {
+        description = "Add 127.0.0.2 loopback alias for kind cluster";
+        wantedBy = [ "network.target" ];
+        after = [ "network-pre.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = pkgs.writeShellScript "lo-alias-up" ''
+            if ! ${pkgs.iproute2}/bin/ip addr show lo | grep -q "127.0.0.2"; then
+              ${pkgs.iproute2}/bin/ip addr add 127.0.0.2/8 dev lo
+            fi
+          '';
+          ExecStop = pkgs.writeShellScript "lo-alias-down" ''
+            ${pkgs.iproute2}/bin/ip addr del 127.0.0.2/8 dev lo 2>/dev/null || true
+          '';
+          # Ignore error if address already exists
+          ExecStartPre = "${pkgs.bash}/bin/bash -c '${pkgs.iproute2}/bin/ip addr show lo | grep -q 127.0.0.2 && exit 0 || true'";
+        };
+      };
+      environment.etc."cloaking-rules.txt".text = ''
+        *.calico  127.0.0.2
+        calico    127.0.0.2
+        **calico  127.0.0.2
+      '';
       # Enable networking
       networking = {
         extraHosts =
           ''
           '';
-
+        # interfaces.lo.ipv4.addresses = [
+        #   { address = "127.0.0.1"; prefixLength = 8; }
+        #   { address = "127.0.0.2"; prefixLength = 8; }
+        # ];
         # If using dhcpcd:
         dhcpcd.extraConfig = "nohook resolv.conf";
         networkmanager = {
@@ -46,20 +73,20 @@ in
           "::1"
           "2a06:98c1:54::3cfe"
         ];
-      };
 
-      services.resolved.enable = false;
-      networking.resolvconf.enable = false;
-      networking.firewall = {
-        allowedTCPPorts = [
-          80
-          443
-        ];
-        # checkReversePath = false;
-        # allowedUDPPorts = [
-        #   53
-        # ];
+        resolvconf.enable = false;
+        firewall = {
+          allowedTCPPorts = [
+            80
+            443
+          ];
+          # checkReversePath = false;
+          # allowedUDPPorts = [
+          #   53
+          # ];
+        };
       };
+      services.resolved.enable = false;
 
       boot.kernel.sysctl = {
         "net.ipv4.ip_forward" = 1;
