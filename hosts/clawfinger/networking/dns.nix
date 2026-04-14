@@ -24,6 +24,17 @@ in
 {
   config = lib.mkMerge [
     {
+      # Local resolver just for .calico — no DNSSEC involved
+      services.dnsmasq = {
+        enable = true;
+        settings = {
+          port = 5353;
+          listen-address = "127.0.0.1";
+          bind-interfaces = true;
+          no-resolv = true;          # don't touch upstream DNS
+          address = "/calico/127.0.0.2";
+        };
+      };
       systemd.services."lo-alias" = {
         description = "Add 127.0.0.2 loopback alias for kind cluster";
         wantedBy = [ "network.target" ];
@@ -44,9 +55,6 @@ in
         };
       };
       environment.etc."cloaking-rules.txt".text = ''
-        *.calico  127.0.0.2
-        calico    127.0.0.2
-        **calico  127.0.0.2
       '';
       # Enable networking
       networking = {
