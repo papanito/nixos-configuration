@@ -18,10 +18,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    pentesting = {
-      url = "/home/papanito/Workspaces/papanito/nix-pentesting";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # pentesting = {
+    #   url = "/home/papanito/Workspaces/papanito/nix-pentesting";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs = { self, nixpkgs, disko, sops-nix, nixos-raspberrypi, colmena, terranix, ... }@inputs:

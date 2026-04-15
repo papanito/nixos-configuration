@@ -13,7 +13,6 @@
     bws # BItwarden Secret Manager cli
     btop # A monitor of resources
     glances # system monitor
-    smartcl # smart disk utilty
     dysk # alternative to du
     btrfs-progs
     coreutils # The GNU Core Utilities
@@ -29,10 +28,11 @@
     gnupg # Modern release of the GNU Privacy Guard, a GPL OpenPGP implementation
     lsof # Tool to list open files
     ncdu # Disk usage analyzer with an ncurses interface
+    openssl
     parted
     psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
     polkit # A toolkit for defining and handling the policy that allows unprivileged processes to speak to privileged processes
-    openssl
+    smartmontools # smart disk utilty
     unzip
     yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
 
