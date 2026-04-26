@@ -19,7 +19,7 @@ in
       desktopManager.gnome.enable = true;
       xserver = {
         enable = true;
-        videoDrivers = [ "displaylink" ];
+        #videoDrivers = [ "displaylink" ];
         # Configure keymap in X11
         xkb = {
           layout = "ch";

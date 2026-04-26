@@ -32,7 +32,11 @@ in
           listen-address = "127.0.0.1";
           bind-interfaces = true;
           no-resolv = true;          # don't touch upstream DNS
-          address = "/calico/127.0.0.2";
+          address = [
+            "/cluster/127.0.0.2"
+            "/calico/127.0.0.2"
+            "/envoy/127.0.0.2"
+          ];
         };
       };
       systemd.services."lo-alias" = {
