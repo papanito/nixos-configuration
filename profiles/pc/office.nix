@@ -1,15 +1,9 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-
+{ config, pkgs, lib, ...}:
 let
-  cfg = config.office;
+  cfg = config.modules.office;
 in
 {
-  options.office = {
+  options.modules.office = {
     enable = lib.mkEnableOption "enable office module";
   };
   config = lib.mkIf cfg.enable {

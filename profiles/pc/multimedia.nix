@@ -1,15 +1,10 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, pkgs, lib, ... }:
 
 let
-  cfg = config.office;
+  cfg = config.modules.multimedia;
 in
 {
-  options.multimedia = {
+  options.modules.multimedia = {
     enable = lib.mkEnableOption "enable multimedia module";
   };
   config = lib.mkIf cfg.enable {

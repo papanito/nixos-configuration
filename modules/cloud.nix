@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }:
 
 let
-   cfg = config.cloud;
+   cfg = config.modules.cloud;
 in
 {
-  options.cloud = {
+  options.modules.cloud = {
     enable
       = lib.mkEnableOption "enable cloud backend and tooling";
   };

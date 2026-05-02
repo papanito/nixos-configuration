@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }:
 
 let
-   cfg = config.security;
+   cfg = config.modules.security.tools;
 in
 {
-  options.security = {
+  options.modules.security.tools = {
     enable
       = lib.mkEnableOption "enable security related software";
   };

@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }:
 
 let
-   cfg = config.kde;
+   cfg = config.modules.kde;
 in
 {
-  options.kde = {
+  options.modules.kde = {
     enable
       = lib.mkEnableOption "enable kde and install related software";
   };

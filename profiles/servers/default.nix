@@ -8,11 +8,13 @@
     ./users.nix
   ];
   # modules
-  solokey.enable = false;
-  container.enable = false;
-  cloud.enable = false;
-  printing.enable = false;
-  virtualisation.enable = false;
+  modules = {
+    solokey.enable = false;
+    container.enable = false;
+    cloud.enable = false;
+    printing.enable = false;
+    virtualisation.enable = false;
+  };
 
   fonts.fontconfig.enable = lib.mkForce false;
   # some servers are notebooks

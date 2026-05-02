@@ -36,21 +36,27 @@
   };
 
   # modules
-  gnome.enable = true;
-  kde.enable = false;
-  solokey.enable = true;
-  container.enable = true;
-  cloud.enable = true;
-  development.enable = true;
-  multimedia.enable = true;
-  office.enable = true;
-  security.enable = true;
+  modules = {
+    cloud.enable = true;
+    security = {
+      tools.enable =  true;
+    };
+    container.enable = true;
+    ## printing module
+    printing = {
+      enable = true;
+      drivers = [ pkgs.hplipWithPlugin ];
+    };
+    solokey.enable = true;
+    ## virtualisation module
+    virtualisation.enable = true;
+    windows-support.enable = true;
 
-  ## printing module
-  printing.enable = true;
-  printing.drivers = [ pkgs.hplipWithPlugin ];
-
-  ## virtualisation module
-  virtualisation.enable = true;
-  windows-support.enable = true;
+    ## pc modules
+    gnome.enable = true;
+    kde.enable = false;
+    development.enable = true;
+    multimedia.enable = true;
+    office.enable = true;
+  };
 }

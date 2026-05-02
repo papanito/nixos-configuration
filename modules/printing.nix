@@ -1,10 +1,10 @@
 { lib, config, pkgs, ... }:
 
 let
-   cfg = config.printing;
+   cfg = config.modules.printing;
 in
 {
-  options.printing = {
+  options.modules.printing = {
     enable
       = lib.mkEnableOption "enable printing module";
 

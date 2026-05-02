@@ -1,10 +1,10 @@
 { lib, config, pkgs, ... }:
 
 let
-   cfg = config.solokey;
+   cfg = config.modules.solokey;
 in
 {
-  options.solokey = {
+  options.modules.solokey = {
     enable
       = lib.mkEnableOption "enable pam using solokey";
   };

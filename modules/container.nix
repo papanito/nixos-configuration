@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }:
 
 let
-   cfg = config.container;
+   cfg = config.modules.container;
 in
 {
-  options.container = {
+  options.modules.container = {
     enable
       = lib.mkEnableOption "enable container backend and tooling";
   };

@@ -1,15 +1,9 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-
+{ config, pkgs, lib, ... }:
 let
-  cfg = config.gnome;
+  cfg = config.modules.gnome;
 in
 {
-  options.gnome = {
+  options.modules.gnome = {
     enable = lib.mkEnableOption "enable gnome and install related software";
   };
   config = lib.mkIf cfg.enable {

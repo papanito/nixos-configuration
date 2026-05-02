@@ -1,16 +1,15 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
+{ lib, config, pkgs, ...}:
 
+let
+   cfg = config.modules.virtualisation;
+in
 {
-  options = {
-    virtualisation.enable = lib.mkEnableOption "enable libvirtd and install related software";
+  options.modules.virtualisation = {
+    enable
+      = lib.mkEnableOption "enable libvirtd and install related software";
   };
 
-  config = lib.mkIf config.virtualisation.enable {
+  config = lib.mkIf cfg.enable {
     virtualisation.libvirtd = {
       enable = true;
       qemu = {

@@ -1,12 +1,14 @@
 { lib, config, pkgs, ... }:
-
+let
+   cfg = config.modules.windows-support;
+in
 {
-  options = {
-    windows-support.enable
-      = lib.mkEnableOption "enable wine and stuff";
+  options.modules.windows-support = {
+    enable
+      = lib.mkEnableOption "enable kde and install related software";
   };
 
-  config = lib.mkIf config.windows-support.enable {
+  config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       (wine.override { wineBuild = "wine64"; })
       # wine-staging (version with experimental features)

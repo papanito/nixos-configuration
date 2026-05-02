@@ -1,16 +1,11 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
+{ lib, config, pkgs, ...}:
 {
   imports = [
     ./cloud.nix
     ./container.nix
     ./solokey.nix
     ./printing.nix
-    ./security.nix
+    ./security
     ./virt.nix
   ];
 }
