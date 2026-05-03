@@ -15,7 +15,7 @@
   environment.etc."fuse.conf".text = ''
     user_allow_other
   '';
-  
+
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default is 4)
   boot = {
     consoleLogLevel = 3;
