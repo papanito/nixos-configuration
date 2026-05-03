@@ -45,7 +45,8 @@ in {
     };
   };
 
-  config = {
+  config = mkMerge [
+  {
     services = {
       avahi.enable = mkDefault cfg.allowAvahi;
       geoclue2.enable = mkDefault cfg.allowGeoclue;
@@ -60,5 +61,27 @@ in {
 
     # Hardening often implies disabling setuid wrappers for unused tools
     security.polkit.enable = mkDefault cfg.allowUdisks;
-  };
+  }
+  # Conditional Systemd Hardening for Bluetooth
+  (mkIf cfg.allowBluetooth {
+    systemd.services = {
+      bluetooth.serviceConfig = {
+        ProtectKernelTunables = lib.mkDefault true;
+        ProtectKernelModules = lib.mkDefault true;
+        ProtectKernelLogs = lib.mkDefault true;
+        ProtectHostname = true;
+        ProtectControlGroups = true;
+        ProtectProc = "invisible";
+        SystemCallFilter = [
+          "~@obsolete"
+          "~@cpu-emulation"
+          "~@swap"
+          "~@reboot"
+          "~@mount"
+        ];
+        SystemCallArchitectures = "native";
+      };
+    };
+    })
+  ];
 }
