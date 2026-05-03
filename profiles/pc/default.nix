@@ -27,4 +27,15 @@
     watchman # Watches files and takes action when they change
     pueue # A daemon for managing long running shell commands
   ];
+
+  # loosen security hardening for pcs
+  modules.security = {
+    enable = true;
+    allowBluetooth = true;
+    allowGeoclue = true;
+    allowAvahi = true;
+    allowModemManager = true;
+    allowAccountsDaemon = true;
+    allowUdisks = true;
+  };
 }
