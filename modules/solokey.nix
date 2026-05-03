@@ -17,25 +17,43 @@ in
      libfido2
     ];
 
+    security.pam = {
+      services.polkit-1 = {
+        # This adds FIDO2 as an authentication method for Polkit prompts
+        # 'cue' provides a terminal message to touch the key
+        rules.auth.fido2 = {
+          enable = true;
+          order = 10; # Usually want this before pam_unix for 'key-first' auth
+          # Set the control flag (this fixes the error)
+          control = "sufficient";
+          # Use 'module' (not 'modulePath') and point to the .so
+          modulePath = "${pkgs.pam_u2f}/lib/security/pam_u2f.so";
+          settings = {
+            cue = true;
+            authfile = "/etc/security/fido2_keys"; # Ensure your key is enrolled here
+          };
+        };
+      };
 
-    # Enable the pam_u2f module globally
-    security.pam.u2f = {
-      enable = true;
-      # "sufficient" means if u2f auth succeeds, PAM chain stops. If it fails or is not used, PAM continues.
-      control = "sufficient";
-      # # Point to the generated u2f_keys file.
-      # # We use pkgs.writeText so the file is managed by Nix and available for all users.
-      # # Make sure to replace <your_username> and the content with your actual generated key data.
-      # authFile = pkgs.writeText "u2f_keys" ''
-      #   yourusername:keyHandle,userKey,coseType,options # Replace with content from ~/.config/Yubico/u2f_keys
-      #   # Add more lines if you have multiple users or keys
-      # '';
-    };
+      # Enable the pam_u2f module globally
+      u2f = {
+        enable = true;
+        # "sufficient" means if u2f auth succeeds, PAM chain stops. If it fails or is not used, PAM continues.
+        control = "sufficient";
+        # # Point to the generated u2f_keys file.
+        # # We use pkgs.writeText so the file is managed by Nix and available for all users.
+        # # Make sure to replace <your_username> and the content with your actual generated key data.
+        # authFile = pkgs.writeText "u2f_keys" ''
+        #   yourusername:keyHandle,userKey,coseType,options # Replace with content from ~/.config/Yubico/u2f_keys
+        #   # Add more lines if you have multiple users or keys
+        # '';
+      };
 
-    security.pam.services = {
-      login.u2fAuth = true;
-      sudo.u2fAuth = true;
-      sddm.u2fAuth = true;
+      services = {
+        login.u2fAuth = true;
+        sudo.u2fAuth = true;
+        sddm.u2fAuth = true;
+      };
     };
 
     # https://github.com/solokeys/solo2-cli/blob/main/70-solo2.rules

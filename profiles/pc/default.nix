@@ -30,12 +30,19 @@
 
   # loosen security hardening for pcs
   modules.security = {
-    enable = true;
     allowBluetooth = true;
     allowGeoclue = true;
     allowAvahi = true;
     allowModemManager = true;
     allowAccountsDaemon = true;
     allowUdisks = true;
+    pam = {
+      disabledWrappers = [
+        "su"
+        "sudoedit"
+        "sg"
+        "pkexec"
+      ];
+    };
   };
 }
