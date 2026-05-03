@@ -1,0 +1,39 @@
+{ config
+, ...
+}:
+{
+  services.chrony = {
+    enable = true;
+    enableNTS = true;
+    servers = [
+        "server time.cloudflare.com iburst nts"
+        "server ntppool1.time.nl iburst nts"
+        "server nts.netnod.se iburst nts"
+        "server ptbtime1.ptb.de iburst nts"
+        "server time.dfm.dk iburst nts"
+        "server time.cifelli.xyz iburst nts"
+     ];
+    # havent worked out the kinks yet
+  #  extraConfig = ''
+  #      minsources 3
+  #      authselectmode require
+
+  #      # EF
+  #      dscp 46
+
+  #      driftfile /var/lib/chrony/drift
+  #      dumpdir /var/lib/chrony
+  #      ntsdumpdir /var/lib/chrony
+
+  #      leapseclist /usr/share/zoneinfo/leap-seconds.list
+  #      makestep 1.0 3
+
+  #      rtconutc
+
+  #      cmdport 0
+
+  #      noclientlog
+  #  '';
+  };
+}
+
