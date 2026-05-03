@@ -15,7 +15,7 @@
       MaxSessions = 2;
       ClientAliveInterval = 300;
       ClientAliveCountMax = 0;
-      AllowUsers = ["admin"];
+      AllowUsers = ["admin" "nixos"];
       TCPKeepAlive = false;
       AllowTcpForwarding = false;
       AllowAgentForwarding = false;
