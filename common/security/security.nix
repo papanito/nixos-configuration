@@ -55,7 +55,7 @@ in {
     };
 
     # Only needed for WWAN/3G/4G modems, otherwise it runs `mmcli` unnecessarily
-    networking.modemmanager.enable = mkDefault cfg.allowModemManager;
+    networking.modemmanager.enable = mkForce cfg.allowModemManager;
 
     hardware.bluetooth.enable = mkDefault cfg.allowBluetooth;
 
