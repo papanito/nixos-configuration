@@ -36,15 +36,18 @@ in
   };
 
   config = {
+    programs.bash.shellAliases = {
+      sudo = "run0";
+    };
+    programs.zsh.shellAliases = {
+      sudo = "run0";
+    };
     security = {
-      # systemd-run0
-      run0.enableSudoAlias = cfg.useRun0Alias;
-
       # Polkit is the backend for run0
       polkit.enable = mkDefault true;
 
       # Toggle the standard sudo module
-      sudo.enable = !cfg.disableSudo;
+      sudo.enable = mkForce (!cfg.disableSudo);
 
       # Map the list of disabled wrappers into the security.wrappers attribute set
       wrappers = builtins.listToAttrs (map (name: {
