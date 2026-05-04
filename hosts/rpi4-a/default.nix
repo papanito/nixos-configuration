@@ -14,6 +14,9 @@
     fsType = "vfat";
     options = [ "noatime" "noauto" "x-systemd.automount" "x-systemd.idle-timeout=1min" ];
   };
+  nixpkgs.config.allowUnfree = true;
+  # Ensure the RPi firmware is actually enabled
+  hardware.enableRedistributableFirmware = true;
   # Explicitly define supported filesystems (exclude zfs)
   boot.supportedFilesystems = lib.mkForce [ "btrfs" "ext4" "vfat" ];
   # Force GRUB off and enable Generic Extlinux
@@ -25,7 +28,7 @@
 
   # Disable the vendor-specific loader module
   # (This prevents the "grub.devices" requirement)
-  boot.loader.raspberryPi.enable = lib.mkForce false;
+  #boot.loader.raspberryPi.enable = lib.mkForce false;
 
   # Refactored Tags
   # We manually set these because 'config.boot.loader.raspberryPi'
