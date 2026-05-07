@@ -44,5 +44,9 @@
         "pkexec"
       ];
     };
+    usbguard = {
+      enable = true;
+      allowedUsers = [ "root" "nixos" ];
+    };
   };
 }

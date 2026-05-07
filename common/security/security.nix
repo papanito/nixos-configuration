@@ -6,8 +6,6 @@ let
   cfg = config.modules.security;
 in {
   options.modules.security = {
-    enable = mkEnableOption "Enable opinionated system hardening";
-
     allowBluetooth = mkOption {
       type = types.bool;
       default = false;

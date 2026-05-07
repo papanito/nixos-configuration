@@ -16,6 +16,11 @@
     virtualisation.enable = false;
   };
 
+  custom.security.usbguard = {
+    enable = true;
+    allowedUsers = [ "root" "papanito" "nixos" ];
+  };
+
   fonts.fontconfig.enable = lib.mkForce false;
   # some servers are notebooks
   services.logind.settings.Login = {
