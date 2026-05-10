@@ -18,7 +18,7 @@
 
   custom.security.usbguard = {
     enable = true;
-    allowedUsers = [ "root" "papanito" "nixos" ];
+    allowedUsers = [ "root" "nixos" ];
   };
 
   fonts.fontconfig.enable = lib.mkForce false;

@@ -15,6 +15,9 @@ in {
     rules = mkOption {
       type = types.lines;
       default = ''
+        # Slokey
+        allow id 1209:beee
+
         # Block suspicious combinations FIRST
         reject with-interface all-of { 08:*:* 03:00:* }
         reject with-interface all-of { 08:*:* 03:01:* }

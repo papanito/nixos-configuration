@@ -46,7 +46,7 @@
     };
     usbguard = {
       enable = true;
-      allowedUsers = [ "root" "nixos" ];
+      allowedUsers = [ "root" "papanito" "nixos" ];
     };
   };
 }
