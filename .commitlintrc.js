@@ -29,6 +29,22 @@ module.exports = {
       'ui',
       'security']],
 
-    'type-enum': [1, 'always', ['clawfinger', 'envy', 'rpi4', 'lenovo', 'profiles']],
+    'type-enum': [2, 'always', ['feat', 'fix', 'chore', 'docs', 'ci', 'refactor']],
+    // Load the custom rule from the plugin below
+    'mandatory-scope': [2, 'always'],
   },
+  // Custom Plugin to enforce scope ONLY for specific types
+  plugins: [
+    {
+      rules: {
+        'mandatory-scope': ({ type, scope }) => {
+          const protectedTypes = ['feat', 'fix'];
+          if (protectedTypes.includes(type) && !scope) {
+            return [false, `Scope [topic] is mandatory for types: ${protectedTypes.join(', ')}` ];
+          }
+          return [true];
+        },
+      },
+    },
+  ],
 };
