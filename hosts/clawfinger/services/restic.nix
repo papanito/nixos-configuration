@@ -123,6 +123,7 @@
         "*/Videos/Movies"
         "*/Videos/Music"
         "*/Virtualbox"
+        "*/.windows"
       ];
 
       # keep 7 daily, 5 weekly, and 10 annual backups
@@ -200,6 +201,7 @@
         "*/snap"
         "**/tmp"
         "*/Trash"
+        "*/.windows"
       ];
 
       # keep 7 daily, 5 weekly, and 10 annual backups
