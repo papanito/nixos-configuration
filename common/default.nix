@@ -24,4 +24,5 @@
   security.wrappers = {
     fusermount.source = "${pkgs.fuse}/bin/fusermount";
   };
+  services.fwupd.enable = true;
 }
