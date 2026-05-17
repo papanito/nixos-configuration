@@ -39,6 +39,36 @@ in
           ];
         };
       };
+      # Hardening
+      systemd.services.dnsmasq = {
+        # Completely nullify the upstream preStart script that causes the chown failure
+        preStart = lib.mkForce "";
+        serviceConfig = {
+          # Privilege Escalation & User
+          CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" "CAP_NET_RAW" "CAP_SETUID" "CAP_SETGID" ];
+          AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" "CAP_NET_RAW" ];
+
+          # Creates /var/lib/dnsmasq with correct ownership if it doesn't exist
+          StateDirectory = "dnsmasq";
+          StateDirectoryMode = "0750";
+
+          # Filesystem & State
+          #ProtectSystem = "strict";
+          ProtectHome = true;
+          PrivateTmp = true;
+          ProtectKernelTunables = true;
+          ProtectKernelModules = true;
+          ProtectControlGroups = true;
+
+          # If using dnsmasq for DHCP, it needs raw packet access
+          # otherwise, you can set PrivateDevices = true
+          PrivateDevices = false;
+
+          # Networking
+          RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" "AF_NETLINK" ];
+        };
+      };
+
       systemd.services."lo-alias" = {
         description = "Add 127.0.0.2 loopback alias for kind cluster";
         wantedBy = [ "network.target" ];
