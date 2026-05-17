@@ -53,6 +53,7 @@
     windows-support.enable = true;
 
     ## pc modules
+    dms.enable = true;
     gnome.enable = true;
     kde.enable = false;
     development.enable = true;

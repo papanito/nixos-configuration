@@ -9,6 +9,7 @@
   imports = [
     ./development.nix
     ./fonts.nix
+    ./dms.nix
     ./kde.nix
     ./gnome.nix
     ./multimedia.nix

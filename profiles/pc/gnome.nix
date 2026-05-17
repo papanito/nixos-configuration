@@ -10,9 +10,9 @@ in
     services = {
       udev.packages = with pkgs; [ gnome-settings-daemon ];
       displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
+      desktopManager.gnome.enable = !config.modules.dms.enable;
       xserver = {
-        enable = true;
+        enable = false;
         #videoDrivers = [ "displaylink" ];
         # Configure keymap in X11
         xkb = {
@@ -37,7 +37,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      epiphany # web browser
+      epiphany # web browser!config.modules.dms.enable;
       geary # email reader
       seahorse
       gpaste

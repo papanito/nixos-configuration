@@ -5,7 +5,10 @@
     disko.url = "github:nix-community/disko";
     colmena.url = "github:zhaofengli/colmena";
     terranix.url = "github:terranix/terranix";
-
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,11 +27,12 @@
     # };
   };
 
-  outputs = { self, nixpkgs, disko, sops-nix, nixos-raspberrypi, colmena, terranix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, disko, sops-nix, nixos-raspberrypi, colmena, terranix, ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      pkgs-unstable = nixpkgs-unstable.legacyPackages."x86_64-linux";
       version = "25.11";
       system = pkgs.stdenv.hostPlatform.system;
 
@@ -73,7 +77,8 @@
 
           # Use nixpkgs lib for convenience
           lib = nixpkgs.lib;
-          # 1. Define modules common to all, but keep RPi-specific
+
+          # Define modules common to all, but keep RPi-specific
           # declarations out of the global scope.
           moduleList = [
             ./hosts/${name}
@@ -82,7 +87,7 @@
             sops-nix.nixosModules.sops
             disko.nixosModules.disko
             inputs.home-manager.nixosModules.home-manager
-
+            inputs.dms.nixosModules.dank-material-shell
             ({ ... }: {
               imports =
                 lib.optionals (type == "pc") [
@@ -116,13 +121,14 @@
           };
 
           specialArgs = {
-            inherit self inputs name isRpi version rpiVersion;
+            inherit self inputs name isRpi version rpiVersion pkgs-unstable;
             # Add this line to pass your host database to all modules
             type = type;
             hosts = self.hosts;
             isCloud = type == "cloud";
             disko = inputs.disko;
             home-manager = inputs.home-manager;
+            dms = inputs.dms;
           }
           // lib.optionalAttrs isRpi {
             inherit nixos-raspberrypi;
