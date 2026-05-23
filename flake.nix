@@ -17,8 +17,8 @@
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # pentesting = {
@@ -87,11 +87,12 @@
             sops-nix.nixosModules.sops
             disko.nixosModules.disko
             inputs.home-manager.nixosModules.home-manager
-            inputs.dms.nixosModules.dank-material-shell
+
             ({ ... }: {
               imports =
                 lib.optionals (type == "pc") [
                     ./profiles/pc
+                    inputs.dms.nixosModules.dank-material-shell
                   ]
                 ++ lib.optionals (type == "server") [
                     ./profiles/servers
