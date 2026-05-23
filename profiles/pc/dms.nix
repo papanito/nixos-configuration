@@ -21,6 +21,8 @@ in
           matugen
           cava
           khal
+          fuzzel
+          swaylock
           wtype;
       })
     ];
