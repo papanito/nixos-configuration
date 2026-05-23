@@ -14,11 +14,10 @@
     cloud.enable = false;
     printing.enable = false;
     virtualisation.enable = false;
-  };
-
-  custom.security.usbguard = {
-    enable = true;
-    allowedUsers = [ "root" "nixos" ];
+    security.usbguard = {
+      enable = true;
+      allowedUsers = [ "root" "nixos" ];
+    };
   };
 
   fonts.fontconfig.enable = lib.mkForce false;
