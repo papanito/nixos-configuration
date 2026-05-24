@@ -30,6 +30,7 @@
     ncdu # Disk usage analyzer with an ncurses interface
     openssl
     parted
+    tilix # terminal
     psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
     polkit # A toolkit for defining and handling the policy that allows unprivileged processes to speak to privileged processes
     smartmontools # smart disk utilty
@@ -55,6 +56,8 @@
 
     lsix # ls for images
     imgcat # It's like cat, but for images
+    doppler # secret manager
+    infisical # secret manager
 
     ### Shell stuff ###
     vim
