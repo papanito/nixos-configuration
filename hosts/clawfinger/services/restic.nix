@@ -60,7 +60,7 @@
         "/home/papanito"
       ];
       # the name of your repository.
-      repository = "b2:papanito-private-backup:/${name}";
+      repository = "b2:papanito-backup-private:/${name}";
       timerConfig = {
         # backup every 1d
         OnCalendar = "daily";
