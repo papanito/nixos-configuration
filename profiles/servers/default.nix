@@ -18,6 +18,13 @@
       enable = true;
       allowedUsers = [ "root" "nixos" ];
     };
+
+    security.pam = {
+      useRun0Alias = false;
+      disableSudo = false;
+      disabledWrappers = [
+      ];
+    };
   };
 
   fonts.fontconfig.enable = lib.mkForce false;
