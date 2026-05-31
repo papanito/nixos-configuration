@@ -4,15 +4,14 @@
     ./networking.nix
     ./users.nix
   ];
-  # modules
-  # solokey.enable = false;
-  # container.enable = false;
-  # cloud.enable = false;
-  # printing.enable = false;
-  # virtualisation.enable = false;
+
+  # Disable features that pull in heavy dependencies
+  services.pipewire.enable = lib.mkForce false;
+  fonts.fontconfig.enable = lib.mkForce false;
 
   # Disable the X11 library stack globally
-  # This is the modern replacement for noXlibs
-  environment.variables.NIXOS_OZONE_WL = "0"; # Optional: helps with some wayland-aware libs
+  environment.variables.NIXOS_OZONE_WL = "0";
   documentation.nixos.enable = false;
+  documentation.enable = false;
+  documentation.man.enable = false;
 }

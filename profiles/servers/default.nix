@@ -15,7 +15,7 @@
     printing.enable = false;
     virtualisation.enable = false;
     security.usbguard = {
-      enable = true;
+      enable = lib.mkDefault true;
       allowedUsers = [ "root" "nixos" ];
     };
 
@@ -39,12 +39,12 @@
   };
   # Enable sound with pipewire.
   services.pipewire = {
-    enable = true;
+    enable = lib.mkDefault true;
   };
   #
   # ## pam stuff
   # programs.gnupg.agent = {
-  #   enable = true;
+  #   enable = lib.mkDefault true;
   #   enableSSHSupport = true;
   #   pinentryPackage = pkgs.pinentry-curses;
   # };

@@ -20,6 +20,8 @@
   environment.systemPackages = with pkgs; [
     lsix # ls for images
     ptyxis # Terminal
+    tilix # terminal
+    glances # system monitor
     imgcat # It's like cat, but for images
     pinentry-tty # GnuPG’s interface to passphrase inputt
     gtop # graphic top
