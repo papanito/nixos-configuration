@@ -1,4 +1,4 @@
-{config, pkgs, version, ... }:
+{ config, lib, pkgs, version, ... }:
 {
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -9,7 +9,7 @@
   system.stateVersion = version; # Did you read the comment?
 
   # Limit nixos entries for systemd-boot to not fill the boot partition
-  boot.loader.systemd-boot.configurationLimit = 15;
+  boot.loader.systemd-boot.configurationLimit = lib.mkDefault 5;
   nix = {
     #package = pkgs.nixFlakes;
     #package = pkgs.nixVersions.git;
@@ -18,13 +18,15 @@
     '';
     # Automatic Garbage Collection
     gc = {
+      dates = "daily";
       automatic = true;
       persistent = true;
-      dates = "weekly";
       options = "--delete-older-than 7d";
     };
     settings = {
       auto-optimise-store = true;
+      min-free = 1073741824; # 1GB
+      max-free = 2147483648; # 2GB
       # Tells Nix this machine can natively run these architectures (via binfmt)
       extra-platforms = [
         "aarch64-linux"

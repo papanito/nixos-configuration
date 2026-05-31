@@ -23,6 +23,7 @@
   # Force GRUB off and enable Generic Extlinux
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
+  boot.loader.generic-extlinux-compatible.configurationLimit = 3;
 
   # Use the well-cached mainline kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
