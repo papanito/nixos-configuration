@@ -1,5 +1,6 @@
 { lib, config, pkgs, inputs, ... }:
 {
+  boot.loader.generic-extlinux-compatible.configurationLimit = lib.mkDefault 5;
   imports = [
     ./networking.nix
     ./users.nix
@@ -14,4 +15,7 @@
   documentation.nixos.enable = false;
   documentation.enable = false;
   documentation.man.enable = false;
+  documentation.doc.enable = false;
+  documentation.info.enable = false;
+  programs.command-not-found.enable = false;
 }

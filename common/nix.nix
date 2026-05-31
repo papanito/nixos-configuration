@@ -21,9 +21,10 @@
       automatic = true;
       persistent = true;
       dates = "weekly";
-      options = "--delete-older-than 30d";
+      options = "--delete-older-than 7d";
     };
     settings = {
+      auto-optimise-store = true;
       # Tells Nix this machine can natively run these architectures (via binfmt)
       extra-platforms = [
         "aarch64-linux"
