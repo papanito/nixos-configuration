@@ -1,4 +1,4 @@
-{ config, pkgs, name, ... }:
+{ config, lib, pkgs, name, ... }:
 {
   imports = [
     ./dns.nix
@@ -72,7 +72,7 @@
     "kernel.yama.ptrace_scope" = 2;
 
     # ASLR memory protection (64-bit systems)
-    "vm.mmap_rnd_bits" = 32;
+    "vm.mmap_rnd_bits" = if pkgs.stdenv.hostPlatform.isx86_64 then 32 else 24;
     "vm.mmap_rnd_compat_bits" = 16;
 
     # only permit symlinks to be followed when outside of a world-writable sticky directory
@@ -85,7 +85,6 @@
     # Randomize memory
     "kernel.randomize_va_space" = 2;
     # Exec Shield (Stack protection)
-    "kernel.exec-shield" = 1;
 
     ## TCP optimization
     # TCP Fast Open is a TCP extension that reduces network latency by packing

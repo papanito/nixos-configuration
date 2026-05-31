@@ -39,9 +39,7 @@
       # 4 makes it so a user can only use the secure attention key. A value of 0 would disable completely
       "kernel.sysrq" = 4;
       # disable unprivileged user namespaces, Note: Docker, NH, and other apps may need this
-      # "kernel.unprivileged_userns_clone" = 0; # Set to 1 because it makes NH and other programs fail
       # This should be set to 0 if you don't rely on flatpak, NH, Docker, etc.
-      "kernel.unprivileged_userns_clone" = 1;
       # restrict all usage of performance events to the CAP_PERFMON capability
       "kernel.perf_event_paranoid" = 3;
     };
@@ -55,7 +53,7 @@
       "init_on_free=1"
       # randomizes page allocator freelist, improving security by
       # making page allocations less predictable
-      "page_alloc.shuffel=1"
+      "page_alloc.shuffle=1"
       # enables Kernel Page Table Isolation, which mitigates Meltdown and
       # prevents some KASLR bypasses
       "pti=on"

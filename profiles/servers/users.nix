@@ -15,6 +15,8 @@ in {
 
   # Enable Zsh as a system shell
   home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
     backupFileExtension = "backup";
     users.nixos = { pkgs, ... }: {
       programs.zsh = myZshConfig;
