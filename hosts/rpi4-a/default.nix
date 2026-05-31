@@ -2,6 +2,11 @@
 {
   imports = [
   ];
+
+  # Enable cross-compilation for faster builds on x86_64 hosts
+  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
+  nixpkgs.buildPlatform = lib.mkDefault "x86_64-linux";
+
   # --- File Systems (from your cat /etc/fstab output) ---
   fileSystems."/" = {
     device = "/dev/disk/by-label/NIXOS_SD";
