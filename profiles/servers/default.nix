@@ -5,7 +5,7 @@
     ./networking.nix
     ./restic.nix
     ./notifications.nix
-    ./users.nix
+    ./users
   ];
   # modules
   modules = {
