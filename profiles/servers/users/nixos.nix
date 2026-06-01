@@ -1,4 +1,4 @@
-{ lib, config, pkgs, version, home-manager, sops-nix, ...}:
+{ lib, config, pkgs, nixosVersion, home-manager, sops-nix, ...}:
 {
   users.users.nixos = {
     isNormalUser = true;

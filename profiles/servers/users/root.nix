@@ -1,4 +1,4 @@
-{ lib, config, pkgs, version, home-manager, sops-nix, ...}:
+{ lib, config, pkgs, sops-nix, ...}:
 {  # allow nix-copy to live system
   users.users.root = {
     openssh.authorizedKeys.keys = lib.mkForce [ ];

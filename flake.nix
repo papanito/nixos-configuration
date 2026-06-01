@@ -38,7 +38,7 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
       pkgs-unstable = nixpkgs-unstable.legacyPackages."x86_64-linux";
-      version = "26.05";
+      nixosVersion = "26.05";
       system = pkgs.stdenv.hostPlatform.system;
 
       # Instantiate pkgs with overlays for use in CLI (nix build .#hello)
@@ -68,7 +68,7 @@
       # --- HOST FACTORY ---
       mkSystem = name: {
           type,
-          version ? version,
+          version ? nixosVersion,
           rpiVersion ? "4",
           system ? "x86_64-linux",
           device ? "/dev/sda",
@@ -127,7 +127,7 @@
           };
 
           specialArgs = {
-            inherit self inputs name isRpi version rpiVersion pkgs-unstable;
+            inherit self inputs name isRpi nixosVersion rpiVersion pkgs-unstable;
             # Add this line to pass your host database to all modules
             type = type;
             hosts = self.hosts;
@@ -141,7 +141,7 @@
           };
         in
         {
-          inherit deployment moduleList specialArgs system type version rpiVersion;
+          inherit deployment moduleList specialArgs system type nixosVersion rpiVersion;
           pkgs = nixpkgsFor.${system};
 
           nixosConfig = if isRpi
@@ -205,14 +205,14 @@
         };
         custom-iso = nixos-generators.nixosGenerate {
           inherit system;
-          specialArgs = { inherit self version; };
+          specialArgs = { inherit self nixosVersion; };
           format = "iso";
           modules = [
             sops-nix.nixosModules.sops
             inputs.home-manager.nixosModules.home-manager
             ./profiles/servers/users
             ({ pkgs, lib, ... }: {
-              system.stateVersion = version;
+              system.stateVersion = nixosVersion;
 
               networking = {
                 useDHCP = false;
@@ -303,7 +303,7 @@
               build.toplevel = lib.mkOption { type = lib.types.unspecified; };
               systemBuilderCommands = lib.mkOption { type = lib.types.unspecified; };
               activatableSystemBuilderCommands = lib.mkOption { type = lib.types.unspecified; };
-              stateVersion = lib.mkOption { type = lib.types.str; default = version; };
+              stateVersion = lib.mkOption { type = lib.types.str; default = nixosVersion; };
             };
 
             # 3. Everything else goes into 'config'
@@ -318,7 +318,7 @@
               system.activatableSystemBuilderCommands = h.nixosConfig.config.system.activatableSystemBuilderCommands;
 
               # Dummies to satisfy the minimal evaluation requirements
-              system.stateVersion = version;
+              system.stateVersion = nixosVersion;
               boot.loader.grub.enable = lib.mkForce false;
               fileSystems."/".device = lib.mkForce "/dev/null";
 

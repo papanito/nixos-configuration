@@ -1,4 +1,4 @@
-{ config, lib, pkgs, version, ... }:
+{ config, lib, pkgs, nixosVersion, ... }:
 {
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -6,7 +6,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = version; # Did you read the comment?
+  system.stateVersion = nixosVersion; # Did you read the comment?
 
   # Limit nixos entries for systemd-boot to not fill the boot partition
   boot.loader.systemd-boot.configurationLimit = lib.mkDefault 5;
