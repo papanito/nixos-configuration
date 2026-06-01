@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     disko.url = "github:nix-community/disko";
     colmena.url = "github:zhaofengli/colmena";
@@ -17,23 +17,28 @@
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # Add the generator input
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs"; # Forces generator to reuse YOUR nixpkgs version
+    };
     # pentesting = {
     #   url = "/home/papanito/Workspaces/papanito/nix-pentesting";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, disko, sops-nix, nixos-raspberrypi, colmena, terranix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, disko, sops-nix, nixos-raspberrypi, nixos-generators, colmena, terranix, ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
       pkgs-unstable = nixpkgs-unstable.legacyPackages."x86_64-linux";
-      version = "25.11";
+      version = "26.05";
       system = pkgs.stdenv.hostPlatform.system;
 
       # Instantiate pkgs with overlays for use in CLI (nix build .#hello)
@@ -63,7 +68,7 @@
       # --- HOST FACTORY ---
       mkSystem = name: {
           type,
-          version ? "25.11",
+          version ? version,
           rpiVersion ? "4",
           system ? "x86_64-linux",
           device ? "/dev/sda",
@@ -163,6 +168,13 @@
             targetUser = "nixos";
           };
         };
+        envy17 = mkSystem "envy17" {
+          type = "server";
+          deployment = {
+            targetHost = "10.0.0.10";
+            targetUser = "nixos";
+          };
+        };
         lenovo = mkSystem "lenovo" {
           type = "server";
           deployment = {
@@ -190,6 +202,74 @@
         hcloud-infra = terranix.lib.terranixConfiguration {
           inherit system;
           modules = [ ./infra/hcloud.nix ]; # Path to your Hetzner resources
+        };
+        custom-iso = nixos-generators.nixosGenerate {
+          inherit system;
+          specialArgs = { inherit self version; };
+          format = "iso";
+          modules = [
+            sops-nix.nixosModules.sops
+            inputs.home-manager.nixosModules.home-manager
+            ./profiles/servers/users
+            ({ pkgs, lib, ... }: {
+              system.stateVersion = version;
+
+              networking = {
+                useDHCP = false;
+                defaultGateway = "10.0.0.1";
+                nameservers = [ "10.0.0.10" ];
+                firewall.allowedTCPPorts = [ 22 ];
+              };
+
+              # --- FIX: RUNTIME INTERFACE DETECTION & IP ASSIGNMENT ---
+              # This script runs ON THE LAPTOP right after the network card drivers load.
+              systemd.services.iso-static-ip = {
+                description = "Dynamically assign static IP to the physical Ethernet card";
+                wantedBy = [ "network-pre.target" ];
+                before = [ "network.target" ];
+                serviceConfig = {
+                  Type = "oneshot";
+                  RemainAfterExit = true;
+                };
+                script = ''
+                  # 1. Find the first physical ethernet interface name at boot runtime
+                  IFACE=$(${pkgs.iproute2}/bin/ip -o link show | ${pkgs.gawk}/bin/awk -F': ' '$2 ~ /^e/ {print $2; exit}')
+
+                  if [ -n "$IFACE" ]; then
+                    echo "Found Ethernet interface: $IFACE. Assigning 10.0.0.250/24..."
+                    ${pkgs.iproute2}/bin/ip addr add 10.0.0.250/24 dev "$IFACE"
+                    ${pkgs.iproute2}/bin/ip link set dev "$IFACE" up
+                    # --- FIX: Manually inject default route table parameters onto the interface ---
+                    echo "Injecting default gateway routing rules through 10.0.0.1..."
+                    ${pkgs.iproute2}/bin/ip route add default via 10.0.0.1 dev "$IFACE" proto static || true
+                  else
+                    echo "No physical Ethernet interface starting with 'e' was found."
+                  fi
+                '';
+              };
+              services.openssh.enable = true;
+
+              # --- FIX: Break the mutableUsers lockdown for the live ISO session ---
+              users.mutableUsers = lib.mkForce true;
+
+              # Neutralize SOPS file runtime evaluation barriers for the ephemeral ISO run
+              sops.secrets.default_password = {};
+              sops.validateSopsFiles = false;
+
+              # Force plain-text fallback credentials specifically on the physical notebook TTY console
+              users.users.nixos = {
+                hashedPasswordFile = lib.mkForce null;
+                initialPassword = "nixos";
+              };
+              users.users.root = {
+                hashedPasswordFile = lib.mkForce null;
+                initialPassword = "nixos";
+              };
+
+              # Bypasses local sudo permission prompt blocks on the live environment console
+              security.sudo.wheelNeedsPassword = lib.mkForce false;
+            })
+          ];
         };
       });
 

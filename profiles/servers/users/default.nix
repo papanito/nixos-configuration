@@ -1,6 +1,6 @@
-{ lib, config, pkgs, version, home-manager, sops-nix, ...}:
+{ lib, config, pkgs, version, home-manager, sops-nix, self, ...}:
 let
-  myZshConfig = import ../../common/zsh-config.nix { inherit pkgs; };
+  myZshConfig = import (self + /common/zsh-config.nix) { inherit pkgs; };
 in {
   imports = [
     ./nixos.nix
@@ -12,7 +12,7 @@ in {
   users.mutableUsers = false;
   sops = {
     secrets.default_password = {
-      sopsFile = ../../secrets/secrets.yaml;
+      sopsFile = (self + /secrets/secrets.yaml);
       neededForUsers = true; # Critical: decrypts before users are created
     };
   };
