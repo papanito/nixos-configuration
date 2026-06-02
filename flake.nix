@@ -15,6 +15,7 @@
     };
 
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
+    nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -92,7 +93,6 @@
             sops-nix.nixosModules.sops
             disko.nixosModules.disko
             inputs.home-manager.nixosModules.home-manager
-
             ({ ... }: {
               imports =
                 lib.optionals (type == "pc") [
@@ -147,10 +147,12 @@
           nixosConfig = if isRpi
             then nixos-raspberrypi.lib.nixosInstaller {
               inherit system specialArgs;
+              pkgs = nixpkgsFor.${system};
               modules = moduleList;
             }
             else nixpkgs.lib.nixosSystem {
               inherit system specialArgs;
+              pkgs = nixpkgsFor.${system};
               modules = moduleList;
             };
         };
@@ -286,8 +288,12 @@
       # Colmena Integration
       colmena = {
         meta = {
-          nixpkgs = nixpkgsFor."x86_64-linux"; # Use your pre-defined instance
+          # Use your 26.05 channel as the foundational module lookup engine
+          nixpkgs = import nixpkgs { system = "x86_64-linux"; };
+
+          # Pass per-node pkgs to avoid _module.args.pkgs conflict
           nodeNixpkgs = builtins.mapAttrs (name: h: h.pkgs) self.hosts;
+
           # Pass specialArgs to Colmena nodes
           nodeSpecialArgs = builtins.mapAttrs (name: h: h.specialArgs) self.hosts;
         };
