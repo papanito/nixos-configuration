@@ -15,7 +15,6 @@
     fsType = "vfat";
     options = [ "noatime" "noauto" "x-systemd.automount" "x-systemd.idle-timeout=1min" ];
   };
-  nixpkgs.config.allowUnfree = true;
   # Ensure the RPi firmware is actually enabled
   hardware.enableRedistributableFirmware = true;
   # Explicitly define supported filesystems (exclude zfs)

@@ -28,12 +28,6 @@
       # here, NOT in environment.systemPackages
     ];
   };
-  nixpkgs.config = {
-    permittedInsecurePackages = [
-      "electron"
-    ];
-    allowUnfree = true;
-  };
 
   # modules
   modules = {
