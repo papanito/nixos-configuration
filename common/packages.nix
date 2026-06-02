@@ -1,11 +1,7 @@
+{ lib, config, pkgs, inputs, ... }:
 {
-  lib,
-  config,
-  pkgs,
-  inputs,
-  ...
-}:
-{
+  nixpkgs.config.allowUnfree = true;
+
   environment.systemPackages = with pkgs; [
     ## Essential system tools
     age # Modern encryption tool with small explicit keys

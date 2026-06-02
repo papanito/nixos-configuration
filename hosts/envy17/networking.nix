@@ -39,9 +39,11 @@
 
   services.resolved = {
     enable = lib.mkForce false;
-    extraConfig = ''
-      DNSStubListener=no
-    '';
+    settings = {
+      Resolve = {
+        DNSStubListener = "no";
+      };
+    };
   };
 
   environment.etc."resolv.conf".text = lib.mkForce ''
