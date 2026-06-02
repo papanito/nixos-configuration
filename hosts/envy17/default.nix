@@ -3,7 +3,5 @@
     ./disko.nix
     ./hardware.nix
     ./users.nix
-    ./networking.nix
   ];
-
 }

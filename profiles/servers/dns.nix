@@ -2,13 +2,13 @@
 {
   services.resolved = {
     enable = true;
-    # Pass your specific nameservers here instead of networking.nameservers
-    fallbackDns = [ "10.0.0.10" ];
     # Or use 'extraConfig' if you want them as primary
     settings = {
       Resolve = {
-        DNS = "10.0.0.10";
-        Domains = "~.";
+        # Pass your specific nameservers here instead of networking.nameservers
+        FallbackDns = [ "10.0.0.10" ];
+        DNS = ["10.0.0.10"];
+        Domains = ["~."];
       };
     };
   };
