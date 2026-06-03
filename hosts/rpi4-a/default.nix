@@ -25,7 +25,7 @@
   boot.loader.generic-extlinux-compatible.configurationLimit = 3;
 
   # Use the well-cached mainline kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages;
 
   # Disable the vendor-specific loader module
   # (This prevents the "grub.devices" requirement)
