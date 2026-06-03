@@ -173,7 +173,7 @@
         envy17 = mkSystem "envy17" {
           type = "server";
           deployment = {
-            targetHost = "10.0.0.10";
+            targetHost = "10.0.0.12";
             targetUser = "nixos";
           };
         };
@@ -319,12 +319,13 @@
               _module.check = false;
 
               # Inject the real derivation from your flake
-              system.build.toplevel = h.nixosConfig.config.system.build.toplevel;
-              system.systemBuilderCommands = h.nixosConfig.config.system.systemBuilderCommands;
-              system.activatableSystemBuilderCommands = h.nixosConfig.config.system.activatableSystemBuilderCommands;
-
-              # Dummies to satisfy the minimal evaluation requirements
-              system.stateVersion = nixosVersion;
+              system = {
+                build.toplevel = h.nixosConfig.config.system.build.toplevel;
+                systemBuilderCommands = h.nixosConfig.config.system.systemBuilderCommands;
+                activatableSystemBuilderCommands = h.nixosConfig.config.system.activatableSystemBuilderCommands;
+                # Dummies to satisfy the minimal evaluation requirements
+                stateVersion = nixosVersion;
+              };
               boot.loader.grub.enable = lib.mkForce false;
               fileSystems."/".device = lib.mkForce "/dev/null";
 
