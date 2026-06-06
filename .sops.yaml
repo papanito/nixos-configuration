@@ -37,3 +37,9 @@ creation_rules:
           - *admin_papanito
           - *admin_nixos
           - *server_envy
+  - path_regex: hosts/envy/secrets\.yaml$
+    key_groups:
+      - age:
+          - *admin_papanito
+          - *admin_nixos
+          - *server_envy
