@@ -6,6 +6,7 @@
     firefox
     google-chrome
     tor-browser
+    opensnitch
 
     ### UI Tools ###
     tailscale # The node agent for Tailscale, a mesh VPN built on WireGuard
@@ -58,7 +59,6 @@
     home-manager # Nix-based user environment configurator
     paper-age # Easy and secure paper backups of secrets
     power-profiles-daemon # Makes user-selected power profiles handling available over D-Bus
-    gnomeExtensions.power-profile-switcher # Automatically switch between power profiles based on power supply and percentage.
     mission-center #Monitor your CPU, Memory, Disk, Network and GPU usage
     usbutils # Tools for working with USB devices, such as lsusb
     wireplumber # A modular session / policy manager for PipeWire
