@@ -40,16 +40,16 @@
     #kernelPackages = pkgs.linuxPackages_6_12;
     kernelPackages = pkgs.linuxPackages_latest.extend (
       lfinal: lprev: {
-        opensnitch-ebpf = lprev.opensnitch-ebpf.overrideAttrs (
-          old:
-          # Fixed in 1.7.3: https://github.com/evilsocket/opensnitch/pull/1554
-          assert lib.versionOlder old.version "1.7.3";
-          {
-            preBuild = old.preBuild or "" + ''
-              makeFlagsArray+=(EXTRA_FLAGS="-Wno-microsoft-anon-tag -fms-extensions")
-            '';
-          }
-        );
+#        opensnitch-ebpf = lprev.opensnitch-ebpf.overrideAttrs (
+#          old:
+#          # Fixed in 1.7.3: https://github.com/evilsocket/opensnitch/pull/1554
+#          assert lib.versionOlder old.version "1.7.3";
+#          {
+#            preBuild = old.preBuild or "" + ''
+#              makeFlagsArray+=(EXTRA_FLAGS="-Wno-microsoft-anon-tag -fms-extensions")
+#            '';
+#          }
+#        );
       }
     );
     initrd = {
@@ -105,7 +105,7 @@
 
   services.hardware.bolt.enable = true;
   services.upower.enable = true;
-
+  services.jitterentropy-rngd.enable = true; # Random number generator, which injects entropy to the kernel
   # required for wondershapper
   systemd.network.netdevs.ifb0 = {
     enable = true;
