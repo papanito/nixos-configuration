@@ -34,6 +34,7 @@ in {
 
   config = mkIf cfg.enable {
     services.usbguard = {
+      dbus.enable = true;
       enable = true;
       # Reference the list from the option
       IPCAllowedUsers = cfg.allowedUsers;
