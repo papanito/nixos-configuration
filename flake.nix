@@ -60,7 +60,7 @@
         inherit system;
         config = {
           allowUnfree = true;
-          permittedInsecurePackages = [ "electron" ]; # Centralized here
+          permittedInsecurePackages = [ "electron-39.8.10" ]; # Centralized here
         };
         # ALL YOUR OVERLAYS GO HERE
         overlays = [
