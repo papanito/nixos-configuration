@@ -8,6 +8,7 @@
   environment.systemPackages = [ pkgs.rclone ];
 
   systemd.services.rclone-sync-movies = {
+    enable = false;
     description = "Sync Jellyfin movie files with rclone";
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
@@ -24,6 +25,7 @@
   };
 
   systemd.timers.rclone-sync-movies = {
+    enable = false;
     description = "Timer for Jellyfin movie files rclone sync";
     timerConfig = {
       OnCalendar = "daily";
