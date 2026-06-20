@@ -1,4 +1,11 @@
-{ config, pkgs, lib, name, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  name,
+  inputs,
+  ...
+}:
 {
   imports = [
   ];
@@ -13,20 +20,32 @@
   fileSystems."/boot/firmware" = {
     device = "/dev/disk/by-label/FIRMWARE";
     fsType = "vfat";
-    options = [ "noatime" "noauto" "x-systemd.automount" "x-systemd.idle-timeout=1min" ];
+    options = [
+      "noatime"
+      "noauto"
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=1min"
+    ];
   };
   # Ensure the RPi firmware is actually enabled
   hardware.enableRedistributableFirmware = true;
-  # Explicitly define supported filesystems (exclude zfs)
-  boot.supportedFilesystems = lib.mkForce [ "btrfs" "ext4" "vfat" ];
-  # Force GRUB off and enable Generic Extlinux
-  boot.loader.grub.enable = false;
-  boot.loader.generic-extlinux-compatible.enable = true;
-  boot.loader.generic-extlinux-compatible.configurationLimit = 3;
+  boot = {
+    # Explicitly define supported filesystems (exclude zfs)
+    supportedFilesystems = lib.mkForce [
+      "btrfs"
+      "ext4"
+      "vfat"
+    ];
+    # Force GRUB off and enable Generic Extlinux
+    loader = {
+      grub.enable = false;
+      generic-extlinux-compatible.enable = true;
+      generic-extlinux-compatible.configurationLimit = 3;
+    };
 
-  # Use the well-cached mainline kernel
-  boot.kernelPackages = pkgs.linuxPackages;
-
+    # Use the well-cached mainline kernel
+    kernelPackages = inputs.nixos-raspberrypi.packages.${pkgs.system}.linuxPackages_rpi4;
+  };
   # Disable the vendor-specific loader module
   # (This prevents the "grub.devices" requirement)
   #boot.loader.raspberryPi.enable = lib.mkForce false;

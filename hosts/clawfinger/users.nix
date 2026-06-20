@@ -5,7 +5,12 @@
   users.users.papanito = {
     isNormalUser = true;
     description = "papanito";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "libvirtd"
+      "input"
+    ];
     packages = with pkgs; [
       chezmoi
     ];
