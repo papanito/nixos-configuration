@@ -103,7 +103,7 @@
     };
     kernelParams = [
       "nvme_core.default_ps_max_latency_us=0"
-      "i915.enable_dc=0"        # Fix: black screen after screen lock — disable i915 display C-states
+      "i915.enable_dc=1"        # Fix: black screen after screen lock — disable DC5/DC6 (broken DDI/PHY wake), keep DC3 (shallow, safe, battery-friendly)
       "mem_sleep_default=deep"   # Use S3 deep sleep instead of s2idle (more reliable resume)
     ];
     blacklistedKernelModules = [ "spd5118" ]; # Fix: DDR5 temp sensor fails to resume after suspend (error -6)
