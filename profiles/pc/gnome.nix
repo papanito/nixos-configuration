@@ -27,7 +27,6 @@ in
         gnome-keyring.enable = true;
       };
     };
-    systemd.services.dlm.wantedBy = [ "multi-user.target" ];
     services.envfs.enable = true;
 
     programs = {

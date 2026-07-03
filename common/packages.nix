@@ -3,6 +3,7 @@
 
   environment.systemPackages = with pkgs; [
     ## Essential system tools
+    xorg.xprop # Fix: gsd-xsettings needs xprop during XWayland session setup
     age # Modern encryption tool with small explicit keys
     bat # A cat(1) clone with syntax highlighting and Git integration
     bws # BItwarden Secret Manager cli

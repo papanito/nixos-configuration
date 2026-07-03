@@ -15,6 +15,8 @@
       chezmoi
     ];
   };
+  # Fix: udev rules reference plugdev group (70-u2f.rules) which doesn't exist by default in NixOS
+  users.groups.plugdev = { };
 
   programs.steam = {
     enable = true;
