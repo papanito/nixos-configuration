@@ -9,7 +9,7 @@ in
   config = lib.mkIf cfg.enable {
     services = {
       udev.packages = with pkgs; [ gnome-settings-daemon ];
-      displayManager.gdm.enable = true;
+      displayManager.gdm = { enable = true; autoSuspend = false; };
       desktopManager.gnome.enable = !config.modules.dms.enable;
       xserver = {
         enable = false;
