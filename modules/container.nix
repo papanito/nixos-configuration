@@ -11,7 +11,7 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       podman
-      podman-desktop # A graphical tool for developing on containers and Kubernetes
+      #podman-desktop # A graphical tool for developing on containers and Kubernetes (disabled: pulls in insecure pnpm-10.29.2)
       pods # A podman desktop application
       podman-tui
       podman-compose

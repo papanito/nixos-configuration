@@ -101,6 +101,7 @@
     kernel.sysctl = {
       "vm.swappiness" = 10;
     };
+    kernelParams = [ "nvme_core.default_ps_max_latency_us=0" ];
   };
 
   services = {
