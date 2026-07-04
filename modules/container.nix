@@ -17,7 +17,7 @@ in
       podman-compose
       runc # A CLI tool for spawning and running containers according to the OCI specification
       containerd # A daemon to control runC
-      gnomeExtensions.containers
+      #gnomeExtensions.containers # Fix: crashes during screen unlock, causing multi-second delay
       argocd
       kind
       k3s # lightweight Kubernetes distribution
