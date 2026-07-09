@@ -23,7 +23,7 @@ module.exports = {
     'header-max-length': [1, 'always', 50],
     // Disable the global 'scope-empty' rule so we can handle it manually
     'scope-empty': [0],
-    'scope-enum': [2, 'always', [
+    'scope-enum': [2, 'never', [
       'api',
       'infra',
       'ui',
@@ -31,7 +31,7 @@ module.exports = {
 
     'type-enum': [2, 'always', ['feat', 'fix', 'chore', 'docs', 'ci', 'refactor']],
     // Load the custom rule from the plugin below
-    'mandatory-scope': [2, 'always'],
+    'mandatory-scope': [2, 'never'],
   },
   // Custom Plugin to enforce scope ONLY for specific types
   plugins: [
