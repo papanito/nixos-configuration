@@ -1,19 +1,23 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 let
-   cfg = config.modules.solokey;
+  cfg = config.modules.solokey;
 in
 {
   options.modules.solokey = {
-    enable
-      = lib.mkEnableOption "enable pam using solokey";
+    enable = lib.mkEnableOption "enable pam using solokey";
   };
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-     solo2-cli
-     pam_u2f
-     libfido2
+      solo2-cli
+      pam_u2f
+      libfido2
     ];
 
     security.pam = {
@@ -39,6 +43,7 @@ in
         enable = true;
         # "sufficient" means if u2f auth succeeds, PAM chain stops. If it fails or is not used, PAM continues.
         control = "sufficient";
+        authFile = "/etc/security/fido2_keys"; # Ensure your key is enrolled here
         # # Point to the generated u2f_keys file.
         # # We use pkgs.writeText so the file is managed by Nix and available for all users.
         # # Make sure to replace <your_username> and the content with your actual generated key data.
@@ -77,12 +82,12 @@ in
     ];
 
     services.udev.extraRules = ''
-        ACTION=="remove",\
-        ENV{ID_BUS}=="usb",\
-        ENV{ID_MODEL_ID}=="0407",\
-        ENV{ID_VENDOR_ID}=="1050",\
-        ENV{ID_VENDOR}=="Yubico",\
-        RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
+      ACTION=="remove",\
+      ENV{ID_BUS}=="usb",\
+      ENV{ID_MODEL_ID}=="0407",\
+      ENV{ID_VENDOR_ID}=="1050",\
+      ENV{ID_VENDOR}=="Yubico",\
+      RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
     '';
   };
 }
