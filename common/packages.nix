@@ -6,7 +6,6 @@
     xorg.xprop # Fix: gsd-xsettings needs xprop during XWayland session setup
     age # Modern encryption tool with small explicit keys
     bat # A cat(1) clone with syntax highlighting and Git integration
-    bws # BItwarden Secret Manager cli
     btop # A monitor of resources
     dysk # alternative to du
     btrfs-progs
@@ -29,7 +28,7 @@
     polkit # A toolkit for defining and handling the policy that allows unprivileged processes to speak to privileged processes
     smartmontools # smart disk utilty
     unzip
-    yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML documents
+    yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML files
 
     ### Shell and Terminal tools and apps ###
     bats # Bash Automated Testing System
@@ -48,13 +47,14 @@
     xz # A general-purpose data compression software, successor of LZMA
     sshfs
 
-    doppler # secret manager
-    infisical # secret manager
-
     ### Shell stuff ###
     vim
     zellij # A terminal workspace with batteries included
     zsh # zsh shell
     zoxide # A fast cd command that learns your habits
+  ] ++ lib.optionals (!pkgs.stdenv.hostPlatform.isAarch64) [
+    bws # Bitwarden Secret Manager cli (uncached on aarch64, requires GitHub fetch in sandbox)
+    doppler # secret manager
+    infisical # secret manager
   ];
 }
