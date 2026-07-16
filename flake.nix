@@ -86,7 +86,13 @@
           rpiVersion ? "4",
           system ? "x86_64-linux",
           device ? "/dev/sda",
-          deployment ? null # New optional argument
+          deployment ? null,
+          # Static IP config (consumed by ./common/networking/static-ip.nix).
+          # When targetIP is null, the host stays on DHCP.
+          targetIP ? null,
+          interface ? null,
+          defaultGateway ? "10.0.0.1",
+          prefixLength ? 24
         }:
         let
           isRpi = type == "rpi";
@@ -154,7 +160,7 @@
           };
         in
         {
-          inherit deployment moduleList specialArgs system type nixosVersion rpiVersion;
+          inherit deployment moduleList specialArgs system type nixosVersion rpiVersion targetIP interface defaultGateway prefixLength device;
           pkgs = nixpkgsFor.${system};
 
           nixosConfig = if isRpi
@@ -178,6 +184,10 @@
         };
         envy = mkSystem "envy" {
           type = "server";
+          targetIP = "10.0.0.10";
+          interface = "enp0s20f0u5";
+          defaultGateway = "10.0.0.1";
+          prefixLength = 16;
           deployment = {
             targetHost = "10.0.0.10";
             targetUser = "nixos";
@@ -185,6 +195,10 @@
         };
         envy17 = mkSystem "envy17" {
           type = "server";
+          targetIP = "10.0.0.12";
+          interface = "enp0s20f0u5";
+          defaultGateway = "10.0.0.1";
+          prefixLength = 16;
           deployment = {
             targetHost = "10.0.0.12";
             targetUser = "nixos";
@@ -192,6 +206,10 @@
         };
         lenovo = mkSystem "lenovo" {
           type = "server";
+          targetIP = "10.0.0.61";
+          interface = "enp0s20f0u5";
+          defaultGateway = "10.0.0.1";
+          prefixLength = 16;
           deployment = {
             targetHost = "10.0.0.61";
             targetUser = "nixos";
@@ -200,6 +218,10 @@
         rpi4-a = mkSystem "rpi4-a" {
           type = "rpi";
           system = "aarch64-linux";
+          targetIP = "10.0.0.11";
+          interface = "end0";
+          defaultGateway = "10.0.0.1";
+          prefixLength = 24;
           deployment = {
             targetHost = "10.0.0.11";
             targetUser = "nixos";

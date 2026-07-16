@@ -5,6 +5,7 @@
     ./firewall.nix
     ./nts.nix
     ./sshd.nix
+    ./static-ip.nix
   ];
   networking.hostName = name;
 

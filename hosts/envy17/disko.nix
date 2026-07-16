@@ -2,7 +2,7 @@
   disko.devices = {
     disk = {
       main = {
-        device = "/dev/sda";
+        device = "/dev/disk/by-id/nvme-SAMSUNG_MZVLW256HEHP-000H1_S340NX1JC11642";
         type = "disk";
         content = {
           type = "gpt";

@@ -1,16 +1,6 @@
 { config, lib, pkgs, ... }:
 {
   networking = {
-    interfaces = {
-      enp0s20f0u5.ipv4.addresses = [{
-        address = "10.0.0.10";
-        prefixLength = 16;
-      }];
-    };
-
-    # 🌟 Define the default gateway IP address 🌟
-    defaultGateway = "10.0.0.1";
-
     firewall = {
       allowedTCPPorts = [
         80
@@ -20,7 +10,7 @@
       ];
       # checkReversePath = false;
       allowedUDPPorts = [
-       53
+        53
       ];
     };
 
