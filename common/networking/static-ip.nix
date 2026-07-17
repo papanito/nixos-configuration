@@ -7,7 +7,7 @@ let
   ip = if host == null then null else host.targetIP;
   iface = if host == null then null else host.interface;
   gw = if host == null then "10.0.0.1" else (host.defaultGateway or "10.0.0.1");
-  prefix = if host == null then 24 else (host.prefixLength or 24);
+  prefixLength = if host == null then 24 else (host.prefixLength or 24);
   isRpi = type == "rpi";
 in
 lib.mkIf (ip != null && iface != null) {
@@ -26,7 +26,7 @@ lib.mkIf (ip != null && iface != null) {
   # NetworkManager / generic stack: bind the static address to the interface.
   networking.interfaces.${iface}.ipv4.addresses = [{
     address = ip;
-    inherit prefix;
+    inherit prefixLength;
   }];
 
   # RPi stack: systemd-networkd. The 99-prefixed static unit loads after the
@@ -36,7 +36,7 @@ lib.mkIf (ip != null && iface != null) {
     matchConfig.Name = iface;
     networkConfig = {
       DHCP = "no";
-      Address = "${ip}/${toString prefix}";
+      Address = "${ip}/${toString prefixLength}";
       Gateway = gw;
       MulticastDNS = "yes";
     };
