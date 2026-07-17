@@ -40,10 +40,6 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs"; # Forces generator to reuse YOUR nixpkgs version
     };
-    # pentesting = {
-    #   url = "/home/papanito/Workspaces/papanito/nix-pentesting";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, disko, sops-nix, nixos-raspberrypi, nixos-generators, colmena, terranix, ... }@inputs:
@@ -64,10 +60,6 @@
         };
         # ALL YOUR OVERLAYS GO HERE
         overlays = [
-          # Custom Local Overlays
-          (final: prev: {
-            pentesting = inputs.pentesting.packages.${system};
-          })
           # Architecture-Specific Overlays
           (final: prev: nixpkgs.lib.optionalAttrs prev.stdenv.hostPlatform.isAarch64 {
               # Only override if it actually exists in the upstream nixpkgs
@@ -82,10 +74,8 @@
       # --- HOST FACTORY ---
       mkSystem = name: {
           type,
-          version ? nixosVersion,
           rpiVersion ? "4",
           system ? "x86_64-linux",
-          device ? "/dev/sda",
           deployment ? null,
           # Static IP config (consumed by ./common/networking/static-ip.nix).
           # When targetIP is null, the host stays on DHCP.
@@ -97,9 +87,6 @@
         let
           isRpi = type == "rpi";
           isCloud = type == "cloud";
-          isServer = type == "server";
-          isPC = type == "pc";
-
           # Use nixpkgs lib for convenience
           lib = nixpkgs.lib;
 
@@ -160,7 +147,7 @@
           };
         in
         {
-          inherit deployment moduleList specialArgs system type nixosVersion rpiVersion targetIP interface defaultGateway prefixLength device;
+          inherit deployment moduleList specialArgs system type nixosVersion rpiVersion targetIP interface defaultGateway prefixLength;
           pkgs = nixpkgsFor.${system};
 
           nixosConfig = if isRpi
