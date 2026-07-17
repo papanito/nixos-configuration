@@ -7,7 +7,14 @@
       "networkmanager"
       "video"
     ];
-    hashedPasswordFile = config.sops.secrets.default_password.path;
+    # Use the SOPS-derived password when sops is actually wired up;
+    # fall back to a known plaintext for first-boot recovery on hosts
+    # that were installed without sops age keys on the installer.
+    hashedPasswordFile = lib.mkIf
+      ((config.sops.secrets ? default_password) &&
+       (config.sops.secrets.default_password ? path))
+      config.sops.secrets.default_password.path;
+    initialPassword = lib.mkIf (!(config.sops.secrets ? default_password)) "nixos";
     # Kill the empty string fallback
     initialHashedPassword = lib.mkForce null;
     openssh.authorizedKeys.keys = [
