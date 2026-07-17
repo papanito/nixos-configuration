@@ -1,8 +1,10 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   imports = [
     ./disko.nix
     ./hardware.nix
     ./users.nix
+    ./hermes.nix
   ];
 
   # envy17 was installed via nixos-anywhere without sops age keys on

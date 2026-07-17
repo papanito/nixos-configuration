@@ -29,22 +29,21 @@ creation_rules:
           - *server_lenovo
           - *server_envy17
           - *server_rpi4_a
-  - path_regex: secrets/clawfinger/[^/]+\.(yaml|json|env|ini)$
-    key_groups:
-      - age:
-          - *admin_papanito
-          - *server_clawfinger
-  - path_regex: secrets/envy/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: hosts/clawfinger/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
           - *admin_papanito
           - *admin_nixos
           - *server_envy
-          - *server_envy17
-  - path_regex: hosts/envy/secrets\.yaml$
+  - path_regex: hosts/envy/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
           - *admin_papanito
           - *admin_nixos
           - *server_envy
+  - path_regex: hosts/envy17/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *admin_papanito
+          - *admin_nixos
           - *server_envy17
