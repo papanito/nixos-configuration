@@ -19,13 +19,13 @@ nix-shell -p spos --run 'sops updatekeys secrets/secrets.yaml'
    nix build ".#packages.x86_64-linux.custom-iso"
    ```
 
-1. Boot system in live mode
+1. Boot system in live mode, which defaults to 10.0.0.250
 1. Use [nixos-anywhere](https://github.com/nix-community/nixos-anywhere/blob/main/docs/quickstart.md)
 
    ```shell
    nix run github:nix-community/nixos-anywhere -- \
     --flake ".#FLAKE" \
-   <nixos@10.0.0.XX>
+   nixos@10.0.0.250
    ```
 
 1. Install/Update system using [colmena](https://github.com/zhaofengli/colmena)
@@ -34,7 +34,12 @@ nix-shell -p spos --run 'sops updatekeys secrets/secrets.yaml'
    colmena apply --on lenovo,envy
    ```
 
-1. Add host key to `.spps.yaml`
+1. Add host key to `.sops.yaml` - we use age and the key can be found in the error message
+
+   ```shell
+   [ERROR]   stderr) sops-install-secrets: Imported /etc/ssh/ssh_host_ed25519_key as age key with fingerprint ageXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+   ```
+
 1. Update secrets
 
   ```shell
@@ -48,7 +53,7 @@ Alternatively you can also run:
 ```shell
 sudo -E nixos-rebuild switch --flake '.#envy' \
   --upgrade --target-host \
-  nixos@10.0.0.11 --sudo
+  nixos@<ip> --sudo
 ```
 
 If there is a problem with ssh, you can specify the key to use:
