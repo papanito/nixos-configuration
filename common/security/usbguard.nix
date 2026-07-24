@@ -1,14 +1,23 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (lib) mkIf mkOption types;
   cfg = config.modules.security.usbguard;
-in {
+in
+{
   options.modules.security.usbguard = {
     enable = lib.mkEnableOption "usbguard";
 
     allowedUsers = mkOption {
       type = types.listOf types.str;
-      default = [ "root" "nixos" ];
+      default = [
+        "root"
+        "nixos"
+      ];
       description = "List of users allowed to interact with the USBGuard daemon via IPC.";
     };
 
@@ -16,7 +25,8 @@ in {
       type = types.lines;
       default = ''
         # Slokey
-        allow id 1209:beee
+        allow id 1209:beee # Slokey
+        allow is 04e8:6860 # SGS Fold
 
         # Block suspicious combinations FIRST
         reject with-interface all-of { 08:*:* 03:00:* }
