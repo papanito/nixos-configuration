@@ -20,6 +20,9 @@ in
     inputs.hermes-agent.nixosModules.default # Import the NixOS module directly from the flake
   ];
 
+  # Allow the nixos user to run hermes CLI commands against the service state
+  users.users.nixos.extraGroups = [ "hermes" ];
+
 
   # SOPS secret for API key
   sops.secrets = {
