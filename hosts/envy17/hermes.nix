@@ -51,8 +51,8 @@ in
     "hermes_gcp_key" = {
       sopsFile = ./gcp-config.json;
       format = "binary"; # Keeps sops-nix from trying to parse inside the file
-      owner = "hermes-agent";
-      group = "hermes-agent";
+      owner = "hermes";
+      group = "hermes";
       mode = "0400";
     };
   };
