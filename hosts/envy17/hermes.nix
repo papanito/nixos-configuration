@@ -9,38 +9,17 @@
 let
   # google-cloud-pubsub is the only missing dep for Google Chat, but it
   # transitively depends on google-api-core which is already in the sealed
-  # venv — so extraPythonPackages' collision check rejects it.  Work around
-  # by pre-wrapping the package with the full transitive closure on PYTHONPATH.
-  googleChatPythonPath = "${pkgs.python312.withPackages (ps: [ ps.google-cloud-pubsub ])}/${pkgs.python312.sitePackages}";
-  hermesWithPubsub = inputs.hermes-agent.packages.${pkgs.system}.default.overrideAttrs (prev: {
-    buildInputs = (prev.buildInputs or [ ]) ++ [ pkgs.makeWrapper ];
-    installPhase = (prev.installPhase or "") + ''
-      for bin in $out/bin/*; do
-        wrapProgram "$bin" \
-          --suffix PYTHONPATH : "${googleChatPythonPath}"
-      done
-    '';
-  });
+  # venv — so extraPythonPackages' collision check rejects it.  Inject the
+  # full transitive closure via systemd Environment to avoid the collision.
+  googleChatPythonPath = "${
+    pkgs.python312.withPackages (ps: [ ps.google-cloud-pubsub ])
+  }/${pkgs.python312.sitePackages}";
 in
 {
   imports = [
     inputs.hermes-agent.nixosModules.default # Import the NixOS module directly from the flake
   ];
 
-  users = {
-    groups.hermes-agent = { };
-    users.hermes-agent = {
-      isSystemUser = true;
-      group = "hermes-agent";
-      description = "Service account for hermes-agent";
-      # Prevents interactive login
-      shell = pkgs.shadow;
-      # If the serv ftice needs a home directory for config/state
-      createHome = true;
-
-      home = "/var/lib/hermes";
-    };
-  };
 
   # SOPS secret for API key
   sops.secrets = {
@@ -57,10 +36,9 @@ in
     };
   };
 
-  # Configuration for hermes-AGent service
+  # Configuration for hermes-agent service
   services.hermes-agent = {
     enable = true;
-    package = hermesWithPubsub;
     container.enable = false;
     extraDependencyGroups = [
       "messaging"
@@ -96,7 +74,12 @@ in
       GOOGLE_CHAT_ALLOWED_USERS = "aedu@wyssmann.com";
     };
 
-    environmentFiles = [ config.sops.secrets.hermes_env.path ]; # Corrected reference to hermes_env
+    environmentFiles = [ config.sops.secrets.hermes_env.path ];
     addToSystemPackages = true;
   };
+
+  # Inject google-cloud-pubsub transitive closure into the hermes service's PYTHONPATH.
+  # The sealed venv already has all other Google deps; extraPythonPackages can't be used
+  # because the collision check rejects google-api-core (already in venv).
+  systemd.services.hermes-agent.environment.PYTHONPATH = googleChatPythonPath;
 }
