@@ -6,6 +6,28 @@
   sops-nix,
   ...
 }:
+let
+  # Build the Google SDKs cleanly in the Nix Store
+  googleChatLibs = pkgs.python312.withPackages (ps: [
+    ps.google-cloud-pubsub
+    ps.google-api-python-client
+    ps.google-auth
+    ps.google-auth-oauthlib
+  ]);
+  # 2. Wrap the Hermes binaries to forcefully inject the libraries into PYTHONPATH
+  hermesWrapped = pkgs.symlinkJoin {
+    name = "hermes-agent-gchat";
+    paths = [ inputs.hermes-agent.packages.${pkgs.system}.default ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      # This wraps both 'hermes' and 'hermes-gateway' to always load the Google libs
+      for bin in $out/bin/*; do
+        wrapProgram "$bin" \
+          --prefix PYTHONPATH : "${googleChatLibs}/${pkgs.python312.sitePackages}"
+      done
+    '';
+  };
+in
 {
   imports = [
     inputs.hermes-agent.nixosModules.default # Import the NixOS module directly from the flake
@@ -52,14 +74,15 @@
       "messaging"
       "firecrawl"
       "honcho"
+      "google"
     ];
     extraPythonPackages = [
-      pkgs.python312Packages.google-cloud-pubsub
-      pkgs.python312Packages.google-api-python-client
-      pkgs.python312Packages.google-auth
-      pkgs.python312Packages.google-auth-oauthlib
+      #pkgs.python312Packages.google-cloud-pubsub
+      #pkgs.python312Packages.google-api-python-client
+      #pkgs.python312Packages.google-auth
+      #pkgs.python312Packages.google-auth-oauthlib
     ];
-
+    package = inputs.hermes-agent.packages.${pkgs.system}.default;
     settings = {
       model.default = "openrouter/free";
 
@@ -82,6 +105,9 @@
     };
 
     environment = {
+      # This forces the /nix/store executable to see the required Google SDKs
+      PYTHONPATH = "${googleChatLibs}/${pkgs.python312.sitePackages}";
+
       OPENAI_API_BASE = "https://openrouter.ai/api/v1";
       GOOGLE_CHAT_SERVICE_ACCOUNT_JSON = "${config.sops.secrets.hermes_gcp_key.path}";
       GOOGLE_CHAT_PROJECT_ID = "hermes-agent-chatbot-502718";
