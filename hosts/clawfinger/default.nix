@@ -1,7 +1,5 @@
-#
-# Contains modules for configuring systems.
-#
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [
     ./hardware.nix
     ./networking
@@ -13,10 +11,11 @@
     ./sound.nix
     ./security.nix
     ./users.nix
+    ./virtualization.nix
   ];
 
   services.logind.settings.Login = {
-    RuntimeDirectorySize ="32G";
+    RuntimeDirectorySize = "32G";
     HandleLidSwitchDocked = "ignore";
   };
 
@@ -33,7 +32,7 @@
   modules = {
     cloud.enable = true;
     security = {
-      tools.enable =  true;
+      tools.enable = true;
     };
     container.enable = true;
     ## printing module
