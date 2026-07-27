@@ -23,10 +23,11 @@ in
 
     rules = mkOption {
       type = types.lines;
+      # allow id 1209:beee # Solokey
+      # allow id 04e8:6860 # SGS Fold Nightwish
       default = ''
-        # Slokey
-        allow id 1209:beee # Slokey
-        allow is 04e8:6860 # SGS Fold
+        allow id 04e8:6860
+        allow id 1209:beee
 
         # Block suspicious combinations FIRST
         reject with-interface all-of { 08:*:* 03:00:* }
