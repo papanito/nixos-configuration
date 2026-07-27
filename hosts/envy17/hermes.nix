@@ -75,7 +75,9 @@ in
 
     environment = {
       OPENAI_API_BASE = "https://openrouter.ai/api/v1";
-      GOOGLE_CHAT_ALLOWED_USERS = "aedu@wyssmann.com";
+      GOOGLE_CHAT_PROJECT_ID = "hermes-agent-chatbot-502718";
+      GOOGLE_CHAT_SUBSCRIPTION_NAME = "projects/hermes-agent-chatbot-502718/subscriptions/hermes-chat-events-sub";
+
     };
 
     environmentFiles = [ config.sops.secrets.hermes_env.path ];
