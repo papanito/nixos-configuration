@@ -1,4 +1,12 @@
-{ lib, config, pkgs, nixosVersion, home-manager, sops-nix, ...}:
+{
+  lib,
+  config,
+  pkgs,
+  nixosVersion,
+  home-manager,
+  sops-nix,
+  ...
+}:
 {
   users.users.nixos = {
     isNormalUser = true;
@@ -6,6 +14,7 @@
       "wheel"
       "networkmanager"
       "video"
+      "docker"
     ];
     # Principal (ongoing) password: read from the sops-decrypted file when
     # sops is wired up. The file at /run/secrets/default_password is
@@ -20,10 +29,9 @@
     # IMPORTANT: guard BOTH the outer attribute and the inner `.path`. Any
     # module that does `sops.secrets.<name> = lib.mkForce null` would
     # otherwise crash eval at `null.path`.
-    hashedPasswordFile = lib.mkIf
-      ((config.sops.secrets ? default_password) &&
-       (config.sops.secrets.default_password ? path))
-      config.sops.secrets.default_password.path;
+    hashedPasswordFile = lib.mkIf (
+      (config.sops.secrets ? default_password) && (config.sops.secrets.default_password ? path)
+    ) config.sops.secrets.default_password.path;
     initialPassword = "nixos";
     # Prevent nixpkgs from setting a placeholder hash that would override
     # both `hashedPasswordFile` and `initialPassword`.
