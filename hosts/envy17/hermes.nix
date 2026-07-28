@@ -23,6 +23,7 @@ in
   # Allow the nixos user to run hermes CLI commands against the service state
   users.users.nixos.extraGroups = [ "hermes" ];
 
+
   # SOPS secret for API key
   sops.secrets = {
     "hermes_env" = {
@@ -50,13 +51,8 @@ in
     settings = {
       model.default = "openrouter/free";
 
-      platforms.google_chat = {
+      google_chat = {
         enabled = true;
-        extra = {
-          project_id = "hermes-agent-chatbot-502718";
-          subscription_name = "projects/hermes-agent-chatbot-502718/subscriptions/hermes-chat-events-sub";
-          service_account_json = "${config.sops.secrets.hermes_gcp_key.path}";
-        };
       };
       toolsets = [ "all" ];
       terminal = {
@@ -75,9 +71,10 @@ in
 
     environment = {
       OPENAI_API_BASE = "https://openrouter.ai/api/v1";
+      GOOGLE_CHAT_SERVICE_ACCOUNT_JSON = "${config.sops.secrets.hermes_gcp_key.path}";
       GOOGLE_CHAT_PROJECT_ID = "hermes-agent-chatbot-502718";
       GOOGLE_CHAT_SUBSCRIPTION_NAME = "projects/hermes-agent-chatbot-502718/subscriptions/hermes-chat-events-sub";
-
+      GOOGLE_CHAT_ALLOWED_USERS = "aedu@wyssmann.com";
     };
 
     environmentFiles = [ config.sops.secrets.hermes_env.path ];
@@ -94,5 +91,8 @@ in
   # Inject google-cloud-pubsub transitive closure into the hermes service's PYTHONPATH.
   # The sealed venv already has all other Google deps; extraPythonPackages can't be used
   # because the collision check rejects google-api-core (already in venv).
-  systemd.services.hermes-agent.environment.PYTHONPATH = googleChatPythonPath;
+  systemd.services.hermes-agent.environment.PYTHONPATH = lib.concatStringsSep ":" [
+    "${inputs.hermes-agent.packages.${pkgs.system}.default}/lib/python3.12/site-packages"
+    googleChatPythonPath
+  ];
 }
