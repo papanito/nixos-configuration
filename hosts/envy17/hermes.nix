@@ -79,6 +79,7 @@ in
 
     environmentFiles = [ config.sops.secrets.hermes_env.path ];
     addToSystemPackages = true;
+    extraArgs = [ "--verbose" ];
   };
 
   systemd.tmpfiles.rules = [
