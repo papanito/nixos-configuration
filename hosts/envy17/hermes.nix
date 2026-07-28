@@ -75,11 +75,11 @@ in
       GOOGLE_CHAT_PROJECT_ID = "hermes-agent-chatbot-502718";
       GOOGLE_CHAT_SUBSCRIPTION_NAME = "projects/hermes-agent-chatbot-502718/subscriptions/hermes-chat-events-sub";
       GOOGLE_CHAT_ALLOWED_USERS = "aedu@wyssmann.com";
+      HERMES_LOG_LEVEL = "DEBUG";
     };
 
     environmentFiles = [ config.sops.secrets.hermes_env.path ];
     addToSystemPackages = true;
-    extraArgs = [ "--verbose" ];
   };
 
   systemd.tmpfiles.rules = [
