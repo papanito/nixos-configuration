@@ -1,60 +1,69 @@
-{ lib, config, pkgs, inputs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 {
 
-  environment.systemPackages = with pkgs; [
-    ## Essential system tools
-    xorg.xprop # Fix: gsd-xsettings needs xprop during XWayland session setup
-    age # Modern encryption tool with small explicit keys
-    bat # A cat(1) clone with syntax highlighting and Git integration
-    btop # A monitor of resources
-    dysk # alternative to du
-    btrfs-progs
-    coreutils # The GNU Core Utilities
-    cifs-utils # Tools for managing Linux CIFS client filesystems
-    curl # A command line tool for transferring files with URL syntax
-    dnsutils # Domain name server
-    eza # replacement for exa which is unmaintained
-    file # A program that shows the type of files
-    fzf # A command-line fuzzy finder written in Go
-    fd # A simple, fast and user-friendly alternative to find
-    fq # jq for binary formats
-    jq # A lightweight and flexible command-line JSON processor
-    gnupg # Modern release of the GNU Privacy Guard, a GPL OpenPGP implementation
-    lsof # Tool to list open files
-    ncdu # Disk usage analyzer with an ncurses interface
-    openssl
-    parted
-    psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
-    polkit # A toolkit for defining and handling the policy that allows unprivileged processes to speak to privileged processes
-    smartmontools # smart disk utilty
-    unzip
-    yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML files
+  environment.systemPackages =
+    with pkgs;
+    [
+      ## Essential system tools
+      xprop # Fix: gsd-xsettings needs xprop during XWayland session setup
+      age # Modern encryption tool with small explicit keys
+      bat # A cat(1) clone with syntax highlighting and Git integration
+      btop # A monitor of resources
+      dysk # alternative to du
+      btrfs-progs
+      coreutils # The GNU Core Utilities
+      cifs-utils # Tools for managing Linux CIFS client filesystems
+      curl # A command line tool for transferring files with URL syntax
+      dnsutils # Domain name server
+      eza # replacement for exa which is unmaintained
+      file # A program that shows the type of files
+      fzf # A command-line fuzzy finder written in Go
+      fd # A simple, fast and user-friendly alternative to find
+      fq # jq for binary formats
+      jq # A lightweight and flexible command-line JSON processor
+      gnupg # Modern release of the GNU Privacy Guard, a GPL OpenPGP implementation
+      lsof # Tool to list open files
+      ncdu # Disk usage analyzer with an ncurses interface
+      openssl
+      parted
+      psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
+      polkit # A toolkit for defining and handling the policy that allows unprivileged processes to speak to privileged processes
+      smartmontools # smart disk utilty
+      unzip
+      yq # Command-line YAML/XML/TOML processor - jq wrapper for YAML, XML, TOML files
 
-    ### Shell and Terminal tools and apps ###
-    bats # Bash Automated Testing System
-    duf # better df lternative
-    direnv # A shell extension that manages your environment
-    findutils # GNU Find Utilities, the basic directory searching utilities of the GNU operating system
-    nix-direnv # A fast, persistent use_nix implementation for direnv
-    glow # Render markdown on the CLI, with pizzazz
-    gum # a tool for glamorous shell scripts
-    atuin # Your shell history: synced, queryable, and in context
-    melt # Backup and restore Ed25519 SSH keys with seed words
-    miller # Like awk, sed, cut, join, and sort for data formats such as CSV, TSV, JSON, JSON Lines, and positionally-indexed
-    nq # Unix command line queue utility
-    ripgrep
-    sad # CLI tool to search and replace
-    xz # A general-purpose data compression software, successor of LZMA
-    sshfs
+      ### Shell and Terminal tools and apps ###
+      bats # Bash Automated Testing System
+      duf # better df lternative
+      direnv # A shell extension that manages your environment
+      findutils # GNU Find Utilities, the basic directory searching utilities of the GNU operating system
+      nix-direnv # A fast, persistent use_nix implementation for direnv
+      glow # Render markdown on the CLI, with pizzazz
+      gum # a tool for glamorous shell scripts
+      atuin # Your shell history: synced, queryable, and in context
+      melt # Backup and restore Ed25519 SSH keys with seed words
+      miller # Like awk, sed, cut, join, and sort for data formats such as CSV, TSV, JSON, JSON Lines, and positionally-indexed
+      nq # Unix command line queue utility
+      ripgrep
+      sad # CLI tool to search and replace
+      xz # A general-purpose data compression software, successor of LZMA
+      sshfs
 
-    ### Shell stuff ###
-    vim
-    zellij # A terminal workspace with batteries included
-    zsh # zsh shell
-    zoxide # A fast cd command that learns your habits
-  ] ++ lib.optionals (!pkgs.stdenv.hostPlatform.isAarch64) [
-    bws # Bitwarden Secret Manager cli (uncached on aarch64, requires GitHub fetch in sandbox)
-    doppler # secret manager
-    infisical # secret manager
-  ];
+      ### Shell stuff ###
+      vim
+      zellij # A terminal workspace with batteries included
+      zsh # zsh shell
+      zoxide # A fast cd command that learns your habits
+    ]
+    ++ lib.optionals (!pkgs.stdenv.hostPlatform.isAarch64) [
+      bws # Bitwarden Secret Manager cli (uncached on aarch64, requires GitHub fetch in sandbox)
+      doppler # secret manager
+      infisical # secret manager
+    ];
 }
