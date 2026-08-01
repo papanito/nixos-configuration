@@ -15,6 +15,10 @@
     #package = pkgs.nixVersions.git;
     extraOptions = ''
       experimental-features = nix-command flakes
+      # Force HTTP/1.1 for cache fetches. HTTP/2 framing-layer stream errors
+      # (HTTP 206, curl error) hit large nar fetches from cache.nixos.org,
+      # especially on the RPi build target. HTTP/1.1 is rock-solid here.
+      http2 = false
     '';
     # Automatic Garbage Collection
     gc = {
