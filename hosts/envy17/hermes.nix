@@ -93,6 +93,7 @@ in
   # The sealed venv already has all other Google deps; extraPythonPackages can't be used
   # because the collision check rejects google-api-core (already in venv).
   systemd.services.hermes-agent.environment.PYTHONPATH = lib.concatStringsSep ":" [
+    "/var/lib/hermes/patches"
     "${inputs.hermes-agent.packages.${pkgs.system}.default}/lib/python3.12/site-packages"
     googleChatPythonPath
   ];
