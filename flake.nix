@@ -217,8 +217,11 @@
           deployment = {
             targetHost = "10.0.0.11";
             targetUser = "nixos";
-            # Allows x86_64 machine to build for aarch64 (needs binfmt)
-            allowLocalDeployment = true;
+            # Build the aarch64 closure on the Pi itself, not on the x86 deploy
+            # host. The deploy host lacks binfmt/qemu emulation, so a local
+            # cross-build hangs for hours (and crashes nix eval). buildOnTarget
+            # pushes the realization to the Pi, which builds natively in minutes.
+            buildOnTarget = true;
           };
         };
       };
