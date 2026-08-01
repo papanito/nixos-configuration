@@ -31,7 +31,7 @@
     nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs";
 
     hermes-agent = {
-      url = "github:NousResearch/hermes-agent/539e9b5c1b7a6fce1ea80a4f8ce5a9178472a3bf";
+      url = "github:NousResearch/hermes-agent";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
