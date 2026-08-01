@@ -20,7 +20,14 @@ lib.mkIf (ip != null && iface != null) {
 
   networking = {
     useDHCP = lib.mkForce false;
-    defaultGateway = gw;
+    # systemd-networkd (RPi) requires defaultGateway as an attrset with the
+    # bound interface; a bare string trips the networkd assertion
+    # "networking.defaultGateway.interface is not optional when using networkd".
+    # The NetworkManager stack accepts a bare string.
+    defaultGateway =
+      if isRpi
+      then { address = gw; interface = iface; }
+      else gw;
   };
 
   # NetworkManager / generic stack: bind the static address to the interface.

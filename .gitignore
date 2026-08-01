@@ -2,5 +2,9 @@ result
 **.img
 **.zst
 
+# Core dumps from crashed nix eval (aarch64 cross-builds)
+core
+core.*
+
 # Terraform stuff
 *.tf.json
