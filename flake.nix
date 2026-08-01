@@ -104,6 +104,10 @@
             sops-nix.nixosModules.sops
             disko.nixosModules.disko
             inputs.home-manager.nixosModules.home-manager
+            # Set the target platform via the modern option. The legacy `system`
+            # arg passed to nixosSystem/nixosInstaller below is renamed to
+            # stdenv.hostPlatform.system and warns on every eval.
+            { nixpkgs.hostPlatform = system; }
             ({ ... }: {
               imports =
                 lib.optionals (type == "pc") [
@@ -157,12 +161,12 @@
 
           nixosConfig = if isRpi
             then nixos-raspberrypi.lib.nixosInstaller {
-              inherit system specialArgs;
+              inherit specialArgs;
               pkgs = nixpkgsFor.${system};
               modules = moduleList;
             }
             else nixpkgs.lib.nixosSystem {
-              inherit system specialArgs;
+              inherit specialArgs;
               pkgs = nixpkgsFor.${system};
               modules = moduleList;
             };
