@@ -78,6 +78,11 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
+### Deployment rules
+
+- rpi4-a (aarch64) MUST build on the remote target, not on the x86 deploy host. The deploy host has no binfmt/qemu emulation, so a local cross-build hangs for hours and crashes `nix eval`. `deployment.buildOnTarget = true` in `flake.nix` enforces this. Apply with `colmena apply --impure --on rpi4-a`.
+- All deploys use Colmena: `colmena apply --impure --on <hostname>`. Never `nixos-rebuild` directly on this repo.
+
 ## Child DOX Index
 
 This project is not yet indexed. Before continuing you must scan the project, build the DOX tree and replace this message with the actual index. Go deep and scan files recursively to properly evaluate complexity and create nested DOX files where needed.
