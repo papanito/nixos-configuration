@@ -40,7 +40,6 @@
     loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
-      generic-extlinux-compatible.configurationLimit = 3;
     };
 
     # Use the well-cached mainline kernel
