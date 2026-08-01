@@ -160,7 +160,11 @@
           pkgs = nixpkgsFor.${system};
 
           nixosConfig = if isRpi
-            then nixos-raspberrypi.lib.nixosInstaller {
+            then nixos-raspberrypi.lib.nixosSystem {
+              # nixosSystem (not nixosInstaller) -- the installer variant adds
+              # sd-image + raspberrypi-installer modules, which pull in the
+              # image-builder closure (parted, dosfstools, etc). That's only
+              # needed for the initial SD-card image, not regular deploys.
               inherit specialArgs;
               pkgs = nixpkgsFor.${system};
               modules = moduleList;
@@ -221,11 +225,12 @@
           deployment = {
             targetHost = "10.0.0.11";
             targetUser = "nixos";
-            # Build the aarch64 closure on the Pi itself, not on the x86 deploy
-            # host. The deploy host lacks binfmt/qemu emulation, so a local
-            # cross-build hangs for hours (and crashes nix eval). buildOnTarget
-            # pushes the realization to the Pi, which builds natively in minutes.
-            buildOnTarget = true;
+            # Build locally on clawfinger (x86_64 with binfmt aarch64 emulation).
+            # The deploy host fetches aarch64 substitutes from cache.nixos.org +
+            # nixos-raspberrypi.cachix.org; any cache miss builds under qemu
+            # (slower but works). Building on the Pi filled its SD card; building
+            # locally keeps all build artifacts on the deploy host's disk and
+            # only copies the final closure to the Pi.
           };
         };
       };
