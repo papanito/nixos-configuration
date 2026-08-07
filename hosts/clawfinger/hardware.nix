@@ -103,7 +103,19 @@
     };
     kernelParams = [
       "nvme_core.default_ps_max_latency_us=0"
-      "i915.enable_dc=1"        # Fix: black screen after screen lock — disable DC5/DC6 (broken DDI/PHY wake), keep DC3 (shallow, safe, battery-friendly)
+      # --- Fix: black screen after screen lock / suspend (Intel i915) ---
+      # DC states (DC3-DC6): deep display power-saving C-states. On many Intel
+      # iGPUs the display PHY/DDI fails to reinitialize on resume from DC5/DC6,
+      # leaving the panel permanently black. enable_dc=0 disables ALL display
+      # C-states - the reliable fix for the "screen never comes back" class.
+      # Trade-off: slightly higher idle power draw on the display pipeline.
+      "i915.enable_dc=0"
+      # Panel Self Refresh: another Intel power-saving feature known to cause
+      # black screens / flicker on resume. Disable alongside DC states.
+      "i915.enable_psr=0"
+      # Frame Buffer Compression: less commonly implicated but part of the same
+      # power-saving family; disable for maximum resume reliability.
+      "i915.enable_fbc=0"
       "mem_sleep_default=deep"   # Use S3 deep sleep instead of s2idle (more reliable resume)
     ];
     blacklistedKernelModules = [ "spd5118" ]; # Fix: DDR5 temp sensor fails to resume after suspend (error -6)
