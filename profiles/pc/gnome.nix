@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.modules.gnome;
 in
@@ -9,11 +14,14 @@ in
   config = lib.mkIf cfg.enable {
     services = {
       udev.packages = with pkgs; [ gnome-settings-daemon ];
-      displayManager.gdm = { enable = true; autoSuspend = false; };
+      displayManager.gdm = {
+        enable = true;
+        autoSuspend = false;
+      };
       desktopManager.gnome.enable = !config.modules.dms.enable;
       xserver = {
         enable = false;
-        #videoDrivers = [ "displaylink" ];
+        videoDrivers = [ "displaylink" ];
         # Configure keymap in X11
         xkb = {
           layout = "ch";

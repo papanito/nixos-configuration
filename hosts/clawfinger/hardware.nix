@@ -36,7 +36,7 @@
   ];
 
   boot = {
-    #extraModulePackages = [ config.boot.kernelPackages.evdi ];
+    extraModulePackages = [ config.boot.kernelPackages.evdi ];
     #kernelPackages = pkgs.linuxPackages_6_12;
     kernelPackages = pkgs.linuxPackages_latest.extend (
       lfinal: lprev: {
@@ -116,7 +116,7 @@
       # Frame Buffer Compression: less commonly implicated but part of the same
       # power-saving family; disable for maximum resume reliability.
       "i915.enable_fbc=0"
-      "mem_sleep_default=deep"   # Use S3 deep sleep instead of s2idle (more reliable resume)
+      "mem_sleep_default=deep" # Use S3 deep sleep instead of s2idle (more reliable resume)
     ];
     blacklistedKernelModules = [ "spd5118" ]; # Fix: DDR5 temp sensor fails to resume after suspend (error -6)
   };
