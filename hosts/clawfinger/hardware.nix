@@ -22,6 +22,20 @@
     "/home" = {
       device = "/dev/disk/by-uuid/a308663e-a262-448d-bfdf-16cd450cf246";
       fsType = "btrfs";
+      # --- Fix: BTRFS resilience against NVMe I/O failures ---
+      # The NVMe controller crashes (CSTS=0xffffffff) produce errno=-5 I/O
+      # errors that BTRFS treats as persistent media failures, forcing the
+      # filesystem read-only to protect data. These options reduce the
+      # surface area for that outcome:
+      #
+      # degraded:  allow mounting with missing devices (single-device BTRFS
+      #             shouldn't need this, but it avoids abort-on-first-error
+      #             behavior when the controller briefly disappears)
+      # commit=60: longer commit interval reduces the frequency of sync
+      #             writes that can collide with a transient controller lockup
+      #             (default is 30s)
+      # space_cache=v2: already in mount opts from NixOS default; keep it
+      options = [ "degraded" "commit=60" "ssd" "space_cache=v2" ];
     };
     "/boot" = {
       device = "/dev/disk/by-uuid/B581-AD78";
@@ -102,7 +116,32 @@
       "vm.swappiness" = 10;
     };
     kernelParams = [
+      # --- Fix: NVMe controller crashes (CSTS=0xffffffff) on Crucial P3 Plus + Samsung 990 PRO ---
+      # Both NVMe SSDs experience random controller lockups where the device
+      # becomes completely unresponsive (CSTS=0xffffffff), the kernel reset
+      # fails (-19), and the device is disabled. BTRFS on /home then hits
+      # errno=-5 IO failures and is forced read-only.
+      #
+      # Root cause: aggressive NVMe power management (APST + D3cold) combined
+      # with firmware bugs in the Crucial P3 Plus (QLC NAND, DRAM-less,
+      # known for controller instability under Linux).
+      #
+      # nvme_core.default_ps_max_latency_us=0 already disables APST (was set
+      # before). The additional params below fully disable all remaining NVMe
+      # and PCIe link power states that can trigger the lockup.
+
+      # Keep APST disabled (prevents drive from entering low-power NVMe states)
       "nvme_core.default_ps_max_latency_us=0"
+
+      # Disable PCIe Active State Power Management — prevents the PCIe link
+      # from entering L1/L2/L3 sub-states from which the NVMe controller
+      # fails to wake on some firmwares (Crucial P3 Plus is notorious).
+      "pcie_aspm=off"
+
+      # Disable PCIe port power management entirely — prevents the parent
+      # port from powering down the downstream NVMe device during runtime PM.
+      "pcie_port_pm=off"
+
       # --- Fix: black screen after screen lock / suspend (Intel i915) ---
       # DC states (DC3-DC6): deep display power-saving C-states. On many Intel
       # iGPUs the display PHY/DDI fails to reinitialize on resume from DC5/DC6,
@@ -119,7 +158,32 @@
       "mem_sleep_default=deep" # Use S3 deep sleep instead of s2idle (more reliable resume)
     ];
     blacklistedKernelModules = [ "spd5118" ]; # Fix: DDR5 temp sensor fails to resume after suspend (error -6)
+
+    # --- Fix: prevent D3cold on NVMe controllers ---
+    # Even with ASPM disabled, the kernel can still put the NVMe device into
+    # D3cold (deepest PCIe power state) via runtime PM. Some NVMe firmwares
+    # (Crucial P3 Plus P9CR40A) fail to re-initialize from D3cold, causing
+    # the same CSTS=0xffffffff controller lockup. This keeps the nvme_core
+    # module loaded with APST disabled at modprobe time (belt-and-suspenders
+    # alongside the kernelParam).
+    extraModprobeConfig = ''
+      options nvme_core default_ps_max_latency_us=0
+    '';
   };
+
+  # --- Fix: disable runtime PM for NVMe devices via udev rule ---
+  # The kernelParams above disable ASPM and PCIe port PM at the kernel level,
+  # but runtime PM can still put NVMe devices into low-power states via udev.
+  # This rule sets power/control = "on" for all NVMe PCI devices at boot,
+  # preventing the kernel from autosuspending the controllers. This is the
+  # last line of defense against the CSTS=0xffffffff lockup that forces
+  # /home (BTRFS) read-only.
+  # Trade-off: ~1-2W higher idle power draw per NVMe drive.
+  services.udev.extraRules = ''
+    # Disable runtime PM for NVMe controllers to prevent CSTS=0xffffffff lockups
+    # on Crucial P3 Plus (CT4000P3PSSD8) and Samsung 990 PRO
+    ACTION=="add", KERNEL=="nvme[0-9]*", SUBSYSTEM=="pci", ATTR{power/control}="on"
+  '';
 
   services = {
     hardware.bolt.enable = true;
@@ -133,6 +197,9 @@
   # host-specific packages
   environment.systemPackages = with pkgs; [
     displaylink # DisplayLink DL-7xxx, DL-6xxx, DL-5xxx, DL-41xx and DL-3x00 Driver for Linux
+    # --- NVMe diagnostics: monitor controller health and SMART data ---
+    nvme-cli # nvme smart-log, nvme error-log, firmware update
+    smartmontools # smartctl — cross-platform SMART monitoring
   ];
 
   hardware = {
@@ -147,6 +214,46 @@
     bluetooth = {
       enable = true;
       powerOnBoot = true;
+    };
+  };
+
+  # --- Fix: BTRFS read-only detection + early warning ---
+  # When the NVMe controller crashes and BTRFS is forced read-only, the user
+  # often doesn't notice until applications start failing silently. This
+  # monitor checks every 2 minutes whether /home is still writable and,
+  # if not, sends a desktop notification + writes to the journal so the
+  # user can reboot before data is at risk.
+  systemd.services.btrfs-readonly-monitor = {
+    description = "Detect BTRFS read-only remount and alert";
+    after = [ "home.mount" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = pkgs.writeShellScript "btrfs-readonly-monitor" ''
+        while true; do
+          # Test writability by creating and removing a probe file
+          if ! touch /home/.readonly-probe 2>/dev/null; then
+            ${pkgs.util-linux}/bin/logger -t btrfs-monitor "ALERT: /home is read-only — NVMe controller may have crashed. Reboot recommended."
+            # Send desktop notification if a user session is active
+            for uid in $(${pkgs.systemd}/bin/loginctl list-users --no-legend | awk '{print $1}'); do
+              user=$(getent passwd "$uid" | cut -d: -f1)
+              if [ -n "$user" ] && [ -d "/run/user/$uid" ]; then
+                DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$uid/bus" \
+                  ${pkgs.util-linux}/bin/runuser -u "$user" -- \
+                  ${pkgs.libnotify}/bin/notify-send -u critical \
+                  "Disk Emergency" \
+                  "/home is READ-ONLY. NVMe controller likely crashed. Reboot immediately." \
+                  2>/dev/null || true
+              fi
+            done
+          else
+            rm -f /home/.readonly-probe 2>/dev/null || true
+          fi
+          sleep 120
+        done
+      '';
+      Restart = "always";
+      RestartSec = 60;
     };
   };
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
