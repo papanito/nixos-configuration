@@ -41,10 +41,11 @@ BOLD='\033[1m'
 NC='\033[0m'
 
 # --- Helpers ---
-log() { echo -e "${BLUE}[$(date +%H:%M:%S)]${NC} $*"; }
-ok() { echo -e "${GREEN}[OK]${NC} $*"; }
-warn() { echo -e "${YELLOW}[WARN]${NC} $*"; }
+# log() { echo -e "${BLUE}[$(date +%H:%M:%S)]${NC} $*" >&2; }
+ok() { echo -e "${GREEN}[OK]${NC} $*" >&2; }
+warn() { echo -e "${YELLOW}[WARN]${NC} $*" >&2; }
 err() { echo -e "${RED}[ERROR]${NC} $*" >&2; }
+log() { echo -e "${BLUE}[$(date +%H:%M:%S)]${NC} $*"; }
 die() {
   err "$*"
   exit 1
@@ -150,6 +151,7 @@ check_crucial_firmware() {
 
 download_and_extract_crucial() {
   local workdir="$1"
+  local -n bin_file="$2"
 
   log "Downloading Crucial P3 Plus firmware ($CRUCIAL_LATEST_FW)..."
   local zipfile="$workdir/crucial_fw.zip"
@@ -160,12 +162,12 @@ download_and_extract_crucial() {
   unzip -o "$zipfile" -d "$workdir/crucial_extracted" >/dev/null || die "Extraction failed."
 
   # Find the .bin file
-  local binfile
-  binfile=$(find "$workdir/crucial_extracted" -name "*.bin" -type f | head -1)
-  [[ -z "$binfile" ]] && die "No .bin firmware file found in archive."
+  local binfile_cruical # must not be binfile as this is the referenced name and it will shadow it and hence disapper after function is closed
+  binfile_cruical=$(find "$workdir/crucial_extracted" -name "*.bin" -type f | head -1)
+  [[ -z "$binfile_cruical" ]] && die "No .bin firmware file found in archive."
 
-  echo "  Firmware file: $binfile"
-  echo "$binfile"
+  echo "  Firmware file: $binfile_cruical" >&2
+  bin_file="$binfile_cruical"
 }
 
 flash_crucial() {
@@ -258,6 +260,7 @@ check_samsung_firmware() {
 
 download_and_extract_samsung() {
   local workdir="$1"
+  local -n fuma_dir="$2"
 
   log "Downloading Samsung 990 PRO firmware ISO ($SAMSUNG_LATEST_FW)..."
   local isofile="$workdir/samsung_990pro.iso"
@@ -268,6 +271,7 @@ download_and_extract_samsung() {
   local initrd="$workdir/samsung_initrd"
   local iso_extract_dir="$workdir/samsung_iso_extracted"
   mkdir -p "$iso_extract_dir"
+  chmod 755 "$iso_extract_dir"
   7z x -o"$iso_extract_dir" "$isofile" initrd >/dev/null 2>&1 ||
     die "Failed to extract initrd from ISO."
   mv "$iso_extract_dir/initrd" "$initrd" 2>/dev/null || true
@@ -282,17 +286,17 @@ download_and_extract_samsung() {
   ) || die "Failed to decompress initrd."
 
   # Find fumagician
-  local fuma_dir
-  fuma_dir=$(find "$extract_dir" -name "fumagician" -type f -printf '%h' 2>/dev/null | head -1)
-  [[ -z "$fuma_dir" ]] && die "fumagician not found in extracted initrd."
+  local fuma_dir_samsung
+  fuma_dir_samsung=$(find "$extract_dir" -name "fumagician" -type f -printf '%h' 2>/dev/null | head -1)
+  [[ -z "$fuma_dir_samsung" ]] && die "fumagician not found in extracted initrd."
 
   local enc_files
-  enc_files=$(find "$fuma_dir" -name "*.enc" -type f | wc -l)
+  enc_files=$(find "$fuma_dir_samsung" -name "*.enc" -type f | wc -l)
   [[ "$enc_files" -eq 0 ]] && die "No .enc firmware files found."
 
-  echo "  fumagician:  $fuma_dir/fumagician"
-  echo "  .enc files:  $(find "$fuma_dir" -name '*.enc' -printf '%f\n' | tr '\n' ' ')"
-  echo "$fuma_dir"
+  echo "  fumagician:  $fuma_dir_samsung/fumagician"
+  echo "  .enc files:  $(find "$fuma_dir_samsung" -name '*.enc' -printf '%f\n' | tr '\n' ' ')"
+  fuma_dir="$fuma_dir_samsung"
 }
 
 flash_samsung() {
@@ -333,6 +337,7 @@ flash_samsung() {
 
 # --- Cleanup ---
 cleanup() {
+  return
   if [[ -n "${WORKDIR:-}" ]] && [[ -d "$WORKDIR" ]]; then
     log "Cleaning up $WORKDIR..."
     rm -rf "$WORKDIR"
@@ -411,13 +416,13 @@ main() {
         case "$model" in
         crucial-p3plus)
           local binfile
-          binfile=$(download_and_extract_crucial "$WORKDIR")
+          download_and_extract_crucial "$WORKDIR" binfile
           flash_crucial "$devname" "$binfile"
           ;;
         samsung-990pro)
-          local fuma_dir
-          fuma_dir=$(download_and_extract_samsung "$WORKDIR")
-          flash_samsung "$devname" "$fuma_dir"
+          local fumadir
+          download_and_extract_samsung "$WORKDIR" fumadir
+          flash_samsung "$devname" "$fumadir"
           ;;
         esac
       else
