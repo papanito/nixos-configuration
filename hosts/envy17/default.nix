@@ -4,7 +4,8 @@
     ./disko.nix
     ./hardware.nix
     ./users.nix
-    ./hermes.nix
+    #./hermes.nix
+    ./gitlab-runner.nix
   ];
 
   # envy17 was installed via nixos-anywhere without sops age keys on

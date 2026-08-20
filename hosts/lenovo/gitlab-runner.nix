@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-   sops = {
+  sops = {
     secrets.gitlab_runner_token = {
       sopsFile = ../../profiles/servers/secrets.yaml;
       # GitLab runner runs as the "gitlab-runner" user
@@ -20,7 +20,7 @@
 
   users.users.gitlab-runner = {
     isSystemUser = true;
-    group = "paperless";
+    group = "gitlab-runner";
     description = "Service account for gitlab-runner";
     # Prevents interactive login
     shell = pkgs.shadow;
@@ -29,6 +29,7 @@
 
     home = "/var/lib/gitlab-runner";
   };
+  users.groups.gitlab-runner = { };
 
   # Enable Docker (required for the Docker executor)
   virtualisation.docker.enable = true;
@@ -40,8 +41,7 @@
       # You can name this anything (e.g., "my-local-runner")
       local-builder = {
         # Get your token from GitLab: Settings > CI/CD > Runners > New project runner
-        #authenticationTokenConfigFile = "${config.sops.secrets.gitlab_runner_token.path}";
-        registrationConfigFile = config.sops.templates."gitlab-runner-env".path;
+        authenticationTokenConfigFile = config.sops.templates."gitlab-runner-env".path;
 
         executor = "docker";
         dockerImage = "golang:1.25-bookworm"; # Default image if not specified in YAML
@@ -53,6 +53,10 @@
         registrationFlags = [
           "--docker-network-mode=host"
         ];
+        requestConcurrency = 2;
+
+        # Fallback to local image cache if upstream registry throws 50x / rate limit
+        dockerPullPolicy = "if-not-present";
       };
     };
   };
