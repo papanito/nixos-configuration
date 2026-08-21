@@ -43,6 +43,7 @@
 
   environment.systemPackages = with pkgs; [
     buildkit # BuildKit for advanced Docker builds (DOCKER_BUILDKIT=1)
+    docker-buildx # Docker CLI plugin for BuildKit (docker buildx)
   ];
 
   # Configure the GitLab Runner service
