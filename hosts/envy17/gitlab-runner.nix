@@ -41,6 +41,10 @@
   # Enable Docker (required for the Docker executor)
   virtualisation.docker.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    buildkit # BuildKit for advanced Docker builds (DOCKER_BUILDKIT=1)
+  ];
+
   # Configure the GitLab Runner service
   services.gitlab-runner = {
     enable = true;
