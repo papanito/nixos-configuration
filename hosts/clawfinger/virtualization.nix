@@ -15,9 +15,6 @@ let
   '';
 in
 {
-  users.users.papanito = {
-    extraGroups = [ "libvirtd" ];
-  };
 
   # Grant read/write/execute permissions to the libvirtd group on /var/lib/libvirt/images
   systemd.tmpfiles.rules = [

@@ -11,13 +11,11 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       podman
-      #podman-desktop # A graphical tool for developing on containers and Kubernetes (disabled: pulls in insecure pnpm-10.29.2)
       pods # A podman desktop application
       podman-tui
       podman-compose
       runc # A CLI tool for spawning and running containers according to the OCI specification
       containerd # A daemon to control runC
-      #gnomeExtensions.containers # Fix: crashes during screen unlock, causing multi-second delay
       argocd
       kind
       k3s # lightweight Kubernetes distribution

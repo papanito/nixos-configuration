@@ -1,4 +1,4 @@
-{ config, lib, pkgs, name, ... }:
+{ pkgs, name, ... }:
 {
   imports = [
     ./dns.nix
@@ -32,8 +32,6 @@
     "net.ipv4.tcp_fin_timeout" = 20;
     "net.ipv4.tcp_keepalive_time" = 600;
 
-    # protect against SYN flood attacks (denial of service attack)
-    "net.ipv4.tcp_syncookies" = 1;
     # protection against TIME-WAIT assassination
     "net.ipv4.tcp_rfc1337" = 1;
     # enable source validation of packets received (prevents IP spoofing)
@@ -50,17 +48,13 @@
     "net.ipv4.conf.all.send_redirects" = 0;
     "net.ipv4.conf.default.send_redirects" = 0;
 
-    # prevent man-in-the-middle attacks
+    # ignore ICMP requests, helps avoid Smurf attacks and man-in-the-middle probing
     "net.ipv4.icmp_echo_ignore_all" = 1;
 
-    # ignore ICMP request, helps avoid Smurf attacks
-    "net.ipv4.conf.all.forwarding" = 0;
     "net.ipv4.conf.default.accept_source_route" = 0;
     "net.ipv4.conf.all.accept_source_route" = 0;
     "net.ipv6.conf.all.accept_source_route" = 0;
     "net.ipv6.conf.default.accept_source_route" = 0;
-    # Reverse path filtering causes the kernel to do source validation of
-    "net.ipv6.conf.all.forwarding" = 0;
     "net.ipv6.conf.all.accept_ra" = 0;
     "net.ipv6.conf.default.accept_ra" = 0;
 

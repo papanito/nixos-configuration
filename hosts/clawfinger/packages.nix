@@ -12,7 +12,6 @@
     tailscale # The node agent for Tailscale, a mesh VPN built on WireGuard
     timeline #  Display and navigate information on a timeline
     xdg-ninja # Shell script which checks your $HOME for unwanted files and directories
-    watchman # Watches files and takes action when they change
     wl-clipboard
     xclip # Tool to access the X clipboard from a console application
     wiki-tui # A simple and easy to use Wikipedia Text User Interface
@@ -23,7 +22,6 @@
 
     ### File system, Storage, File Transfer ###
     insync # sync google drive
-    sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     ssh-tools # Collection of various tools using ssh
     #nfstrace # NFS and CIFS tracing/monitoring/capturing/analyzing tool
     rclone # Command line program to sync files and directories to and from major cloud storage
@@ -73,17 +71,4 @@
     # yubikey-touch-detector
   ];
 
-  # programs.go = {
-  #   enable = true;
-  #   packages = {
-  #     "golang.org/x/tools/mksub" = builtins.fetchGit {
-  #       url = "https://github.com/trickest/mksub";
-  #       rev = "c90cbdc254378cdcee972198f878435da79103af";
-  #     };
-  #   };
-  # };
-
-  # pentesting = {
-  #   enable = false;
-  # };
 }

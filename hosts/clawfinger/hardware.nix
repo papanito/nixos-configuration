@@ -54,21 +54,7 @@
     # kernel/desktop update should always leave a bootable fallback.
     loader.systemd-boot.configurationLimit = 12;
     extraModulePackages = [ config.boot.kernelPackages.evdi ];
-    #kernelPackages = pkgs.linuxPackages_6_12;
-    kernelPackages = pkgs.linuxPackages_latest.extend (
-      lfinal: lprev: {
-        #        opensnitch-ebpf = lprev.opensnitch-ebpf.overrideAttrs (
-        #          old:
-        #          # Fixed in 1.7.3: https://github.com/evilsocket/opensnitch/pull/1554
-        #          assert lib.versionOlder old.version "1.7.3";
-        #          {
-        #            preBuild = old.preBuild or "" + ''
-        #              makeFlagsArray+=(EXTRA_FLAGS="-Wno-microsoft-anon-tag -fms-extensions")
-        #            '';
-        #          }
-        #        );
-      }
-    );
+    kernelPackages = pkgs.linuxPackages_latest;
     initrd = {
       # The set of kernel modules in the initial ramdisk used during the boot process.
       availableKernelModules = [
@@ -78,10 +64,6 @@
         "usb_storage"
         "usbhid"
         "sd_mod"
-      ];
-      # List of modules that are always loaded by the initrd.
-      kernelModules = [
-        #"evdi"
       ];
       secrets = {
         "/crypto_keyfile.bin" = null;
@@ -112,8 +94,6 @@
     };
     plymouth = {
       enable = true;
-      #themePackages = [ nixos-boot ];
-      #theme = "load_unload";
     };
     kernel.sysctl = {
       "vm.swappiness" = 10;
@@ -210,9 +190,6 @@
     # Enable hardware graphics acceleration (crucial for Wayland performance)
     graphics.enable = true;
 
-    # For AMD GPUs (uncomment if you have one)
-    # hardware.opengl.extraPackages = with pkgs; [ mesa.amdgpu-pro-vulkan-driver ];
-    # For Intel GPUs (uncomment if you have one)
     graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
     bluetooth = {

@@ -1,4 +1,4 @@
-{ config, pkgs, version, ... }:
+{ ... }:
 {
   # Set your time zone.
   time.timeZone = "Europe/Zurich";
@@ -11,7 +11,6 @@
   ];
 
   i18n.extraLocaleSettings = {
-    LC_LANG = "en_US.UTF-8";
     LC_ADDRESS = "de_CH.utf8";
     LC_IDENTIFICATION = "de_CH.utf8";
     LC_MEASUREMENT = "de_CH.utf8";

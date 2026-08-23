@@ -30,17 +30,6 @@
     '';
   };
 
-  # users.users.restic = {
-  #   isNormalUser = true;
-  # };
-
-  # security.wrappers.restic = {
-  #   source = "${pkgs.restic.out}/bin/restic";
-  #   owner = "papanito";
-  #   group = "users";
-  #   permissions = "u=rwx,g=,o=";
-  #   #capabilities = "cap_dac_read_search=+ep";
-  # };
   # Inject the dependency into the generated service
   systemd.services."restic-backups-b2" = {
     unitConfig = {
@@ -65,8 +54,6 @@
         # backup every 1d
         OnCalendar = "daily";
         Persistent = true;
-        OnSuccess = "systemd-googlechat-notifier@%N.service";
-        OnFailure = "systemd-googlechat-notifier@%N.service";
       };
 
       # defined in modules/sops.nix

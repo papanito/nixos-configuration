@@ -8,11 +8,9 @@
 
   # host-specific packages
   environment.systemPackages = with pkgs; [
-    jellyfin # Free Software Media System
     jellyfin-web
     jellyfin-ffmpeg
     sqlite
-    adguardhome
   ];
 
   fileSystems."/media" = {

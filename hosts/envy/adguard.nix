@@ -1,10 +1,6 @@
 
 { config, pkgs, ... }:
 {
-  boot.kernel.sysctl = {
-    # Increase maximum receive buffer size for AdGuard Home's DNS
-    "net.core.rmem_max" = 2500000;
-  };
   services.adguardhome = {
     enable = true;
     settings = {
@@ -73,9 +69,6 @@
         "https://adguardteam.github.io/HostlistsRegistry/assets/filter_6.txr"  # Dandelion Sprout's Game Console Adblock List
         "https://adguardteam.github.io/HostlistsRegistry/assets/filter_61.txt" # HaGeZi's Samsung Tracker Blocklist
       ];
-      #whitelist_filters = map(url: { enabled = true; url = url; name = "Allowlist";}) [
-      #  "https://gitlab.com/papanito/adguard-filters/-/raw/main/allowlist.txt"
-      #];
       whitelist_filters = [
       {
         enabled = true;

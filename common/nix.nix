@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixosVersion, ... }:
+{ lib, nixosVersion, ... }:
 {
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -11,8 +11,6 @@
   # Limit nixos entries for systemd-boot to not fill the boot partition
   boot.loader.systemd-boot.configurationLimit = lib.mkDefault 5;
   nix = {
-    #package = pkgs.nixFlakes;
-    #package = pkgs.nixVersions.git;
     extraOptions = ''
       experimental-features = nix-command flakes
       # Force HTTP/1.1 for cache fetches. HTTP/2 framing-layer stream errors
@@ -55,7 +53,6 @@
   # https://discourse.nixos.org/t/best-practices-for-auto-upgrades-of-flake-enabled-nixos-systems/31255
   system.autoUpgrade = {
     enable = true;
-    #flake = inputs.self.outPath;
     flags = [
       "--update-input"
       "nixpkgs"

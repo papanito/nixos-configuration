@@ -1,19 +1,14 @@
-{ config, pkgs, name, ... }:
+{ config, ... }:
 {
   security = {
      protectKernelImage = true;
-     lockKernelModules = false; # this breaks iptables, wireguard, and virtd
 
      # force-enable the Page Table Isolation (PTI) Linux kernel feature
      forcePageTableIsolation = true;
 
-     # User namespaces are required for sandboxing.
-     # this means you cannot set `"user.max_user_namespaces" = 0;` in sysctl
-     allowUserNamespaces = true;
 
      # Disable unprivileged user namespaces, unless containers are enabled
      unprivilegedUsernsClone = config.virtualisation.containers.enable;
-     allowSimultaneousMultithreading = true;
   };
 
    boot = {
@@ -105,16 +100,6 @@
       "hfsplus"
       "udf"
 
-      # "squashfs"  # compressed read-only file system used for Live CDs
-      # "cifs"  # cmb (Common Internet File System)
-      # "nfs"  # Network File System
-      # "nfsv3"
-      # "nfsv4"
-      # "ksmbd"  # SMB3 Kernel Server
-      # "gfs2"  # Global File System 2
-      # vivid driver is only useful for testing purposes and has been the
-      # cause of privilege escalation vulnerabilities
-      # "vivid"
     ];
   };
 }
