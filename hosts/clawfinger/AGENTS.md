@@ -34,6 +34,16 @@ Local workstation host (Tuxedo laptop, x86_64, GNOME/Wayland on Intel iGPU, libv
   - `hardware.nix`: `loader.systemd-boot.configurationLimit = 12` (overrides the repo default of 5 in `common/nix.nix`) to keep rollback generations.
 - Use the system nix binary from `/nix/store/*-nix-*/bin/nix` for evals if the profile nix misbehaves.
 - Verify flake.lock pins a channel commit before deploying (cache-miss/gap-commit issue).
+- NVMe/BTRFS read-only mitigations in `hardware.nix`: kernel params
+  `nvme_core.default_ps_max_latency_us=0 pcie_aspm=off pcie_port_pm=off`, plus a udev rule
+  pinning every NVMe PCI function to full power (`SUBSYSTEM=="pci", DRIVER=="nvme"` — do NOT
+  match `KERNEL=="nvme*"` + `SUBSYSTEM=="pci"`, that combination never fires).
+- `btrfs-readonly-monitor.service` polls `/home` writability; on failure it self-heals by
+  PCI remove+rescan of ONLY the NVMe function backing `/home` (resolved via findmnt ->
+  dm-N -> slaves -> nvme class dir), then rw remounts; alerts if still broken. Never widen
+  the removal to all NVMe devices — the other drive hosts the root filesystem.
+- `services.btrfs.autoScrub` scrubs `/home` weekly (single-device btrfs has no
+  redundancy — scrub detects checksum errors, restic restore is the repair path).
 
 ## Verification
 
@@ -42,9 +52,11 @@ Local workstation host (Tuxedo laptop, x86_64, GNOME/Wayland on Intel iGPU, libv
 nix eval --raw '.#nixosConfigurations.clawfinger.config.boot.kernelParams' \
   --apply 'p: builtins.concatStringsSep " " p'
 nix eval '.#nixosConfigurations.clawfinger.config.boot.loader.systemd-boot.configurationLimit'
+# Verify udev rule targets the PCI function (must contain DRIVER=="nvme")
+nix eval --raw '.#nixosConfigurations.clawfinger.config.services.udev.extraRules' | grep DRIVER
 ```
 
-After deploy + reboot: `/proc/cmdline` must contain `i915.enable_dc=0`; `journalctl -b | grep 'froze unit'` should show no user.slice freezing on suspend.
+After deploy + reboot: `/proc/cmdline` must contain `i915.enable_dc=0`; `journalctl -b | grep 'froze unit'` should show no user.slice freezing on suspend. After a switch (no reboot required): both `/sys/class/nvme/nvme*/device/power/control` must be `on` and `d3cold_allowed` must be `0`.
 
 ## Child DOX Index
 

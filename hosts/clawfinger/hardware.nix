@@ -174,18 +174,19 @@
     '';
   };
 
-  # --- Fix: disable runtime PM for NVMe devices via udev rule ---
-  # The kernelParams above disable ASPM and PCIe port PM at the kernel level,
-  # but runtime PM can still put NVMe devices into low-power states via udev.
-  # This rule sets power/control = "on" for all NVMe PCI devices at boot,
-  # preventing the kernel from autosuspending the controllers. This is the
-  # last line of defense against the CSTS=0xffffffff lockup that forces
-  # /home (BTRFS) read-only.
+  # --- Fix: disable runtime PM + D3cold for NVMe controllers ---
+  # Both NVMe SSDs (Crucial P3 Plus CT4000P3PSSD8, Samsung 990 PRO) suffer
+  # CSTS=0xffffffff controller lockups. The kernelParams above already
+  # disable APST/ASPM/port PM globally; this rule additionally pins each
+  # NVMe PCI function to full power (no runtime suspend, no D3cold).
+  #
+  # IMPORTANT: the match MUST be SUBSYSTEM=="pci" + DRIVER=="nvme".
+  # An earlier version used KERNEL=="nvme[0-9]*" + SUBSYSTEM=="pci",
+  # which never fires: the nvme controller uevent has SUBSYSTEM=nvme,
+  # while the PCI uevent has KERNEL="0000:01:00.0".
   # Trade-off: ~1-2W higher idle power draw per NVMe drive.
   services.udev.extraRules = ''
-    # Disable runtime PM for NVMe controllers to prevent CSTS=0xffffffff lockups
-    # on Crucial P3 Plus (CT4000P3PSSD8) and Samsung 990 PRO
-    ACTION=="add", KERNEL=="nvme[0-9]*", SUBSYSTEM=="pci", ATTR{power/control}="on"
+    ACTION=="add", SUBSYSTEM=="pci", DRIVER=="nvme", ATTR{power/control}="on", ATTR{d3cold_allowed}="0"
   '';
 
   services = {
@@ -219,38 +220,76 @@
       powerOnBoot = true;
     };
   };
-
-  # --- Fix: BTRFS read-only detection + early warning ---
-  # When the NVMe controller crashes and BTRFS is forced read-only, the user
-  # often doesn't notice until applications start failing silently. This
-  # monitor checks every 2 minutes whether /home is still writable and,
-  # if not, sends a desktop notification + writes to the journal so the
-  # user can reboot before data is at risk.
+  # --- Fix: BTRFS read-only detection + self-heal ---
+  # When an NVMe controller wedges (CSTS=0xffffffff) and its reset fails,
+  # the kernel disables the device, BTRFS on /home gets errno=-5 I/O errors,
+  # aborts the transaction and forces the filesystem read-only. This monitor
+  # polls /home writability every 2 minutes. On failure it first attempts a
+  # non-destructive recovery (PCI remove + rescan of ONLY the NVMe device
+  # backing /home, then a rw remount). If that restores writability it logs
+  # a recovery notice; otherwise it raises a critical desktop notification.
   systemd.services.btrfs-readonly-monitor = {
-    description = "Detect BTRFS read-only remount and alert";
+    description = "Detect BTRFS read-only remount, self-heal via PCI rescan, and alert";
     after = [ "home.mount" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";
       ExecStart = pkgs.writeShellScript "btrfs-readonly-monitor" ''
+        probe=/home/.readonly-probe
+        notify_critical () {
+          for uid in $(${pkgs.systemd}/bin/loginctl list-users --no-legend | awk '{print $1}'); do
+            user=$(getent passwd "$uid" | cut -d: -f1)
+            if [ -n "$user" ] && [ -d "/run/user/$uid" ]; then
+              DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$uid/bus" \
+                ${pkgs.util-linux}/bin/runuser -u "$user" -- \
+                ${pkgs.libnotify}/bin/notify-send -u critical "$@" 2>/dev/null || true
+            fi
+          done
+        }
         while true; do
-          # Test writability by creating and removing a probe file
-          if ! touch /home/.readonly-probe 2>/dev/null; then
-            ${pkgs.util-linux}/bin/logger -t btrfs-monitor "ALERT: /home is read-only — NVMe controller may have crashed. Reboot recommended."
-            # Send desktop notification if a user session is active
-            for uid in $(${pkgs.systemd}/bin/loginctl list-users --no-legend | awk '{print $1}'); do
-              user=$(getent passwd "$uid" | cut -d: -f1)
-              if [ -n "$user" ] && [ -d "/run/user/$uid" ]; then
-                DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$uid/bus" \
-                  ${pkgs.util-linux}/bin/runuser -u "$user" -- \
-                  ${pkgs.libnotify}/bin/notify-send -u critical \
-                  "Disk Emergency" \
-                  "/home is READ-ONLY. NVMe controller likely crashed. Reboot immediately." \
-                  2>/dev/null || true
-              fi
-            done
+          if ! touch "$probe" 2>/dev/null; then
+            ${pkgs.util-linux}/bin/logger -t btrfs-monitor "/home is read-only — attempting NVMe PCI rescan recovery"
+            # Resolve the NVMe PCI function that backs /home (btrfs -> LUKS -> nvmeXn1),
+            # remove + rescan it so the kernel re-probes the wedged controller.
+            # NEVER touch other NVMe devices: they may host the root filesystem.
+            src=$(${pkgs.util-linux}/bin/findmnt -n -o SOURCE /home 2>/dev/null)
+            # Mapper names (/dev/mapper/luks-*) don't exist under
+            # /sys/class/block; resolve through the real device (dm-N).
+            base=$(basename "$(readlink -f "''${src:-}" 2>/dev/null)")
+            if [ -n "$base" ] && [ -e "/sys/class/block/$base/slaves" ]; then
+              for ns in /sys/class/block/"$base"/slaves/*; do
+                # Slave may be a partition (nvme0n1p1); walk up the sysfs
+                # path to the nvmeX CONTROLLER. Namespace names (nvme0n1)
+                # also match nvme[0-9]*, so require the class dir — only
+                # controllers have /sys/class/nvme/<name>.
+                d=$(readlink -f "$ns")
+                ctrl=""
+                while [ "$d" != "/" ] && [ -n "$d" ]; do
+                  b=$(basename "$d")
+                  case $b in
+                    nvme[0-9]*)
+                      if [ -e "/sys/class/nvme/$b" ]; then ctrl=$b; break; fi ;;
+                  esac
+                  d=$(dirname "$d")
+                done
+                [ -n "$ctrl" ] || continue
+                pcidev=$(readlink -f "/sys/class/nvme/$ctrl/device" 2>/dev/null) || continue
+                echo 1 > "$pcidev/remove" 2>/dev/null || true
+              done
+              echo 1 > /sys/bus/pci/rescan 2>/dev/null || true
+              sleep 5
+            fi
+            ${pkgs.util-linux}/bin/mount -o remount,rw /home 2>/dev/null || true
+            if touch "$probe" 2>/dev/null; then
+              rm -f "$probe"
+              ${pkgs.util-linux}/bin/logger -t btrfs-monitor "RECOVERED: /home writable again after PCI rescan — run 'btrfs scrub start -B /home' to verify data."
+              notify_critical "Disk Recovered" "/home was read-only; NVMe PCI rescan restored it. Run a btrfs scrub soon."
+            else
+              ${pkgs.util-linux}/bin/logger -t btrfs-monitor "ALERT: /home still read-only after rescan — reboot required."
+              notify_critical "Disk Emergency" "/home is READ-ONLY and recovery failed. Save your work and reboot."
+            fi
           else
-            rm -f /home/.readonly-probe 2>/dev/null || true
+            rm -f "$probe" 2>/dev/null || true
           fi
           sleep 120
         done
@@ -258,6 +297,15 @@
       Restart = "always";
       RestartSec = 60;
     };
+  };
+  # --- BTRFS periodic scrub ---
+  # /home is single-device btrfs (no redundancy): checksum errors are
+  # detectable but NOT repairable without a second copy. A weekly scrub at
+  # least surfaces corruption early; restic restores are the repair path.
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [ "/home" ];
+    interval = "weekly";
   };
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
