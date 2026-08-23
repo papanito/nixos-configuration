@@ -2,7 +2,6 @@
 {
   imports = [
     ./dns.nix
-    ./networking.nix
     ./restic.nix
     ./notifications.nix
     ./users
@@ -11,7 +10,6 @@
   modules = {
     solokey.enable = false;
     container.enable = false;
-    cloud.enable = false;
     printing.enable = false;
     virtualisation.enable = false;
     security.usbguard = {

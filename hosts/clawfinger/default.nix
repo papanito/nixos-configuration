@@ -7,7 +7,6 @@
     ./services
     ./pam.nix
     ./tuxedo.nix
-    ./sops.nix
     ./sound.nix
     ./security.nix
     ./users.nix
@@ -46,7 +45,6 @@
 
   # modules
   modules = {
-    cloud.enable = true;
     security = {
       tools.enable = true;
     };
