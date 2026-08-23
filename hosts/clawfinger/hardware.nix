@@ -50,6 +50,9 @@
   ];
 
   boot = {
+    # Keep more rollback generations than the repo default (5): a bad
+    # kernel/desktop update should always leave a bootable fallback.
+    loader.systemd-boot.configurationLimit = 12;
     extraModulePackages = [ config.boot.kernelPackages.evdi ];
     #kernelPackages = pkgs.linuxPackages_6_12;
     kernelPackages = pkgs.linuxPackages_latest.extend (
