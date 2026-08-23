@@ -14,7 +14,109 @@ let
   googleChatPythonPath = "${
     pkgs.python312.withPackages (ps: [ ps.google-cloud-pubsub ])
   }/${pkgs.python312.sitePackages}";
-in
+
+  # Declarative patch for the upstream Google Chat adapter
+  # (plugins/platforms/google_chat/adapter.py, hermes-agent 0.19.1+).
+  #
+  # Bug: line 1389 does `envelope = json.loads(message.data.decode("utf-8"))`
+  # and acks the message on any parse error.  Google Chat Events API
+  # delivers CloudEvents-style Pub/Sub messages where the JSON payload is
+  # carried in `message.attributes["ce-data"]` (structured mode) or even
+  # fully in attributes, and `message.data` is frequently empty bytes.
+  # Result: every inbound event hits JSONDecodeError, is ACKed silently,
+  # and the bot appears unresponsive.
+  #
+  # Fix: inject a small `_parse_chat_envelope` helper into the adapter
+  # class, and replace the brittle `json.loads(message.data.decode(...))`
+  # with a call to it.  Patched via substituteInPlace on the symlinked
+  # plugin tree ($out/share/hermes-agent/plugins/...) at build time, so
+  # no runtime PYTHONPATH or path hacks are required and the loader
+  # continues to discover the plugin exactly as upstream intends.
+  patchedHermesAgent =
+    let
+      upstream = inputs.hermes-agent.packages.${pkgs.system}.default;
+      adapter = "share/hermes-agent/plugins/platforms/google_chat/adapter.py";
+    in
+    upstream.overrideAttrs (_old: {
+      # postInstall is wired through runHook in upstream hermes-agent.nix
+      # at the end of installPhase, so this appends cleanly without
+      # rewriting the whole install phase.
+      postInstall = ''
+        ADAPTER="$out/${adapter}"
+        if [ ! -e "$ADAPTER" ]; then
+          echo "patchedHermesAgent: $ADAPTER missing - refusing to apply patch" >&2
+          exit 1
+        fi
+
+        # 1. Replace the brittle per-call decode with a helper call.
+        substituteInPlace "$ADAPTER" \
+          --replace-fail \
+            'envelope = json.loads(message.data.decode("utf-8"))' \
+            'envelope = self._parse_chat_envelope(message)'
+
+        # 2. Inject the helper method just above the patched call site.
+        #    Anchor on the existing _on_pubsub_message signature so the
+        #    injection lands inside the same class.
+        substituteInPlace "$ADAPTER" \
+          --replace-fail '    def _on_pubsub_message(self, message: Any) -> None:' \
+            '    def _parse_chat_envelope(self, message: Any) -> dict:
+        """Parse Google Chat Pub/Sub envelope, handling empty data.
+
+        Google Chat Events API delivers CloudEvents-style Pub/Sub
+        messages.  Per the spec, the JSON payload may be carried in:
+
+          * message.data (binary mode) - frequently ``b""`` for chat
+          * message.attributes["ce-data"] (structured mode, may be
+            base64-encoded JSON) - common path for chat events
+          * (rarely) other attributes
+
+        Upstream only inspected ``message.data`` and ACKed on empty
+        bytes, which made the bot silently non-responsive.  This
+        helper tries each location in order and returns an empty
+        envelope when nothing is recoverable so downstream
+        ``envelope.get("chat") or {}`` keeps working.
+        """
+        raw = getattr(message, "data", None) or b""
+        if raw:
+            try:
+                return json.loads(raw.decode("utf-8"))
+            except Exception:
+                logger.exception(
+                    "[GoogleChat] Failed to decode message.data; trying attributes"
+                )
+        attrs = dict(getattr(message, "attributes", {}) or {})
+        for key in ("ce-data", "data", "message", "payload"):
+            value = attrs.get(key)
+            if not value:
+                continue
+            payload = value
+            if key == "ce-data":
+                # CloudEvents structured mode: base64-encoded JSON
+                try:
+                    import base64 as _b64
+                    payload = _b64.b64decode(value, validate=False).decode("utf-8")
+                except Exception:
+                    payload = value
+            try:
+                decoded = json.loads(payload)
+                if isinstance(decoded, dict):
+                    return decoded
+            except Exception:
+                continue
+        logger.warning(
+            "[GoogleChat] Pub/Sub message had no decodable envelope "
+            "(data=%sB, attrs=%s); returning empty envelope",
+            len(raw) if isinstance(raw, (bytes, bytearray)) else -1,
+            sorted(attrs.keys()),
+        )
+        return {}
+
+    def _on_pubsub_message(self, message: Any) -> None:'
+
+        echo "patchedHermesAgent: applied CloudEvents empty-data fix to $ADAPTER"
+      '';
+    });
+ in
 {
   imports = [
     inputs.hermes-agent.nixosModules.default # Import the NixOS module directly from the flake
@@ -42,6 +144,10 @@ in
   # Configuration for hermes-agent service
   services.hermes-agent = {
     enable = true;
+    # Use the patched package that fixes the Google Chat "bot not
+    # responding" bug (CloudEvents empty-data handling).  See the
+    # `patchedHermesAgent` binding at the top of this file.
+    package = patchedHermesAgent;
     container.enable = false;
     extraDependencyGroups = [
       "messaging"
