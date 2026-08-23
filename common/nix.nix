@@ -50,13 +50,12 @@
     };
   };
 
-  # https://discourse.nixos.org/t/best-practices-for-auto-upgrades-of-flake-enabled-nixos-systems/31255
+  # Channel-based auto-upgrade: hosts do not have this flake checked out, so
+  # flake-only flags (--update-input/--no-write-lock-file) would make the
+  # upgrade service fail on every run.
   system.autoUpgrade = {
     enable = true;
     flags = [
-      "--update-input"
-      "nixpkgs"
-      "--no-write-lock-file"
       "-L" # print build logs
     ];
     dates = "02:00";
