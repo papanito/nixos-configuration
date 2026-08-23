@@ -81,8 +81,9 @@ When the user requests a durable behavior change, record it here or in the relev
 ### Deployment rules
 
 - rpi4-a (aarch64) MUST build on the remote target, not on the x86 deploy host. The deploy host has no binfmt/qemu emulation, so a local cross-build hangs for hours and crashes `nix eval`. `deployment.buildOnTarget = true` in `flake.nix` enforces this. Apply with `colmena apply --impure --on rpi4-a`.
-- All deploys use Colmena: `colmena apply --impure --on <hostname>`. Never `nixos-rebuild` directly on this repo.
+- Remote hosts (envy, envy17, hcloud, ...) use Colmena: `colmena apply --impure --on <hostname>`. Never `nixos-rebuild` remotely on this repo.
+- clawfinger is the LOCAL workstation and is NOT Colmena-managed: it has no sshd reachable by colmena and no `deployment` attr in `flake.nix`, so it is filtered out of the colmena hive (`--on clawfinger` selects 0 hosts). Deploy it locally from the repo root with `run0 nixos-rebuild switch --flake .#clawfinger`.
 
 ## Child DOX Index
 
-This project is not yet indexed. Before continuing you must scan the project, build the DOX tree and replace this message with the actual index. Go deep and scan files recursively to properly evaluate complexity and create nested DOX files where needed.
+- `hosts/clawfinger/` — local workstation host config; owns its deploy method, privilege-escalation model (run0, no sudo binary), and suspend/GNOME-freeze mitigations.
