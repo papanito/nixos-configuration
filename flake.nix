@@ -16,7 +16,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     disko.url = "github:nix-community/disko";
-    colmena.url = "github:zhaofengli/colmena";
     terranix.url = "github:terranix/terranix";
     dms = {
       url = "github:AvengeMedia/DankMaterialShell/stable";
@@ -47,33 +46,20 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, disko, sops-nix, nixos-raspberrypi, nixos-generators, colmena, terranix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, disko, sops-nix, nixos-raspberrypi, nixos-generators, terranix, ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      pkgs = nixpkgs.legacyPackages."x86_64-linux";
       pkgs-unstable = nixpkgs-unstable.legacyPackages."x86_64-linux";
       nixosVersion = "26.05";
-      system = pkgs.stdenv.hostPlatform.system;
 
-      # Instantiate pkgs with overlays for use in CLI (nix build .#hello)
+      # Instantiate pkgs for use in CLI (nix build .#hello)
       nixpkgsFor = forAllSystems (system: import nixpkgs {
         inherit system;
         config = {
           allowUnfree = true;
           permittedInsecurePackages = [ "electron-39.8.10" ]; # Centralized here
         };
-        # ALL YOUR OVERLAYS GO HERE
-        overlays = [
-          # Architecture-Specific Overlays
-          (final: prev: nixpkgs.lib.optionalAttrs prev.stdenv.hostPlatform.isAarch64 {
-              # Only override if it actually exists in the upstream nixpkgs
-              # Or, if you are trying to pull it from a specific input:
-              raspberrypi-utils = if prev ? raspberrypi-utils
-                                  then prev.raspberrypi-utils
-                                  else prev.libraspberrypi; # Fallback for older nixpkgs structures
-          })
-        ];
       });
 
       # --- HOST FACTORY ---
@@ -91,7 +77,6 @@
         }:
         let
           isRpi = type == "rpi";
-          isCloud = type == "cloud";
           # Use nixpkgs lib for convenience
           lib = nixpkgs.lib;
 
@@ -142,14 +127,10 @@
           };
 
           specialArgs = {
-            inherit self inputs name isRpi nixosVersion rpiVersion pkgs-unstable;
-            # Add this line to pass your host database to all modules
-            type = type;
+            inherit self inputs name isRpi nixosVersion rpiVersion pkgs-unstable type;
+            # Pass the host database to all modules
             hosts = self.hosts;
-            isCloud = type == "cloud";
-            disko = inputs.disko;
             home-manager = inputs.home-manager;
-            dms = inputs.dms;
           }
           // lib.optionalAttrs isRpi {
             inherit nixos-raspberrypi;
@@ -175,6 +156,19 @@
               modules = moduleList;
             };
         };
+      # Server factory: shared shape for wired server hosts
+      mkServer = name: ip: mkSystem name {
+        type = "server";
+        targetIP = ip;
+        interface = "enp0s20f0u5";
+        defaultGateway = "10.0.0.1";
+        prefixLength = 16;
+        deployment = {
+          targetHost = ip;
+          targetUser = "nixos";
+        };
+      };
+
     in
     {
       # Helper to define our hosts in one place
@@ -182,39 +176,9 @@
         clawfinger = mkSystem "clawfinger" {
           type = "pc";
         };
-        envy = mkSystem "envy" {
-          type = "server";
-          targetIP = "10.0.0.10";
-          interface = "enp0s20f0u5";
-          defaultGateway = "10.0.0.1";
-          prefixLength = 16;
-          deployment = {
-            targetHost = "10.0.0.10";
-            targetUser = "nixos";
-          };
-        };
-        envy17 = mkSystem "envy17" {
-          type = "server";
-          targetIP = "10.0.0.12";
-          interface = "enp0s20f0u5";
-          defaultGateway = "10.0.0.1";
-          prefixLength = 16;
-          deployment = {
-            targetHost = "10.0.0.12";
-            targetUser = "nixos";
-          };
-        };
-        lenovo = mkSystem "lenovo" {
-          type = "server";
-          targetIP = "10.0.0.61";
-          interface = "enp0s20f0u5";
-          defaultGateway = "10.0.0.1";
-          prefixLength = 16;
-          deployment = {
-            targetHost = "10.0.0.61";
-            targetUser = "nixos";
-          };
-        };
+        envy = mkServer "envy" "10.0.0.10";
+        envy17 = mkServer "envy17" "10.0.0.12";
+        lenovo = mkServer "lenovo" "10.0.0.61";
         rpi4-a = mkSystem "rpi4-a" {
           type = "rpi";
           system = "aarch64-linux";
@@ -316,10 +280,7 @@
 
       devShells = forAllSystems (system: {
         default = import ./shells/default.nix {
-          pkgs = nixpkgsFor.${system};
-          system = system;
-          inputs = inputs;      # Explicitly pass the @inputs set
-          terranix = terranix;  # Pass the terranix input specifically
+          inherit system;
           nixpkgsFor = nixpkgsFor;
         };
       });
