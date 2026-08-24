@@ -1,0 +1,15 @@
+--- a/module/conftest.sh
++++ b/module/conftest.sh
+@@ -46,7 +46,11 @@
+ # -Werror=implicit-function-declaration -- calls to functions that do not exist.
+ compile_test() {
+ 	macro="$1"
+-	cat > "$SRC"
++	# kbuild always compiles real objects with KBUILD_MODNAME defined; several
++	# kernel headers (e.g. the alloc tags behind kzalloc_obj on 7.2) reference
++	# it, so provide it for syntax-only probes too.
++	printf '#ifndef KBUILD_MODNAME\n#define KBUILD_MODNAME "conftest"\n#endif\n' > "$SRC"
++	cat >> "$SRC"
+ 	# CFLAGS comes from the kernel build and can contain -D options whose
+ 	# values carry embedded shell quoting (e.g. on arm64
+ 	# -DARM64_ASM_ARCH='"armv8.5-a"'). Re-parse via eval so that quoting is

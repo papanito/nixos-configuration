@@ -66,6 +66,25 @@
               (old.env.NIX_CFLAGS_COMPILE or "") + " -DCC_USING_FENTRY";
           };
         });
+
+        # Kernel 7.2 support: upstream fixed the DRM atomic-commit signature
+        # changes on main after v1.14.15 (conftest-probe based compat layer);
+        # pin that revision. Its probes additionally need KBUILD_MODNAME
+        # defined: kernel alloc-tags behind kzalloc_obj reference it, and
+        # kbuild only defines it for real object compilation, so syntax-only
+        # conftest probes always failed and evdi kept its incompatible
+        # 2-arg kzalloc_obj macro (colliding with acpi.h on 7.2).
+        # Remove once nixpkgs ships an evdi with working 7.2 support.
+        evdi = lprev.evdi.overrideAttrs (old: {
+          src = pkgs.fetchFromGitHub {
+            owner = "DisplayLink";
+            repo = "evdi";
+            rev = "21a6390518677e9d52519d8237eddf9b1c216a85";
+            hash = "sha256-Ero2MThmM0rQd5bcWx7pDMNKo2hSKjoGlFCmzbMg5iU=";
+          };
+          prePatch = ""; # /etc/os-release no longer present in module/Makefile
+          patches = (old.patches or [ ]) ++ [ ./evdi-kernel-7.2-conftest.patch ];
+        });
       }
     );
     initrd = {
