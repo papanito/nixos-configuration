@@ -54,7 +54,20 @@
     # kernel/desktop update should always leave a bootable fallback.
     loader.systemd-boot.configurationLimit = 12;
     extraModulePackages = [ config.boot.kernelPackages.evdi ];
-    kernelPackages = pkgs.linuxPackages_latest;
+    # Kernel >= 7.2 requires CC_USING_FENTRY when out-of-tree eBPF programs
+    # include FUNCTION_TRACER-enabled headers (ftrace.h errors otherwise);
+    # clang does not define it itself. Backport of the nixos-unstable
+    # opensnitch-ebpf fix; remove once 26.05 ships it.
+    kernelPackages = pkgs.linuxPackages_latest.extend (
+      lfinal: lprev: {
+        opensnitch-ebpf = lprev.opensnitch-ebpf.overrideAttrs (old: {
+          env = old.env or { } // {
+            NIX_CFLAGS_COMPILE =
+              (old.env.NIX_CFLAGS_COMPILE or "") + " -DCC_USING_FENTRY";
+          };
+        });
+      }
+    );
     initrd = {
       # The set of kernel modules in the initial ramdisk used during the boot process.
       availableKernelModules = [
