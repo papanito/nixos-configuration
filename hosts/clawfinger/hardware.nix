@@ -35,7 +35,12 @@
       #             writes that can collide with a transient controller lockup
       #             (default is 30s)
       # space_cache=v2: already in mount opts from NixOS default; keep it
-      options = [ "degraded" "commit=60" "ssd" "space_cache=v2" ];
+      options = [
+        "degraded"
+        "commit=60"
+        "ssd"
+        "space_cache=v2"
+      ];
     };
     "/boot" = {
       device = "/dev/disk/by-uuid/B581-AD78";
@@ -54,39 +59,8 @@
     # kernel/desktop update should always leave a bootable fallback.
     loader.systemd-boot.configurationLimit = 12;
     extraModulePackages = [ config.boot.kernelPackages.evdi ];
-    # Kernel >= 7.2 requires CC_USING_FENTRY when out-of-tree eBPF programs
-    # include FUNCTION_TRACER-enabled headers (ftrace.h errors otherwise);
-    # clang does not define it itself. Backport of the nixos-unstable
-    # opensnitch-ebpf fix; remove once 26.05 ships it.
-    kernelPackages = pkgs.linuxPackages_latest.extend (
-      lfinal: lprev: {
-        opensnitch-ebpf = lprev.opensnitch-ebpf.overrideAttrs (old: {
-          env = old.env or { } // {
-            NIX_CFLAGS_COMPILE =
-              (old.env.NIX_CFLAGS_COMPILE or "") + " -DCC_USING_FENTRY";
-          };
-        });
+    kernelPackages = pkgs.linuxPackages_7_2;
 
-        # Kernel 7.2 support: upstream fixed the DRM atomic-commit signature
-        # changes on main after v1.14.15 (conftest-probe based compat layer);
-        # pin that revision. Its probes additionally need KBUILD_MODNAME
-        # defined: kernel alloc-tags behind kzalloc_obj reference it, and
-        # kbuild only defines it for real object compilation, so syntax-only
-        # conftest probes always failed and evdi kept its incompatible
-        # 2-arg kzalloc_obj macro (colliding with acpi.h on 7.2).
-        # Remove once nixpkgs ships an evdi with working 7.2 support.
-        evdi = lprev.evdi.overrideAttrs (old: {
-          src = pkgs.fetchFromGitHub {
-            owner = "DisplayLink";
-            repo = "evdi";
-            rev = "21a6390518677e9d52519d8237eddf9b1c216a85";
-            hash = "sha256-Ero2MThmM0rQd5bcWx7pDMNKo2hSKjoGlFCmzbMg5iU=";
-          };
-          prePatch = ""; # /etc/os-release no longer present in module/Makefile
-          patches = (old.patches or [ ]) ++ [ ./evdi-kernel-7.2-conftest.patch ];
-        });
-      }
-    );
     initrd = {
       # The set of kernel modules in the initial ramdisk used during the boot process.
       availableKernelModules = [
