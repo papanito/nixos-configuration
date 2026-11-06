@@ -1,0 +1,159 @@
+---
+# Flake update + Colmena deployment pipeline.
+#
+# Runs on the project-scoped shell runner on envy17 (tag: nixos-deploy).
+# The shell executor shares envy17's /nix store, so builds are incremental
+# and Colmena can build aarch64 closures for rpi4-a locally via binfmt.
+#
+# Required project CI/CD variables (protected):
+#   CI_PUSH_TOKEN        project access token with api + write_repository
+#   NIXOS_SSH_KEY_FILE   file variable with the ci-deploy private key
+#
+# The runner is created with access_level=not_protected so merge request
+# pipelines can run validation. Fork pipelines must stay disabled on the
+# project (Settings > CI/CD > Token Access / Pipelines for merge requests),
+# otherwise a shell runner would execute untrusted code on envy17.
+
+stages:
+  - validate
+  - build
+  - update
+  - deploy
+
+default:
+  tags:
+    - nixos-deploy
+  interruptible: false
+
+variables:
+  GIT_DEPTH: "0"
+  NIX_CONFIG: |
+    experimental-features = nix-command flakes
+    accept-flake-config = true
+    extra-platforms = aarch64-linux armv7l-linux
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+.nix:
+  before_script:
+    - nix --version
+    - colmena --version
+
+# Evaluate every host's top-level derivation without building it. Catches
+# option/type errors and broken input updates before anything is deployed.
+validate:
+  stage: validate
+  extends: .nix
+  interruptible: true
+  timeout: 30m
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+  script:
+    - |
+      set -eu
+      for host in envy envy17 lenovo rpi4-a; do
+        echo "Evaluating ${host}"
+        nix eval --raw ".#nixosConfigurations.${host}.config.system.build.toplevel.drvPath" >/dev/null
+      done
+
+# Build all host closures locally. The deploy job reuses these store paths.
+build:
+  stage: build
+  extends: .nix
+  timeout: 3h
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - colmena build --impure -p 2
+
+# Weekly schedule: update flake.lock and open/update a merge request.
+# Merging that MR triggers the main pipeline (build + deploy).
+update-flake-lock:
+  stage: update
+  extends: .nix
+  timeout: 1h
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  script:
+    - |
+      set -eu
+      git config user.name "GitLab CI"
+      git config user.email "ci@papanito.wyssmann.com"
+
+      nix flake update
+
+      if git diff --quiet -- flake.lock; then
+        echo "flake.lock is already up to date"
+        exit 0
+      fi
+
+      git add flake.lock
+      git commit -m "chore: Update flake lock"
+      git push --force \
+        "https://oauth2:${CI_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" \
+        "HEAD:refs/heads/chore/update-flake-lock"
+
+      # Create the MR through the API instead of push options: GitLab can
+      # create a duplicate MR when merge_request.create is pushed repeatedly
+      # to the same branch. Reuse the open MR when it already exists.
+      mr_api="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests"
+      existing=$(curl --silent --show-error --fail \
+        --header "PRIVATE-TOKEN: ${CI_PUSH_TOKEN}" \
+        "${mr_api}?source_branch=chore/update-flake-lock&state=opened" \
+        | jq 'length')
+
+      if [ "${existing}" -eq 0 ]; then
+        curl --silent --show-error --fail \
+          --request POST \
+          --header "PRIVATE-TOKEN: ${CI_PUSH_TOKEN}" \
+          --data-urlencode "source_branch=chore/update-flake-lock" \
+          --data-urlencode "target_branch=${CI_DEFAULT_BRANCH}" \
+          --data-urlencode "title=chore: Update flake lock" \
+          --data-urlencode "remove_source_branch=true" \
+          --data-urlencode "description=Automated nix flake update from pipeline ${CI_PIPELINE_ID}." \
+          "${mr_api}" >/dev/null
+        echo "Created merge request"
+      else
+        echo "Existing merge request updated by push"
+      fi
+
+# Deploy after a merge/push to main. The runner host (envy17) goes last:
+# its activation must not take the runner down before the other hosts are
+# updated. stopIfChanged/restartIfChanged are disabled for gitlab-runner,
+# so a nixpkgs bump does not kill this job mid-switch.
+deploy:
+  stage: deploy
+  extends: .nix
+  resource_group: nixos-deploy
+  timeout: 3h
+  environment:
+    name: homelab
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+  before_script:
+    - nix --version
+    - colmena --version
+    - install -m 700 -d "$HOME/.ssh"
+    - install -m 600 "$NIXOS_SSH_KEY_FILE" "$HOME/.ssh/id_ed25519"
+  after_script:
+    - rm -f "$HOME/.ssh/id_ed25519"
+  script:
+    - |
+      set -eu
+      cleanup() { rm -f "$HOME/.ssh/id_ed25519"; }
+      trap cleanup EXIT
+
+      colmena apply --impure --on envy,lenovo -p 2
+      colmena apply --impure --on rpi4-a
+      colmena apply --impure --on envy17

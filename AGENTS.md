@@ -80,10 +80,12 @@ When the user requests a durable behavior change, record it here or in the relev
 
 ### Deployment rules
 
-- rpi4-a (aarch64) MUST build on the remote target, not on the x86 deploy host. The deploy host has no binfmt/qemu emulation, so a local cross-build hangs for hours and crashes `nix eval`. `deployment.buildOnTarget = true` in `flake.nix` enforces this. Apply with `colmena apply --impure --on rpi4-a`.
+- rpi4-a (aarch64) is cross-built on the deploy host. `deployment.buildOnTarget` is not set in `flake.nix`; the deploy host must have binfmt/qemu emulation. Both clawfinger (`hosts/clawfinger/hardware.nix`) and the CI runner host (`hosts/envy17/gitlab-runner.nix`) enable `boot.binfmt.emulatedSystems` for `aarch64-linux` and `armv7l-linux`. Apply with `colmena apply --impure --on rpi4-a`.
 - Remote hosts (envy, envy17, lenovo, rpi4-a) use Colmena: `colmena apply --impure --on <hostname>`. Never `nixos-rebuild` remotely on this repo.
 - clawfinger is the LOCAL workstation and is NOT Colmena-managed: it has no sshd reachable by colmena and no `deployment` attr in `flake.nix`, so it is filtered out of the colmena hive (`--on clawfinger` selects 0 hosts). Deploy it locally from the repo root with `run0 nixos-rebuild switch --flake .#clawfinger`.
+- CI deployment lives in `.gitlab-ci.yml` and runs on the project-scoped shell runner on envy17 (tag `nixos-deploy`). A weekly schedule updates `flake.lock` and opens/updates an MR; merges to `main` run `colmena build` then `colmena apply` (envy, lenovo → rpi4-a → envy17 last). Required protected CI variables: `CI_PUSH_TOKEN` (project access token, `api` + `write_repository`) and `NIXOS_SSH_KEY_FILE` (file variable with the `ci-deploy@nixos-configuration` private key; its public key is in `profiles/servers/users/nixos.nix`). Keep fork pipelines disabled in GitLab: shell-executor jobs run directly on envy17.
 
 ## Child DOX Index
 
 - `hosts/clawfinger/` — local workstation host config; owns its deploy method, privilege-escalation model (run0, no sudo binary), and suspend/GNOME-freeze mitigations.
+- `hosts/envy17/` — server host config; owns the GitLab runner setup (docker + shell executors), binfmt cross-builds for rpi4-a, and CI deploy-key/self-deploy constraints.
