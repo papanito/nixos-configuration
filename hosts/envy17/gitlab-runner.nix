@@ -59,6 +59,16 @@
   environment.systemPackages = with pkgs; [
     buildkit # BuildKit for advanced Docker builds (DOCKER_BUILDKIT=1)
     docker-buildx # Docker CLI plugin for BuildKit (docker buildx)
+
+    # The shell executor runs jobs through a login shell, which resets PATH
+    # to /run/current-system/sw/bin. These must therefore be in the system
+    # profile, not only in services.gitlab-runner.extraPackages.
+    colmena
+    curl
+    git
+    jq
+    nix
+    openssh
   ];
 
   # rpi4-a is aarch64: the CI shell runner cross-builds its closure locally on
