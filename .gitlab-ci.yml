@@ -13,6 +13,9 @@
 # pipelines can run validation. Fork pipelines must stay disabled on the
 # project (Settings > CI/CD > Token Access / Pipelines for merge requests),
 # otherwise a shell runner would execute untrusted code on envy17.
+#
+# Manual web pipeline on main: choose `deploy` for all hosts or
+# `deploy:x86` to skip the slow aarch64 cross-build for rpi4-a.
 
 stages:
   - validate
@@ -64,6 +67,8 @@ validate:
       done
 
 # Build all host closures locally. The deploy job reuses these store paths.
+# This runs on merge requests and pushes to main, not on manual web runs:
+# the manual deploy jobs build only the hosts they actually deploy.
 build:
   stage: build
   extends: .nix
@@ -71,7 +76,6 @@ build:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-    - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   script:
     - colmena build --impure -p 2
 
@@ -130,17 +134,13 @@ update-flake-lock:
 # its activation must not take the runner down before the other hosts are
 # updated. stopIfChanged/restartIfChanged are disabled for gitlab-runner,
 # so a nixpkgs bump does not kill this job mid-switch.
-deploy:
+.deploy:
   stage: deploy
   extends: .nix
   resource_group: nixos-deploy
   timeout: 3h
   environment:
     name: homelab
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-    - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-      when: manual
   before_script:
     - nix --version
     - colmena --version
@@ -148,6 +148,15 @@ deploy:
     - install -m 600 "$NIXOS_SSH_KEY_FILE" "$HOME/.ssh/id_ed25519"
   after_script:
     - rm -f "$HOME/.ssh/id_ed25519"
+
+# Normal path: every merge/push to main deploys all hosts. A manually
+# started web pipeline also offers this job as a manual action.
+deploy:
+  extends: .deploy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
   script:
     - |
       set -eu
@@ -156,4 +165,20 @@ deploy:
 
       colmena apply --impure --on envy,lenovo -p 2
       colmena apply --impure --on rpi4-a
+      colmena apply --impure --on envy17
+
+# Manual fallback for when the aarch64 cross-build is unwanted or too slow:
+# deploys only the x86 hosts and never builds or touches rpi4-a.
+deploy:x86:
+  extends: .deploy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+  script:
+    - |
+      set -eu
+      cleanup() { rm -f "$HOME/.ssh/id_ed25519"; }
+      trap cleanup EXIT
+
+      colmena apply --impure --on envy,lenovo -p 2
       colmena apply --impure --on envy17

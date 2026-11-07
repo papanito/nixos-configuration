@@ -72,6 +72,7 @@ Pipeline behavior:
 | :--- | :--- |
 | Merge request | evaluate every host (`nix eval ...drvPath`), build all closures |
 | Push/merge to `main` | evaluate, build, then deploy: `envy,lenovo` → `rpi4-a` → `envy17` |
+| Manual web pipeline on `main` | choose `deploy` (all hosts) or `deploy:x86` (skip the `rpi4-a` cross-build) |
 | Weekly schedule (Mon 03:00 Europe/Zurich) | `nix flake update`, push `chore/update-flake-lock`, create/update an MR |
 
 Merging the automated lockfile MR runs the normal `main` pipeline, so a broken update fails at build time and is never deployed.
