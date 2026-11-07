@@ -296,7 +296,7 @@
         "flake-compat": "flake-compat_2",
         "nixos-images": "nixos-images",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-rpi"
         ]
       },
       "locked": {
@@ -327,6 +327,22 @@
         "owner": "NixOS",
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-rpi": {
+      "locked": {
+        "lastModified": 1792615934,
+        "narHash": "sha256-MlvRfa1O5Cqc2/a+gG+l9TSuowEoCKCmrJ1d9oAVm0I=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "da6dc0e7b26060f2f71ce3ef7088fb56ee44fa36",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "da6dc0e7b26060f2f71ce3ef7088fb56ee44fa36",
         "type": "github"
       }
     },
@@ -436,6 +452,7 @@
         "nixos-generators": "nixos-generators",
         "nixos-raspberrypi": "nixos-raspberrypi",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-rpi": "nixpkgs-rpi",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix",
         "terranix": "terranix"

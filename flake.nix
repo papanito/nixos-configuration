@@ -26,8 +26,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
-    nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs";
+    # The nixos-raspberrypi binary cache is built against the nixpkgs rev in
+    # that flake's own flake.lock. Pin it here instead of following the main
+    # nixpkgs; otherwise the RPi kernel hash differs and is rebuilt under qemu.
+    # When bumping nixos-raspberrypi, update this rev to its lock's nixpkgs.
+    nixpkgs-rpi.url = "github:NixOS/nixpkgs/da6dc0e7b26060f2f71ce3ef7088fb56ee44fa36";
+
+    nixos-raspberrypi = {
+      url = "github:nvmd/nixos-raspberrypi/main";
+      inputs.nixpkgs.follows = "nixpkgs-rpi";
+    };
 
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
