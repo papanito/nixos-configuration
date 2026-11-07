@@ -34,7 +34,7 @@ Server host at `10.0.0.12` that also hosts the project-scoped GitLab runners use
 
 ### Deployment
 
-- Bootstrap/manual deploy from clawfinger: `colmena apply --impure --on envy17`.
+- Bootstrap/manual deploy from clawfinger: `nix develop --command colmena apply --impure --on envy17` (the flake pins Colmena 0.4; the 0.5 hive schema is not compatible).
 - The pipeline deploys envy17 last, after `envy,lenovo` and `rpi4-a`.
 
 ## Work Guidance

@@ -31,7 +31,7 @@ nix-shell -p spos --run 'sops updatekeys secrets/secrets.yaml'
 1. Install/Update system using [colmena](https://github.com/zhaofengli/colmena)
 
    ```shell
-   colmena apply --on lenovo,envy
+   nix develop --command colmena apply --on lenovo,envy
    ```
 
 1. Add host key to `.sops.yaml` - we use age and the key can be found in the error message
@@ -85,7 +85,7 @@ One-time bootstrap after changing runner config or the CI key:
 
 ```sh
 # From clawfinger, using your personal key (already authorized)
-colmena apply --impure --on envy,envy17,lenovo,rpi4-a
+nix develop --command colmena apply --impure --on envy,envy17,lenovo,rpi4-a
 
 # restartIfChanged/stopIfChanged are disabled for the runner, so apply the
 # new unit once manually:
