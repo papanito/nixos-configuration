@@ -33,7 +33,10 @@
     nixpkgs-rpi.url = "github:NixOS/nixpkgs/da6dc0e7b26060f2f71ce3ef7088fb56ee44fa36";
 
     nixos-raspberrypi = {
-      url = "github:nvmd/nixos-raspberrypi/main";
+      # Pin the flake rev so `nix flake update` cannot move the kernel away
+      # from the rev that nixpkgs-rpi / the RPi cache was built for. Bump both
+      # this rev and nixpkgs-rpi together when you want a RPi update.
+      url = "github:nvmd/nixos-raspberrypi/28a5affc20c4a73f94af582432f4dfd179b038fe";
       inputs.nixpkgs.follows = "nixpkgs-rpi";
     };
 
