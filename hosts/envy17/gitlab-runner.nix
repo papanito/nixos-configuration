@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   sops = {
@@ -71,6 +71,11 @@
     openssh
   ];
 
+  # The shell executor sets client-side Nix config (the flake's nixConfig
+  # and NIX_CONFIG). Without trusted status, Nix ignores restricted settings
+  # such as extra-platforms and prints "not a trusted user" warnings.
+  nix.settings.trusted-users = lib.mkAfter [ "gitlab-runner" ];
+
   # rpi4-a is aarch64: the CI shell runner cross-builds its closure locally on
   # this x86_64 host, so binfmt/QEMU has to be available here.
   boot.binfmt.emulatedSystems = [ "aarch64-linux" "armv7l-linux" ];
@@ -115,8 +120,8 @@
         executor = "docker";
         dockerImage = "golang:1.25-bookworm"; # Default image if not specified in YAML
 
-        # Tags are crucial! Use this in your .gitlab-ci.yml
-        tagList = [ "homelab" ];
+        # Tags are configured in GitLab when the runner is created; tagList
+        # with an authentication token has no effect and only warns.
 
         # Optional: speed up builds by allowing the runner to use host's CPU cores
         registrationFlags = [

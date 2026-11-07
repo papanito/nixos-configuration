@@ -2,8 +2,8 @@
 {
   services.resolved = {
     enable = true;
-    fallbackDns = [ "10.0.0.10" ];
-    domains = [ "~." ];
+    settings.Resolve.FallbackDNS = [ "10.0.0.10" ];
+    settings.Resolve.Domains = [ "~." ];
   };
 
   networking = {
