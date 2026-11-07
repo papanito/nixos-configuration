@@ -14,8 +14,9 @@
 # project (Settings > CI/CD > Token Access / Pipelines for merge requests),
 # otherwise a shell runner would execute untrusted code on envy17.
 #
-# Manual web pipeline on main: choose `deploy` for all hosts or
-# `deploy:x86` to skip the slow aarch64 cross-build for rpi4-a.
+# Deploys are split into `deploy:x86` (envy, lenovo, envy17) and
+# `deploy:rpi4` (rpi4-a) so the Pi can be skipped independently.
+# On a manual web pipeline both jobs are manual.
 
 stages:
   - validate
@@ -130,10 +131,10 @@ update-flake-lock:
         echo "Existing merge request updated by push"
       fi
 
-# Deploy after a merge/push to main. The runner host (envy17) goes last:
-# its activation must not take the runner down before the other hosts are
-# updated. stopIfChanged/restartIfChanged are disabled for gitlab-runner,
-# so a nixpkgs bump does not kill this job mid-switch.
+# Deploy after a merge/push to main. The runner host (envy17) goes last in
+# the x86 job so its activation cannot take the runner down before the other
+# x86 hosts are updated. stopIfChanged/restartIfChanged are disabled for
+# gitlab-runner, so a nixpkgs bump does not kill the job mid-switch.
 .deploy:
   stage: deploy
   extends: .nix
@@ -149,9 +150,9 @@ update-flake-lock:
   after_script:
     - rm -f "$HOME/.ssh/id_ed25519"
 
-# Normal path: every merge/push to main deploys all hosts. A manually
-# started web pipeline also offers this job as a manual action.
-deploy:
+# Non-Raspberry-Pi hosts: envy, lenovo, and the runner host envy17 last.
+# Automatic on main; manual on a web pipeline (run only this to skip rpi4-a).
+deploy:x86:
   extends: .deploy
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
@@ -164,14 +165,14 @@ deploy:
       trap cleanup EXIT
 
       colmena apply --impure --on envy,lenovo -p 1
-      colmena apply --impure --on rpi4-a
       colmena apply --impure --on envy17
 
-# Manual fallback for when the aarch64 cross-build is unwanted or too slow:
-# deploys only the x86 hosts and never builds or touches rpi4-a.
-deploy:x86:
+# Raspberry Pi host. Separate job so it can be skipped independently.
+# resource_group + runner concurrent=1 ensure it never overlaps deploy:x86.
+deploy:rpi4:
   extends: .deploy
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
     - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
       when: manual
   script:
@@ -180,5 +181,4 @@ deploy:x86:
       cleanup() { rm -f "$HOME/.ssh/id_ed25519"; }
       trap cleanup EXIT
 
-      colmena apply --impure --on envy,lenovo -p 1
-      colmena apply --impure --on envy17
+      colmena apply --impure --on rpi4-a
