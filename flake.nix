@@ -156,18 +156,20 @@
               modules = moduleList;
             };
         };
-      # Server factory: shared shape for wired server hosts
-      mkServer = name: ip: mkSystem name {
-        type = "server";
-        targetIP = ip;
-        interface = "enp0s20f0u5";
-        defaultGateway = "10.0.0.1";
-        prefixLength = 16;
-        deployment = {
-          targetHost = ip;
-          targetUser = "nixos";
+      # Server factory: shared shape for wired server hosts.
+      # The interface name differs per machine (USB NIC vs onboard NIC), so
+      # callers override it instead of inheriting a single wrong default.
+      mkServer = name: ip: { interface ? "enp0s20f0u5", prefixLength ? 16 }:
+        mkSystem name {
+          type = "server";
+          targetIP = ip;
+          inherit interface prefixLength;
+          defaultGateway = "10.0.0.1";
+          deployment = {
+            targetHost = ip;
+            targetUser = "nixos";
+          };
         };
-      };
 
     in
     {
@@ -176,9 +178,12 @@
         clawfinger = mkSystem "clawfinger" {
           type = "pc";
         };
-        envy = mkServer "envy" "10.0.0.10";
-        envy17 = mkServer "envy17" "10.0.0.12";
-        lenovo = mkServer "lenovo" "10.0.0.61";
+        envy = mkServer "envy" "10.0.0.10" { };
+        envy17 = mkServer "envy17" "10.0.0.12" { interface = "enp2s0f1"; };
+        lenovo = mkServer "lenovo" "10.0.0.61" {
+          interface = "enp1s0";
+          prefixLength = 24;
+        };
         rpi4-a = mkSystem "rpi4-a" {
           type = "rpi";
           system = "aarch64-linux";
