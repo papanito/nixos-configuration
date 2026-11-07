@@ -79,6 +79,10 @@
   services.gitlab-runner = {
     enable = true;
 
+    # Two runners share this process (docker + shell). Keep the global
+    # concurrency above the runner count to avoid long-polling starvation.
+    settings.concurrent = 3;
+
     # Packages placed on the PATH of shell-executor jobs. The module already
     # provides bash/coreutils; Nix, Git, SSH and Colmena are needed by the
     # nixos-configuration pipeline.
