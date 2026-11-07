@@ -55,9 +55,6 @@
   ];
 
   boot = {
-    # Keep more rollback generations than the repo default (5): a bad
-    # kernel/desktop update should always leave a bootable fallback.
-    loader.systemd-boot.configurationLimit = 12;
     extraModulePackages = [ config.boot.kernelPackages.evdi ];
     kernelPackages = pkgs.linuxPackages_7_2;
 
@@ -95,7 +92,10 @@
       "ifb"
     ];
     loader = {
+      # Keep more rollback generations than the repo default (5): a bad
+      # kernel/desktop update should always leave a bootable fallback.
       systemd-boot.enable = true;
+      systemd-boot.configurationLimit = 12;
       efi.canTouchEfiVariables = true;
     };
     plymouth = {
