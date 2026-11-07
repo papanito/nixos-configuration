@@ -85,6 +85,10 @@ When the user requests a durable behavior change, record it here or in the relev
 - clawfinger is the LOCAL workstation and is NOT Colmena-managed: it has no sshd reachable by colmena and no `deployment` attr in `flake.nix`, so it is filtered out of the colmena hive (`--on clawfinger` selects 0 hosts). Deploy it locally from the repo root with `run0 nixos-rebuild switch --flake .#clawfinger`.
 - CI deployment lives in `.gitlab-ci.yml` and runs on the project-scoped shell runner on envy17 (tag `nixos-deploy`). A weekly schedule updates `flake.lock` and opens/updates an MR; merges to `main` run `colmena build` then two deploy jobs: `deploy:x86` (`envy`, `lenovo` → `envy17` last) and `deploy:rpi4` (`rpi4-a`). Manual web pipelines on `main` offer both jobs independently, so the Pi can be skipped. Required protected CI variables: `CI_PUSH_TOKEN` (project access token, `api` + `write_repository`) and `NIXOS_SSH_KEY_FILE` (file variable with the `ci-deploy@nixos-configuration` private key; its public key is in `profiles/servers/users/nixos.nix`). Keep fork pipelines disabled in GitLab: shell-executor jobs run directly on envy17.
 
+### Boot console
+
+- bootvine (`bootvine` flake input, enabled by `common/bootvine.nix`) runs on every non-RPi host. `flake.nix` imports its NixOS module and that file only when `isRpi` is false; rpi4-a is deliberately excluded, so do not move the enablement into `common/default.nix` or `profiles/servers` (both also evaluate for RPi).
+
 ## Child DOX Index
 
 - `hosts/clawfinger/` — local workstation host config; owns its deploy method, privilege-escalation model (run0, no sudo binary), and suspend/GNOME-freeze mitigations.

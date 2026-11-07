@@ -45,6 +45,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Boot animation: live systemd job tree on the console. Only imported for
+    # non-RPi hosts; the RPi profile keeps its own kernel/console setup.
+    bootvine = {
+      url = "git+https://codeberg.org/wvhulle/bootvine";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -99,6 +106,14 @@
             ./modules
             sops-nix.nixosModules.sops
             disko.nixosModules.disko
+            # bootvine needs a systemd initrd and a virtual terminal; keep it
+            # off the RPi hosts, which boot through the RPi-specific shim.
+            (lib.optionalAttrs (!isRpi) {
+              imports = [
+                ./common/bootvine.nix
+                inputs.bootvine.nixosModules.default
+              ];
+            })
             inputs.home-manager.nixosModules.home-manager
             # Set the target platform via the modern option. The legacy `system`
             # arg passed to nixosSystem/nixosInstaller below is renamed to
