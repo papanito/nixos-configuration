@@ -94,9 +94,10 @@
   services.gitlab-runner = {
     enable = true;
 
-    # Two runners share this process (docker + shell). Keep the global
-    # concurrency above the runner count to avoid long-polling starvation.
-    settings.concurrent = 3;
+    # Serialize all jobs: parallel Nix builds contend for CPU/disk and make
+    # the rpi4-a cross-build compete with the x86 hosts. The runner's
+    # long-polling warning with concurrent=1 is expected and harmless.
+    settings.concurrent = 1;
 
     # Packages placed on the PATH of shell-executor jobs. The module already
     # provides bash/coreutils; Nix, Git, SSH and Colmena are needed by the
@@ -127,7 +128,8 @@
         registrationFlags = [
           "--docker-network-mode=host"
         ];
-        requestConcurrency = 2;
+        # Docker jobs are serialized by the global concurrent=1 setting.
+        requestConcurrency = 1;
 
         # 1. Fallback to local image cache if upstream registry throws 50x / rate limit
         dockerPullPolicy = "if-not-present";

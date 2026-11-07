@@ -77,7 +77,7 @@ build:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   script:
-    - colmena build --impure -p 2
+    - colmena build --impure -p 1
 
 # Weekly schedule: update flake.lock and open/update a merge request.
 # Merging that MR triggers the main pipeline (build + deploy).
@@ -163,7 +163,7 @@ deploy:
       cleanup() { rm -f "$HOME/.ssh/id_ed25519"; }
       trap cleanup EXIT
 
-      colmena apply --impure --on envy,lenovo -p 2
+      colmena apply --impure --on envy,lenovo -p 1
       colmena apply --impure --on rpi4-a
       colmena apply --impure --on envy17
 
@@ -180,5 +180,5 @@ deploy:x86:
       cleanup() { rm -f "$HOME/.ssh/id_ed25519"; }
       trap cleanup EXIT
 
-      colmena apply --impure --on envy,lenovo -p 2
+      colmena apply --impure --on envy,lenovo -p 1
       colmena apply --impure --on envy17
