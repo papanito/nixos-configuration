@@ -17,6 +17,14 @@
     RuntimeDirectorySize = "32G";
     HandleLidSwitchDocked = "ignore";
   };
+
+  # binfmt/qemu-user emulation runs ONE qemu process per emulated process, and
+  # Nix defaults to cores = 0 ("use every core"). A cross-built aarch64 kernel
+  # at -j20 therefore spawns ~90 qemu-aarch64 processes and pins all 20 cores.
+  # Cap build parallelism so rpi4-a builds stay in the background. This also
+  # caps native builds; raise it (or override per invocation with
+  # NIX_CONFIG='cores = N') if a native build needs more.
+  nix.settings.cores = 8;
   # --- Fix: black screen / hard freeze on suspend when QEMU/KVM VMs are running ---
   # systemd 256+ freezes user sessions before suspending. When KVM VMs are
   # running, the kernel process freezer deadlocks on KVM worker threads -

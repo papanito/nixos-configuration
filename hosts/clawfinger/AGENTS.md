@@ -28,6 +28,11 @@ Local workstation host (Tuxedo laptop, x86_64, GNOME/Wayland on Intel iGPU, libv
 
 ## Work Guidance
 
+- Build parallelism is capped by `nix.settings.cores = 8` in `default.nix`. binfmt/qemu-user
+  runs one `qemu-aarch64` process per emulated process, so an un-capped `cores = 0` aarch64
+  kernel build (`-j20`) spawns ~90 qemu processes and pins all 20 cores. Override for a
+  single invocation with `NIX_CONFIG='cores = N'`; raise the setting if native builds need
+  more.
 - Suspend/GNOME-freeze mitigations live here and must stay when touching boot/sleep config:
   - `hardware.nix`: `i915.enable_dc=0`, `i915.enable_psr=0`, `i915.enable_fbc=0` (post-resume shell freeze: pointer moves but clicks/overview die).
   - `default.nix`: `SYSTEMD_SLEEP_FREEZE_USER_SESSIONS = "false"` on all four systemd sleep services (KVM deadlock during suspend).
@@ -52,6 +57,7 @@ Local workstation host (Tuxedo laptop, x86_64, GNOME/Wayland on Intel iGPU, libv
 nix eval --raw '.#nixosConfigurations.clawfinger.config.boot.kernelParams' \
   --apply 'p: builtins.concatStringsSep " " p'
 nix eval '.#nixosConfigurations.clawfinger.config.boot.loader.systemd-boot.configurationLimit'
+nix eval '.#nixosConfigurations.clawfinger.config.nix.settings.cores' # must be 8
 # Verify udev rule targets the PCI function (must contain DRIVER=="nvme")
 nix eval --raw '.#nixosConfigurations.clawfinger.config.services.udev.extraRules' | grep DRIVER
 ```
