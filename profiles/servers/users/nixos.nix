@@ -43,7 +43,7 @@
       # Used by the nixos-configuration GitLab pipeline (shell runner on
       # envy17) to deploy via Colmena. Private key lives in the protected
       # CI variable NIXOS_SSH_KEY_FILE.
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHKCx+XrnBuaAdHuS8yUUMOXFqrWuVgCDGOwvuDd3wS6 ci-deploy@nixos-configuration"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC1xc6vhq7JCOt9MadtqOzLFQo6ZrtxML1qGFcq6uHnso8e1S4YLQxGIHlOZG9QOkuu2500ZDU405NXsRjHHHfA9/DvKe3rpKQEhiWfM6js4F+Co0UHV7h6f3WmdeT4x6D7CmED4NYv7i2kw0DQtyp8G07Xnnwe/hTgpmJEe4FeGcgYAj61NGc/xh+Juef7sImuhG5htm4Fw0sY01EicPuSz5f2fSHLVJtmaKQxKtIs/fuBQVRfrovkp/MfVLz2fUpGR7U+FY+tSLsmb5fFRbcQoqOicMcrlSOT06stMyPgcTaI9Dj37wPmHloG3alFLnE5WZDVQjG8ld/vYcB0toPUx8iJ9KEWd+4nOO8zuNMboVrl08cDwFCIL274Yo2DP8Geo0SVLxvpb/0hqv5tdl4bGjTdwHBvhhQx1BbBW5AUnm0XEkrCdoUDs9JFphdkuUrMO6kihrZHGchNurCxY+nAKogmeVO2KU4zMPvv5i1aH4ZvqAUad7KxkgmiWD7NbPTpAU/7fcL7vhgdYl400DLImKUUbELSf0lcAT2Rt4/zXE4FjWpGaOW1OPL9lAaH3AcqeyfNGtIxUT1TkSNas5hqvCdqtybnuX14epW4I6OacLCSrNo2Z6Teio4krIOsx9l4zckZQAYGCZeGyYJJ/pPVEAN0lqPHGvpinSQ/KAEx8w== ci-deploy@nixos-configuration"
       #''command="sudo rsync --server --daemon -vlogDtpr.",no-agent-forwarding,no-port-forwarding,no-pty ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ91S1yRB15KxFHvko7/ZtyUumrD44RZI4HkLpED/iRE  paperless-sync-key''
     ];
   };
