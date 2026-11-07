@@ -67,18 +67,28 @@ validate:
         nix eval --raw ".#nixosConfigurations.${host}.config.system.build.toplevel.drvPath" >/dev/null
       done
 
-# Build all host closures locally. The deploy job reuses these store paths.
+# Build all host closures locally. x86 and rpi4-a are separate jobs so they
+# run in parallel; each job builds its hosts serially (-p 1). The runner has
+# two slots. Deploy jobs reuse these store paths.
 # This runs on merge requests and pushes to main, not on manual web runs:
 # the manual deploy jobs build only the hosts they actually deploy.
-build:
+.build:
   stage: build
   extends: .nix
   timeout: 3h
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+build:x86:
+  extends: .build
   script:
-    - colmena build --impure -p 1
+    - colmena build --impure --on envy,lenovo,envy17 -p 1
+
+build:rpi4:
+  extends: .build
+  script:
+    - colmena build --impure --on rpi4-a
 
 # Weekly schedule: update flake.lock and open/update a merge request.
 # Merging that MR triggers the main pipeline (build + deploy).

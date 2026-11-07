@@ -94,10 +94,9 @@
   services.gitlab-runner = {
     enable = true;
 
-    # Serialize all jobs: parallel Nix builds contend for CPU/disk and make
-    # the rpi4-a cross-build compete with the x86 hosts. The runner's
-    # long-polling warning with concurrent=1 is expected and harmless.
-    settings.concurrent = 1;
+    # Two build jobs run in parallel (x86 and rpi4-a); deploy jobs are
+    # serialized by their resource_group. Each Colmena invocation uses -p 1.
+    settings.concurrent = 2;
 
     # Packages placed on the PATH of shell-executor jobs. The module already
     # provides bash/coreutils; Nix, Git, SSH and Colmena are needed by the
@@ -128,7 +127,7 @@
         registrationFlags = [
           "--docker-network-mode=host"
         ];
-        # Docker jobs are serialized by the global concurrent=1 setting.
+        # Keep docker jobs from consuming both runner slots.
         requestConcurrency = 1;
 
         # 1. Fallback to local image cache if upstream registry throws 50x / rate limit
@@ -151,8 +150,8 @@
       nixos-deploy = {
         authenticationTokenConfigFile = config.sops.templates."gitlab-runner-nixos-env".path;
         executor = "shell";
-        # Never run two deploy jobs against the same store/targets at once.
-        requestConcurrency = 1;
+        # Allow build:x86 and build:rpi4 to run in parallel.
+        requestConcurrency = 2;
       };
     };
   };

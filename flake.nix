@@ -47,7 +47,7 @@
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Add the generator input
@@ -158,6 +158,11 @@
               # image-builder closure (parted, dosfstools, etc). That's only
               # needed for the initial SD-card image, not regular deploys.
               inherit specialArgs;
+              # Use the main nixpkgs for the RPi userland; this avoids the
+              # broken nss-cacert 3.131.1 pulled in by the RPi package set.
+              # The kernel packages still come from the pinned
+              # nixos-raspberrypi input, which hits its binary cache.
+              nixpkgs = nixpkgs;
               pkgs = nixpkgsFor.${system};
               modules = moduleList;
             }
