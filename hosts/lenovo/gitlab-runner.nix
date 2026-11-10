@@ -14,7 +14,7 @@
 
     templates."gitlab-runner-env".content = ''
       CI_SERVER_URL="https://gitlab.com";
-      REGISTRATION_TOKEN="${config.sops.placeholder.gitlab_runner_token}"
+      CI_SERVER_TOKEN="${config.sops.placeholder.gitlab_runner_token}"
     '';
   };
 
@@ -46,8 +46,8 @@
         executor = "docker";
         dockerImage = "golang:1.25-bookworm"; # Default image if not specified in YAML
 
-        # Tags are crucial! Use this in your .gitlab-ci.yml
-        tagList = [ "homelab" ];
+        # Tags live on the runner record in GitLab; `tagList` is ignored
+        # when an authentication token is used (the module warns about it).
 
         # Optional: speed up builds by allowing the runner to use host's CPU cores
         registrationFlags = [

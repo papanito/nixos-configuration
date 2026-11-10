@@ -21,14 +21,29 @@
       key = "gitlab_runner_nixos_token";
     };
 
+    # Authentication token for the existing local-builder runner.
     templates."gitlab-runner-env".content = ''
       CI_SERVER_URL="https://gitlab.com";
-      REGISTRATION_TOKEN="${config.sops.placeholder.gitlab_runner_token}"
+      CI_SERVER_TOKEN="${config.sops.placeholder.gitlab_runner_token}"
     '';
 
+    # Authentication token for the nixos-configuration project runner.
     templates."gitlab-runner-nixos-env".content = ''
       CI_SERVER_URL="https://gitlab.com";
       CI_SERVER_TOKEN="${config.sops.placeholder.gitlab_runner_nixos_token}"
+    '';
+
+    # Authentication token for the homelab group runner (wyssmann/projects,
+    # tag: homelab). Separate from the project runner tokens above so the
+    # group registration can be rotated independently.
+    secrets.gitlab_runner_group_token = {
+      sopsFile = ./secrets.yaml;
+      key = "gitlab_runner_group_token";
+    };
+
+    templates."gitlab-runner-group-env".content = ''
+      CI_SERVER_URL="https://gitlab.com";
+      CI_SERVER_TOKEN="${config.sops.placeholder.gitlab_runner_group_token}"
     '';
 
     # Secret containing Docker Hub authentication details (optional, but prevents rate limits)
@@ -94,9 +109,10 @@
   services.gitlab-runner = {
     enable = true;
 
-    # Two build jobs run in parallel (x86 and rpi4-a); deploy jobs are
-    # serialized by their resource_group. Each Colmena invocation uses -p 1.
-    settings.concurrent = 2;
+    # Three runner services: local-builder (1), nixos-deploy (2) and
+    # homelab-group (1). Keep the global limit at their sum so no runner
+    # starves on long-polling.
+    settings.concurrent = 4;
 
     # Packages placed on the PATH of shell-executor jobs. The module already
     # provides bash/coreutils; Nix, Git, SSH and Colmena are needed by the
@@ -152,6 +168,27 @@
         executor = "shell";
         # Allow build:x86 and build:rpi4 to run in parallel.
         requestConcurrency = 2;
+      };
+
+      # Group runner for wyssmann/projects (tag: homelab in GitLab). Serves
+      # agentdotconf, eventgenie and the other group projects. Docker
+      # executor so jobs can use their own image; tags come from the runner
+      # record in GitLab, not from this file.
+      homelab-group = {
+        authenticationTokenConfigFile = config.sops.templates."gitlab-runner-group-env".path;
+        executor = "docker";
+        dockerImage = "golang:1.26-bookworm";
+        requestConcurrency = 1;
+        dockerPullPolicy = "if-not-present";
+        dockerVolumes = [
+          "/var/run/docker.sock:/var/run/docker.sock"
+        ];
+        environmentVariables = {
+          DOCKER_HOST = "unix:///var/run/docker.sock";
+        };
+        registrationFlags = [
+          "--docker-network-mode=host"
+        ];
       };
     };
   };
