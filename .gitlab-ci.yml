@@ -8,6 +8,7 @@
 # Required project CI/CD variables (protected):
 #   CI_PUSH_TOKEN        project access token with api + write_repository
 #   NIXOS_SSH_KEY_FILE   file variable with the ci-deploy private key
+#   GOOGLE_CHAT_WEBHOOK  optional; Google Chat space webhook for MR notices
 #
 # The runner is created with access_level=not_protected so merge request
 # pipelines can run validation. Fork pipelines must stay disabled on the
@@ -90,8 +91,11 @@ build:rpi4:
   script:
     - colmena build --impure --on rpi4-a
 
-# Weekly schedule: update flake.lock and open/update a merge request.
-# Merging that MR triggers the main pipeline (build + deploy).
+# Weekly schedule: update flake.lock, push chore/update-flake-lock, open or
+# refresh its merge request, and announce that MR in Google Chat. Merging the
+# MR is the only path that deploys: the merge push runs the normal `main`
+# pipeline (validate + build + deploy). Nothing deploys from the schedule
+# itself, so a broken flake update never reaches the hosts.
 update-flake-lock:
   stage: update
   extends: .nix
@@ -104,12 +108,39 @@ update-flake-lock:
       git config user.name "GitLab CI"
       git config user.email "ci@papanito.wyssmann.com"
 
+      # Keep the committed lockfile so the notification can name the inputs
+      # whose locked revs actually moved.
+      git show "HEAD:flake.lock" > "${TMPDIR:-/tmp}/flake.lock.before"
+
       nix flake update
 
       if git diff --quiet -- flake.lock; then
         echo "flake.lock is already up to date"
         exit 0
       fi
+
+      changed=$(
+        {
+          jq -r '.nodes | to_entries[] | "\(.key) \(.value.locked.rev // .value.locked.lastModified // "-")"' \
+            "${TMPDIR:-/tmp}/flake.lock.before"
+          jq -r '.nodes | to_entries[] | "\(.key) \(.value.locked.rev // .value.locked.lastModified // "-")"' \
+            flake.lock
+        } | sort | uniq -u | awk '{print $1}' | sort -u \
+          | awk 'BEGIN { sep = "" } { printf "%s%s", sep, $0; sep = ", " }'
+      )
+      [ -n "${changed}" ] || changed="(unable to detect changed inputs)"
+
+      notify() {
+        if [ -z "${GOOGLE_CHAT_WEBHOOK:-}" ]; then
+          echo "GOOGLE_CHAT_WEBHOOK is not set; skipping Google Chat notification"
+          return 0
+        fi
+        jq -n --arg text "$1" '{text: $text}' \
+          | curl --silent --show-error --fail \
+            --header 'Content-Type: application/json; charset=UTF-8' \
+            --data @- "${GOOGLE_CHAT_WEBHOOK}" >/dev/null \
+          || echo "WARNING: Google Chat notification failed"
+      }
 
       git add flake.lock
       git commit -m "chore: Update flake lock"
@@ -121,25 +152,37 @@ update-flake-lock:
       # create a duplicate MR when merge_request.create is pushed repeatedly
       # to the same branch. Reuse the open MR when it already exists.
       mr_api="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests"
+
       existing=$(curl --silent --show-error --fail \
         --header "PRIVATE-TOKEN: ${CI_PUSH_TOKEN}" \
         "${mr_api}?source_branch=chore/update-flake-lock&state=opened" \
         | jq 'length')
 
       if [ "${existing}" -eq 0 ]; then
-        curl --silent --show-error --fail \
+        mr_url=$(curl --silent --show-error --fail \
           --request POST \
           --header "PRIVATE-TOKEN: ${CI_PUSH_TOKEN}" \
           --data-urlencode "source_branch=chore/update-flake-lock" \
           --data-urlencode "target_branch=${CI_DEFAULT_BRANCH}" \
           --data-urlencode "title=chore: Update flake lock" \
           --data-urlencode "remove_source_branch=true" \
-          --data-urlencode "description=Automated nix flake update from pipeline ${CI_PIPELINE_ID}." \
-          "${mr_api}" >/dev/null
-        echo "Created merge request"
+          --data-urlencode "description=Automated nix flake update from pipeline ${CI_PIPELINE_ID}. Merging deploys envy, lenovo, envy17 and rpi4-a." \
+          "${mr_api}" | jq -r '.web_url')
+        state="ready to merge"
+        echo "Created merge request ${mr_url}"
       else
-        echo "Existing merge request updated by push"
+        mr_url=$(curl --silent --show-error --fail \
+          --header "PRIVATE-TOKEN: ${CI_PUSH_TOKEN}" \
+          "${mr_api}?source_branch=chore/update-flake-lock&state=opened" \
+          | jq -r '.[0].web_url')
+        state="updated, open again"
+        echo "Existing merge request refreshed by push: ${mr_url}"
       fi
+
+      message=$(printf '*Flake lock update %s*\nInputs changed: %s\nMR: %s\nMerging runs validate + build, then deploys envy, lenovo, envy17 and rpi4-a.\nPipeline: %s/-/pipelines/%s' \
+        "${state}" "${changed}" "${mr_url}" "${CI_PROJECT_URL}" "${CI_PIPELINE_ID}")
+
+      notify "${message}"
 
 # Deploy after a merge/push to main. The runner host (envy17) goes last in
 # the x86 job so its activation cannot take the runner down before the other

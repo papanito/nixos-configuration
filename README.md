@@ -73,14 +73,15 @@ Pipeline behavior:
 | Merge request | evaluate every host (`nix eval ...drvPath`), build all closures |
 | Push/merge to `main` | evaluate, build, then `deploy:x86` (`envy`, `lenovo`, `envy17`) and `deploy:rpi4` (`rpi4-a`) |
 | Manual web pipeline on `main` | play `deploy:x86`, `deploy:rpi4`, or both independently |
-| Weekly schedule (Mon 03:00 Europe/Zurich) | `nix flake update`, push `chore/update-flake-lock`, create/update an MR |
+| Weekly schedule (Mon 03:00 Europe/Zurich) | `nix flake update`, push `chore/update-flake-lock`, create/update an MR, announce it in Google Chat |
 
-Merging the automated lockfile MR runs the normal `main` pipeline, so a broken update fails at build time and is never deployed.
+Merging the automated lockfile MR runs the normal `main` pipeline, so a broken update fails at build time and is never deployed. A scheduled run never deploys by itself; the merge is the deploy trigger.
 
 Required protected CI/CD variables:
 
 - `CI_PUSH_TOKEN` — project access token (`nixos-ci-push-api`) with `api` + `write_repository`, used to push the update branch and create/update its MR.
 - `NIXOS_SSH_KEY_FILE` — file variable containing the private key for `ci-deploy@nixos-configuration`. The matching public key is in `profiles/servers/users/nixos.nix`.
+- `GOOGLE_CHAT_WEBHOOK` — masked variable with the Google Chat space webhook URL used to announce the lockfile MR. When unset, the notification step logs a message and is skipped.
 
 One-time bootstrap after changing runner config or the CI key:
 
