@@ -9,6 +9,7 @@
 #   CI_PUSH_TOKEN        project access token with api + write_repository
 #   NIXOS_SSH_KEY_FILE   file variable with the ci-deploy private key
 #   GOOGLE_CHAT_WEBHOOK  optional; Google Chat space webhook for MR notices
+#                        (protected; GitLab cannot mask query-string URLs)
 #
 # The runner is created with access_level=not_protected so merge request
 # pipelines can run validation. Fork pipelines must stay disabled on the

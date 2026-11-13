@@ -81,7 +81,7 @@ Required protected CI/CD variables:
 
 - `CI_PUSH_TOKEN` — project access token (`nixos-ci-push-api`) with `api` + `write_repository`, used to push the update branch and create/update its MR.
 - `NIXOS_SSH_KEY_FILE` — file variable containing the private key for `ci-deploy@nixos-configuration`. The matching public key is in `profiles/servers/users/nixos.nix`.
-- `GOOGLE_CHAT_WEBHOOK` — masked variable with the Google Chat space webhook URL used to announce the lockfile MR. When unset, the notification step logs a message and is skipped.
+- `GOOGLE_CHAT_WEBHOOK` — protected variable with the Google Chat space webhook URL used to announce the lockfile MR. GitLab rejects masking values that contain a query string, so this variable stays unmasked; the job only passes it to `curl` and never echoes it. When unset, the notification step logs a message and is skipped.
 
 One-time bootstrap after changing runner config or the CI key:
 

@@ -30,7 +30,7 @@ Server host at `10.0.0.12` that also hosts the project-scoped GitLab runners use
 
 - `NIXOS_SSH_KEY_FILE` (protected, file variable) holds the private key for `ci-deploy@nixos-configuration`. Its public key is authorized in `profiles/servers/users/nixos.nix`; the first deploy that adds it must be run from clawfinger.
 - `CI_PUSH_TOKEN` (protected, masked) is the project access token `nixos-ci-push-api` with `api` + `write_repository`, used by the scheduled job to push `chore/update-flake-lock` and create/update its MR through the API.
-- `GOOGLE_CHAT_WEBHOOK` (protected, masked) is the Google Chat space webhook the scheduled job posts the MR notice to. Optional: when unset the job logs a warning and skips the notification.
+- `GOOGLE_CHAT_WEBHOOK` (protected) is the Google Chat space webhook the scheduled job posts the MR notice to. GitLab rejects masking values with a query string, so it stays unmasked; the job only passes it to `curl`. Optional: when unset the job logs a warning and skips the notification.
 - The shell runner must stay at `access_level=not_protected` so merge-request pipelines can run validation. Do not execute fork pipelines: `ci_allow_fork_pipelines_to_run_in_parent_project` must remain `false`.
 
 ### Deployment
