@@ -8,6 +8,11 @@
     defaultSopsFile = ../secrets/secrets.yaml;
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets.GODSMACK = {};
+    # Reusable Tailscale auth key used by `tailscaled-autoconnect` on every
+    # host (see common/tailscale.nix). Restart the unit when it is rotated.
+    secrets.tailscale_auth_key = {
+      restartUnits = [ "tailscaled-autoconnect.service" ];
+    };
     templates."GODSMACK.psk" = {
       path = "/var/lib/iwd/GODSMACK.psk";
       content = ''
