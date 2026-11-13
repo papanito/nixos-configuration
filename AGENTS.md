@@ -93,7 +93,14 @@ When the user requests a durable behavior change, record it here or in the relev
 
 - `common/tailscale.nix`, imported by `common/default.nix`, enables `tailscaled` on every host (clawfinger, envy, envy17, lenovo, rpi4-a). Do not re-enable it per host or in `profiles/*`.
 - `useRoutingFeatures = "client"` is deliberate: it relaxes the firewall reverse-path check for tunnel traffic but keeps IP forwarding off, so no host is a subnet router or exit node. Promote a single host with `"server"`/`"both"` plus `tailscale up --advertise-routes=...` only when that is actually wanted.
-- There is no `authKeyFile`. No reusable auth key is stored in sops, so joining the tailnet is a one-time manual step per host: `run0 tailscale up` on clawfinger, `sudo tailscale up` on the Colmena hosts. To automate joins later, add `tailscale_auth_key` to `secrets/secrets.yaml` and point `services.tailscale.authKeyFile` at `config.sops.secrets.tailscale_auth_key.path`.
+- `common/sops.nix` declares `sops.secrets.tailscale_auth_key` from `secrets/secrets.yaml` (encrypted to every host and both admins) and `common/tailscale.nix` sets it as `services.tailscale.authKeyFile`, so each host joins the tailnet on boot via `tailscaled-autoconnect` without manual `tailscale up`.
+- The key must stay reusable, non-ephemeral and pre-approved: a one-shot or ephemeral key makes the other hosts fail to join, and an ephemeral key deletes the node when it goes offline. Rotate it with `sops secrets/secrets.yaml` (the secret is wired to restart `tailscaled-autoconnect.service`), then redeploy; expired keys show up as `NeedsLogin` in `tailscale status`.
+
+### Core dumps
+
+- Never set `systemd.coredump.enable = false`: it makes nixpkgs fall back to `kernel.core_pattern = core`, so crashes dump uncapped `core.<pid>` files into whatever CWD the process had. `common/systemd.nix` keeps coredump enabled with capped external storage (`Storage=external`, `ProcessSizeMax=2G`, `MaxUse=5G`, `KeepFree=1G`), so dumps land in `/var/lib/systemd/coredump` and `coredumpctl` works.
+- Core dumps are never a reason to widen `ulimit -c` in shell init; `~/.bashrc` intentionally keeps the soft limit at 0. Non-login processes (units, containers, `bash -c`) do not read it, which is why the cap lives in the systemd unit config instead.
+- Known cause of the 2026-07→11 core flood: a devshell-injected `LD_LIBRARY_PATH` pointing at glibc 2.42 while the bash binary wanted glibc 2.44 (`__stack_chk_fail` in `dl_main`, direnv re-ran on every prompt), plus the AppIndicator extension spawning `gjs busAnalyzer.js` against mismatched GLib. Keep `glibc` out of devshell `buildInputs` and prefer the system `gjs` on `PATH`.
 
 ## Child DOX Index
 
