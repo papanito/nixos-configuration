@@ -10,6 +10,7 @@
     ./security
     ./system.nix
     ./systemd.nix
+    ./tailscale.nix
     ./tmpfs.nix
   ];
   environment.etc."fuse.conf".text = ''

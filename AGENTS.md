@@ -89,6 +89,12 @@ When the user requests a durable behavior change, record it here or in the relev
 
 - bootvine (`bootvine` flake input, enabled by `common/bootvine.nix`) runs on every non-RPi host. `flake.nix` imports its NixOS module and that file only when `isRpi` is false; rpi4-a is deliberately excluded, so do not move the enablement into `common/default.nix` or `profiles/servers` (both also evaluate for RPi).
 
+### Tailscale
+
+- `common/tailscale.nix`, imported by `common/default.nix`, enables `tailscaled` on every host (clawfinger, envy, envy17, lenovo, rpi4-a). Do not re-enable it per host or in `profiles/*`.
+- `useRoutingFeatures = "client"` is deliberate: it relaxes the firewall reverse-path check for tunnel traffic but keeps IP forwarding off, so no host is a subnet router or exit node. Promote a single host with `"server"`/`"both"` plus `tailscale up --advertise-routes=...` only when that is actually wanted.
+- There is no `authKeyFile`. No reusable auth key is stored in sops, so joining the tailnet is a one-time manual step per host: `run0 tailscale up` on clawfinger, `sudo tailscale up` on the Colmena hosts. To automate joins later, add `tailscale_auth_key` to `secrets/secrets.yaml` and point `services.tailscale.authKeyFile` at `config.sops.secrets.tailscale_auth_key.path`.
+
 ## Child DOX Index
 
 - `hosts/clawfinger/` — local workstation host config; owns its deploy method, privilege-escalation model (run0, no sudo binary), and suspend/GNOME-freeze mitigations.
