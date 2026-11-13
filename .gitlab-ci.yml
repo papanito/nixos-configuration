@@ -92,11 +92,12 @@ build:rpi4:
   script:
     - colmena build --impure --on rpi4-a
 
-# Weekly schedule: update flake.lock, push chore/update-flake-lock, open or
-# refresh its merge request, and announce that MR in Google Chat. Merging the
-# MR is the only path that deploys: the merge push runs the normal `main`
-# pipeline (validate + build + deploy). Nothing deploys from the schedule
-# itself, so a broken flake update never reaches the hosts.
+# Schedule (Mon/Wed/Sat 03:00 Europe/Zurich, cron `0 3 * * */3`): update
+# flake.lock, push chore/update-flake-lock, open or refresh its merge request,
+# and announce that MR in Google Chat. Merging the MR is the only path that
+# deploys: the merge push runs the normal `main` pipeline (validate + build +
+# deploy). Nothing deploys from the schedule itself, so a broken flake update
+# never reaches the hosts.
 update-flake-lock:
   stage: update
   extends: .nix

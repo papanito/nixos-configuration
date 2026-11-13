@@ -73,7 +73,7 @@ Pipeline behavior:
 | Merge request | evaluate every host (`nix eval ...drvPath`), build all closures |
 | Push/merge to `main` | evaluate, build, then `deploy:x86` (`envy`, `lenovo`, `envy17`) and `deploy:rpi4` (`rpi4-a`) |
 | Manual web pipeline on `main` | play `deploy:x86`, `deploy:rpi4`, or both independently |
-| Weekly schedule (Mon 03:00 Europe/Zurich) | `nix flake update`, push `chore/update-flake-lock`, create/update an MR, announce it in Google Chat |
+| Schedule (`0 3 * * */3`: Mon/Wed/Sat 03:00 Europe/Zurich) | `nix flake update`, push `chore/update-flake-lock`, create/update an MR, announce it in Google Chat |
 
 Merging the automated lockfile MR runs the normal `main` pipeline, so a broken update fails at build time and is never deployed. A scheduled run never deploys by itself; the merge is the deploy trigger.
 
