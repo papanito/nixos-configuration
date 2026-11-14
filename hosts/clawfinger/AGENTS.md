@@ -28,23 +28,32 @@ Local workstation host (Tuxedo laptop, x86_64, GNOME/Wayland on Intel iGPU, libv
 
 ### Application firewall (OpenSnitch)
 
-- Declared in `networking/opensnitch.nix`, not from the GUI. Rules live in
-  `services.opensnitch.rules`; the NixOS module symlinks each one into
-  `/var/lib/opensnitch/rules` on service start, so GUI edits to a declared rule are
-  overwritten on the next switch. Add new allows to the `allRules` list there.
-- Evaluation is **lexicographic by rule name**, not by a numeric priority:
-  `daemon/rule/loader.go` sorts active rule names and `FindFirstMatch` stops at the
-  first `deny`/`reject`, otherwise the last matching `allow` wins. Hence the `0NN-`
-  prefixes, and `precedence = true` on the allows so they outrank a later GUI-created
-  `deny-…` rule.
-- Nix store paths change hash on every upgrade, so process rules use
-  `type = "regexp"` (`^/nix/store/[a-z0-9]+-<pkg>-[0-9][^/]*/<binary>$`), never an
-  exact `simple` path — a hash-pinned rule silently stops matching after a rebuild.
+- Rules live in `networking/opensnitch.nix` → `services.opensnitch.rules`, which the
+  NixOS module symlinks into `/var/lib/opensnitch/rules` on service start. The whole
+  permanent set is declared there (migrated from the old GUI rules); add new permanents
+  to `allRules` rather than clicking them in the UI.
+- Home-manager cannot own these: `modules/services/opensnitch-ui.nix` only runs the UI
+  client. Rules belong to the root daemon, whose `Rules.Path` is `root:root 0750` — do
+  not point it at a user-writable dir, that would let the user inject allow/deny.
+- Evaluation is **lexicographic by rule name**, not numeric priority:
+  `daemon/rule/loader.go` sorts active rule names and `FindFirstMatch` returns on the
+  first `deny`/`reject` **or `precedence`** match, otherwise the last matching allow
+  wins. Since `deny-*` sorts after `allow-*`, every declared rule sets
+  `precedence = true`, which makes a declared rule authoritative over a GUI-created
+  deny. That is deliberate: declaring a rule *is* the policy decision.
+- Known overrides: `allow-always-bin-opencode2` and `allow-always-lib-orca-orca-ide`
+  now outrank the stray GUI denies for opencode2 and orca-ide. The security denies
+  (adb, openssl, python3.14, uv, qoder runtime-info) are untouched — no declared allow
+  matches those paths.
+- Process rules use `type = "regexp"` (`/nix/store/.*/<binary>`): `simple` compares
+  with exact `EqualFold`, so a hash-pinned path would silently stop matching on the
+  next upgrade. This was the failure mode of several old GUI rules (a few carried
+  regex metacharacters under `type = "simple"`, i.e. they never matched at all).
 - OpenSnitch intercepts **loopback** (all traffic traverses the OUTPUT hook), so
   `000-allow-localhost` (`dest.network` `127.0.0.0/8`) is load-bearing: agent CLIs
-  spawn a local helper server and connect to it, and a stray deny breaks them.
-- A `duration` other than `always` expires; `once` is never registered in the running
-  rule set. Declarative rules must use `always`.
+  spawn a local helper server on loopback and connect to it.
+- A `duration` other than `always` expires, and `once` is never registered in the
+  running rule set — declarative rules must use `always`.
 
 ## Work Guidance
 
