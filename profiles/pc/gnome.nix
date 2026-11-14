@@ -75,10 +75,6 @@ in
       libgtop
     ];
 
-    environment.variables = {
-      GI_TYPELIB_PATH = "/run/current-system/sw/lib/girepository-1.0";
-    };
-
     qt = {
       enable = false;
       platformTheme = "gnome";
