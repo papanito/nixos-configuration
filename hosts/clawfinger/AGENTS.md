@@ -26,6 +26,26 @@ Local workstation host (Tuxedo laptop, x86_64, GNOME/Wayland on Intel iGPU, libv
 - `run0` needs an interactive polkit password prompt — non-interactive agent shells cannot elevate. Ask the user to run privileged commands.
 - `hosts/clawfinger/security.nix` still contains a `security.sudo` block, but it is dead config: the pam module's `sudo.enable = mkForce (!disableSudo)` overrides it. Do not rely on those sudoers rules being active.
 
+### Application firewall (OpenSnitch)
+
+- Declared in `networking/opensnitch.nix`, not from the GUI. Rules live in
+  `services.opensnitch.rules`; the NixOS module symlinks each one into
+  `/var/lib/opensnitch/rules` on service start, so GUI edits to a declared rule are
+  overwritten on the next switch. Add new allows to the `allRules` list there.
+- Evaluation is **lexicographic by rule name**, not by a numeric priority:
+  `daemon/rule/loader.go` sorts active rule names and `FindFirstMatch` stops at the
+  first `deny`/`reject`, otherwise the last matching `allow` wins. Hence the `0NN-`
+  prefixes, and `precedence = true` on the allows so they outrank a later GUI-created
+  `deny-…` rule.
+- Nix store paths change hash on every upgrade, so process rules use
+  `type = "regexp"` (`^/nix/store/[a-z0-9]+-<pkg>-[0-9][^/]*/<binary>$`), never an
+  exact `simple` path — a hash-pinned rule silently stops matching after a rebuild.
+- OpenSnitch intercepts **loopback** (all traffic traverses the OUTPUT hook), so
+  `000-allow-localhost` (`dest.network` `127.0.0.0/8`) is load-bearing: agent CLIs
+  spawn a local helper server and connect to it, and a stray deny breaks them.
+- A `duration` other than `always` expires; `once` is never registered in the running
+  rule set. Declarative rules must use `always`.
+
 ## Work Guidance
 
 - Build parallelism is capped by `nix.settings.cores = 8` in `default.nix`. binfmt/qemu-user

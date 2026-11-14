@@ -9,6 +9,7 @@
     #./cloudflare.nix
     ./dns.nix
     ./firejail.nix
+    ./opensnitch.nix
     ./tor.nix
     ./vpn.nix
   ];
@@ -55,6 +56,4 @@
       "ethernet.auto-negotiate" = true;
     };
   };
-
-  services.opensnitch.enable = true;
 }
