@@ -28,11 +28,14 @@ Local workstation host (Tuxedo laptop, x86_64, GNOME/Wayland on Intel iGPU, libv
 
 ### Application firewall (OpenSnitch)
 
-- Rules live in `networking/opensnitch.nix` → `services.opensnitch.rules`, which the
-  NixOS module symlinks into `/var/lib/opensnitch/rules` on service start. The whole
-  permanent set is declared there (migrated from the old GUI rules); add new permanents
-  to `allRules` rather than clicking them in the UI.
-- Home-manager cannot own these: `modules/services/opensnitch-ui.nix` only runs the UI
+- `networking/opensnitch.nix` owns both halves: `services.opensnitch.enable = true`
+  (the `opensnitchd` daemon unit; the UI is a client and reports "not running"
+  without it) and `services.opensnitch.rules`, which the NixOS module symlinks
+  into `/var/lib/opensnitch/rules` on service start. The whole permanent set is
+  declared there (migrated from the old GUI rules); add new permanents to
+  `allRules` rather than clicking them in the UI.
+- Home-manager cannot own these: the UI (`opensnitch-ui`, installed from
+  `private_dot_config/private_home-manager/home.nix` in the chezmoi repo) is only a
   client. Rules belong to the root daemon, whose `Rules.Path` is `root:root 0750` — do
   not point it at a user-writable dir, that would let the user inject allow/deny.
 - Evaluation is **lexicographic by rule name**, not numeric priority:

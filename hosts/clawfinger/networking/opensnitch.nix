@@ -228,6 +228,12 @@ let
   ];
 in
 {
+  # The daemon, not just the rules. `services.opensnitch.enable` defaults to
+  # false, so declaring `rules` alone leaves no service and no socket — the UI
+  # then reports "not running". This line lived in default.nix until the rules
+  # were extracted here and it was dropped in the move.
+  services.opensnitch.enable = true;
+
   services.opensnitch.rules = lib.listToAttrs (
     map (r: lib.nameValuePair r.name r) allRules
   );
