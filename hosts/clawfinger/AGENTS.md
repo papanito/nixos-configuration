@@ -68,6 +68,21 @@ Local workstation host (Tuxedo laptop, x86_64, GNOME/Wayland on Intel iGPU, libv
   - `hardware.nix`: `loader.systemd-boot.configurationLimit = 12` (overrides the repo default of 5 in `common/nix.nix`) to keep rollback generations.
 - Use the system nix binary from `/nix/store/*-nix-*/bin/nix` for evals if the profile nix misbehaves.
 - Verify flake.lock pins a channel commit before deploying (cache-miss/gap-commit issue).
+- Kernel policy: `hardware.nix` sets `kernelPackages = pkgs.linuxPackages_latest` — never pin a
+  numbered series (`linuxPackages_7_2`). nixpkgs deletes EOL series outright (`error: linux 7.2
+  was removed because it has reached its end of life upstream`), which hard-fails evaluation on
+  the next lock bump, and any series pin breaks when its own EOL arrives. What actually breaks
+  on a kernel bump are the out-of-tree modules: `evdi` (DisplayLink, `extraModulePackages`),
+  `tuxedo-drivers` (`hardware.tuxedo-drivers`), `opensnitch-ebpf`. Check them with
+  `nix build ".#nixosConfigurations.clawfinger.config.boot.kernelPackages.<name>"`; only the
+  channel-default kernel gets cached module builds, so a non-default kernel rebuilds
+  `tuxedo-drivers` locally.
+- `tuxedo-drivers` carries a local override in `hardware.nix`: nixpkgs' 4.20.1 still registers a
+  `struct acpi_driver`, which kernel 7.3 removed (`'struct acpi_driver' has no member named
+  'name'`), so the set is `linuxPackages_latest.extend` with the package pinned to upstream
+  v4.25.0. 4.25.0 also moved the udev rules to `files/usr/lib/udev/rules.d`, hence the
+  `postInstall` override — without it `substituteInPlace` aborts on an unmatched glob. Drop both
+  once nixpkgs ships >= 4.25 and the plain package builds.
 - NVMe/BTRFS read-only mitigations in `hardware.nix`: kernel params
   `nvme_core.default_ps_max_latency_us=0 pcie_aspm=off pcie_port_pm=off`, plus a udev rule
   pinning every NVMe PCI function to full power (`SUBSYSTEM=="pci", DRIVER=="nvme"` — do NOT

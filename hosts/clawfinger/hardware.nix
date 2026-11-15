@@ -56,7 +56,36 @@
 
   boot = {
     extraModulePackages = [ config.boot.kernelPackages.evdi ];
-    kernelPackages = pkgs.linuxPackages_7_2;
+    # Track the newest kernel nixpkgs ships. Never pin a series by version
+    # (linuxPackages_7_2): nixpkgs removes EOL series outright and the pin then
+    # hard-fails evaluation, while a series pin also breaks when it moves.
+    # The out-of-tree modules below (evdi, tuxedo-drivers, opensnitch-ebpf) are
+    # what actually breaks across kernel bumps — verify them after each update.
+    kernelPackages = pkgs.linuxPackages_latest.extend (final: prev: {
+      # nixpkgs ships tuxedo-drivers 4.20.1, whose clevo_acpi still registers a
+      # `struct acpi_driver`; kernel 7.3 removed that API, so the module build
+      # dies with "'struct acpi_driver' has no member named 'name'". Upstream
+      # v4.25.0 moved the driver to a platform_driver. Drop the override once
+      # nixpkgs ships >= 4.25 and the plain build works again.
+      tuxedo-drivers = prev.tuxedo-drivers.overrideAttrs (old: {
+        version = "4.25.0";
+        src = pkgs.fetchFromGitLab {
+          group = "tuxedocomputers";
+          owner = "development/packages";
+          repo = "tuxedo-drivers";
+          rev = "v4.25.0";
+          hash = "sha256-AER+JPl3lem1OFV51VdOZAnr3Uy1BFSpEJNrE+shYis=";
+        };
+        # 4.25.0 moved the udev rules from `usr/` to `files/usr/`, so the
+        # nixpkgs postInstall glob matches nothing and substituteInPlace fails.
+        postInstall = ''
+          substituteInPlace files/usr/lib/udev/rules.d/* \
+            --replace-quiet "/bin/bash" "${lib.getExe pkgs.bash}" \
+            --replace-quiet "/bin/sh" "${lib.getExe pkgs.bash}"
+          install -Dm 0644 -t $out/etc/udev/rules.d files/usr/lib/udev/rules.d/*
+        '';
+      });
+    });
 
     initrd = {
       # The set of kernel modules in the initial ramdisk used during the boot process.
