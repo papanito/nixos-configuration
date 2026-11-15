@@ -76,7 +76,14 @@
         inherit system;
         config = {
           allowUnfree = true;
-          permittedInsecurePackages = [ "electron-39.8.10" ]; # Centralized here
+          permittedInsecurePackages = [
+            "electron-39.8.10"
+            # glances hard-depends on python-jose, which the current nixpkgs
+            # flags with CVE-2026-120459. Pinned to unblock the toplevel build
+            # (glances is a system monitor in profiles/pc/default.nix); drop
+            # glances or bump the name when nixpkgs fixes/renames it.
+            "python3.13-python-jose-3.5.0"
+          ];
         };
       });
 
