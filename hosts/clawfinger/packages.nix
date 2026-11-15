@@ -36,7 +36,6 @@
 
     ### Shell stuff ###
     feh # A light-weight image viewer
-    guake # Drop-down terminal for GNOME (F12); replaces the removed ddterm extension
     kb # Minimalist command line knowledge base manager
     mods # AI on the command line
     navi # An interactive cheatsheet tool for the command-line and application launchers
