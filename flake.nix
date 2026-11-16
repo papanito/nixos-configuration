@@ -42,7 +42,10 @@
 
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # Do NOT pin hermes-agent's nixpkgs to ours: its Nix build is tested
+      # against the nixpkgs in its own flake.lock. Forcing follows broke
+      # eval with newer nixpkgs' fetch-pnpm-deps (`pnpm.override` missing
+      # for the pm-pinned pnpm attrset).
     };
 
     # Boot animation: live systemd job tree on the console. Only imported for
