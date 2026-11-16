@@ -42,10 +42,16 @@
 
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
-      # Do NOT pin hermes-agent's nixpkgs to ours: its Nix build is tested
-      # against the nixpkgs in its own flake.lock. Forcing follows broke
-      # eval with newer nixpkgs' fetch-pnpm-deps (`pnpm.override` missing
-      # for the pm-pinned pnpm attrset).
+      # Pin nixpkgs to the rev hermes-agent's own flake.lock commits
+      # (nixos-unstable@02c087f3). Resolving the moving nixos-unstable
+      # branch instead produced a Nov-13 tip that cannot build the hermes
+      # closure from source: fetch-pnpm-deps calls pnpm.override on the
+      # pm-pinned pnpm attrset (eval failure), and patchelf's
+      # executable-header-load-overlap security patch does not apply to
+      # the 0.15.2 tarball (4/6 hunks fail).
+      # Do NOT simply set follows to the fleet nixpkgs either: the same
+      # fetch-pnpm-deps branch breaks eval there too.
+      inputs.nixpkgs.url = "github:NixOS/nixpkgs/02c087f3fe673c9e317f206a627cb6b910336dbe";
     };
 
     # Boot animation: live systemd job tree on the console. Only imported for
