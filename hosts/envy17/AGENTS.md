@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Server host at `10.0.0.12` that also hosts the project-scoped GitLab runners used by CI, including the shell runner for the `nixos-configuration` flake-update/Colmena pipeline.
+Server host at `10.0.0.12` that also hosts the project-scoped GitLab runners used by CI, including the shell runner for the `nixos-configuration` flake-update/Colmena pipeline, and the hermes-agent chat service (Google Chat bot via NousResearch/hermes-agent).
 
 ## Ownership
 
@@ -10,6 +10,8 @@ Server host at `10.0.0.12` that also hosts the project-scoped GitLab runners use
 - Runner configuration: `hosts/envy17/gitlab-runner.nix`.
 - Runner auth tokens: `hosts/envy17/secrets.yaml` (`gitlab_runner_token`, `gitlab_runner_nixos_token`).
 - Pipeline definition: `.gitlab-ci.yml` at the repository root.
+- Hermes-agent configuration: `hosts/envy17/hermes.nix` (enabled via `default.nix` imports).
+- Hermes credential: `hosts/envy17/secrets.yaml` (`hermes_env`). `hosts/envy17/gcp-config.json` is unused since Google Chat support was removed.
 
 ## Local Contracts
 
@@ -38,6 +40,12 @@ Server host at `10.0.0.12` that also hosts the project-scoped GitLab runners use
 - Bootstrap/manual deploy from clawfinger: `nix develop --command colmena apply --impure --on envy17` (the flake pins Colmena 0.4; the 0.5 hive schema is not compatible).
 - The pipeline deploys envy17 last, after `envy,lenovo` and `rpi4-a`.
 
+### hermes-agent
+
+- `hermes.nix` imports the NixOS module straight from the `hermes-agent` flake input and runs `services.hermes-agent` on the host (container disabled), state under `/var/lib/hermes`. No chat platform integration — Google Chat (and with it the adapter patch, the Pub/Sub `PYTHONPATH` injection and the `hermes_gcp_key` sops secret) was deliberately removed; re-add it only with the empty-data upstream fix verified (hermes-agent 0.19.1+ ACKed empty `message.data` events).
+- Secrets: `sops.secrets.hermes_env` from `secrets.yaml` passed as `environmentFiles`; it holds the OpenRouter API key.
+- Model endpoint is OpenRouter (`openrouter/free`) via `OPENAI_API_BASE`. The service runs headless; the `nixos` user (group `hermes`) drives it with hermes CLI commands against `/var/lib/hermes`.
+
 ## Work Guidance
 
 - Keep the shell executor's `requestConcurrency = 1`; the pipeline also uses `resource_group: nixos-deploy` to serialize deploys.
@@ -49,6 +57,8 @@ Server host at `10.0.0.12` that also hosts the project-scoped GitLab runners use
 ```sh
 ssh nixos@10.0.0.12 'systemctl status gitlab-runner'
 ssh nixos@10.0.0.12 'systemctl show -p DynamicUser -p User gitlab-runner'
+ssh nixos@10.0.0.12 'systemctl status hermes-agent'
+ssh nixos@10.0.0.12 'systemd-cat --journal-match,_SYSTEMD_UNIT=hermes-agent.service -n 50'
 nix eval --raw '.#nixosConfigurations.envy17.config.boot.binfmt.emulatedSystems' \
   --apply 'lib: builtins.concatStringsSep "," lib'
 nix eval --raw '.#nixosConfigurations.envy17.config.services.gitlab-runner.services.nixos-deploy.executor'

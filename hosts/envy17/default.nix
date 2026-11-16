@@ -4,7 +4,7 @@
     ./disko.nix
     ./hardware.nix
     ./users.nix
-    #./hermes.nix
+    ./hermes.nix
     ./gitlab-runner.nix
   ];
 
