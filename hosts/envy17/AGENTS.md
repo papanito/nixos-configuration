@@ -23,7 +23,7 @@ Server host at `10.0.0.12` that also hosts the project-scoped GitLab runners use
 - Shell jobs run as `gitlab-runner` (HOME `/var/lib/gitlab-runner`) inside the service's mount namespace, share envy17's `/nix` store, and use the host `nix-daemon`.
 - `services.gitlab-runner.extraPackages` provides `nix`, `colmena`, `git`, and `openssh` on the shell-job PATH. Add tools there, not only to `environment.systemPackages`.
 - `boot.binfmt.emulatedSystems = [ "aarch64-linux" "armv7l-linux" ]` lets envy17 cross-build the rpi4-a closure. Do not remove it without replacing the rpi4-a CI strategy.
-- `systemd.services.gitlab-runner.restartIfChanged` and `stopIfChanged` are `false` so deploying envy17 from a job running on envy17 cannot restart the runner mid-pipeline. Consequence: after changing the runner unit (packages, PATH, executor, service list), restart it manually:
+- `systemd.services.gitlab-runner` sets `restartIfChanged`, `stopIfChanged` **and `reloadIfChanged` (mkForce false)** so deploying envy17 from a job running on envy17 cannot restart or re-render the runner config mid-pipeline. The module's `reloadIfChanged=true` must not be re-added: the unit renderer makes X-ReloadIfChanged and X-RestartIfChanged exclusive, so the switch would take the reload/restart path and touch the runner anyway (pipeline #26, 2026-11-17). Consequence: after changing the runner unit (packages, PATH, executor, service list), restart it manually:
   ```sh
   ssh nixos@10.0.0.12 'sudo systemctl restart gitlab-runner'
   ```

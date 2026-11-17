@@ -98,9 +98,24 @@
   # The GitLab Runner service file changes on every nixpkgs bump (ExecStart
   # points into the new nixpkgs). Without this, deploying envy17 from a job
   # running on envy17 would stop/restart the runner underneath the job and
-  # kill the pipeline mid-activation. A unit change now requires a manual
-  # `systemctl restart gitlab-runner` (or a reboot) to take effect.
+  # kill the pipeline mid-activation (seen 2026-11-17, pipeline #26: the
+  # switch restarted the runner during the envy17 deploy, the job died as
+  # runner_system_failure and envy17 was left half-activated with docker,
+  # containerd, gitlab-runner and hermes-agent all stopped).
+  #
+  # reloadIfChanged must stay false: the nixpkgs gitlab-runner module sets
+  # reloadIfChanged=true (re-render config via ExecReload), and the unit
+  # renderer in nixos/lib/systemd-lib.nix emits X-ReloadIfChanged=true and
+  # X-RestartIfChanged=false mutually exclusive (if/else), so the plain
+  # restartIfChanged=false never reaches the unit file. With reload flag on,
+  # switch-to-configuration takes the reload/restart path instead of the
+  # skip path, and the runner gets touched during the deploy. mkForce wins
+  # over the module's plain true; X-StopOnRemoval is unaffected.
+  #
+  # A unit change therefore requires a manual `systemctl restart gitlab-runner`
+  # (or a reboot) to take effect.
   systemd.services.gitlab-runner = {
+    reloadIfChanged = lib.mkForce false;
     restartIfChanged = false;
     stopIfChanged = false;
   };
