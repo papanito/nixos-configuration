@@ -48,6 +48,13 @@
     settings = {
       model.default = "openrouter/free";
 
+      # The Ares mobile companion uses the MagicDNS name; the dashboard pins
+      # the Host header to the bind address (GHSA-ppp5-vxwm-4cf7 rebinding
+      # guard) and returns 400 for anything else. Declaring public_url
+      # adds envy17.tail6fda3.ts.net to the trusted hosts + CORS origins;
+      # the auth gate is already on (basic + session token).
+      dashboard.public_url = "http://envy17.tail6fda3.ts.net:9119";
+
       # Dashboard browser login (stacks with the session-token provider):
       # scrypt hash only, password is not at rest in repo or state.
       dashboard.basic_auth = {
