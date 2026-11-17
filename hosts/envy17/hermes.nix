@@ -56,6 +56,19 @@
 
     environmentFiles = [ config.sops.secrets.hermes_env.path ];
     addToSystemPackages = true;
+
+    # Web dashboard backend (hermes-agent module term: `serve`+UI). Runs as a
+    # separate hermes-backend.service sharing HERMES_HOME with the gateway.
+    # Bound to the tailscale0 interface address so the dashboard is reachable
+    # ONLY via the tailnet: http://100.77.170.127:9119 (MagicDNS is off; use
+    # the IP — the backend pins the Host header to what it binds).
+    # Non-loopback bind enables the dashboard auth gate; credentials are set
+    # in the browser on first visit.
+    backend = {
+      mode = "dashboard";
+      waitFor = "interface";
+      interfaceName = "tailscale0";
+    };
   };
 
   systemd.tmpfiles.rules = [

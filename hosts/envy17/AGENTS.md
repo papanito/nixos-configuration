@@ -43,6 +43,7 @@ Server host at `10.0.0.12` that also hosts the project-scoped GitLab runners use
 ### hermes-agent
 
 - `hermes.nix` imports the NixOS module straight from the `hermes-agent` flake input and runs `services.hermes-agent` on the host (container disabled), state under `/var/lib/hermes`. No chat platform integration — Google Chat (and with it the adapter patch, the Pub/Sub `PYTHONPATH` injection and the `hermes_gcp_key` sops secret) was deliberately removed; re-add it only with the empty-data upstream fix verified (hermes-agent 0.19.1+ ACKed empty `message.data` events).
+- The dashboard backend runs as a separate `hermes-backend.service` (`backend.mode = "dashboard"`), bound to the tailscale0 interface address (`waitFor = "interface"`), so it is reachable **only via the tailnet** on `http://100.77.170.127:9119` — MagicDNS is off, use the IP (the backend pins the Host header to the bind address). Non-loopback bind enables the dashboard auth gate; credentials are set in the browser on first visit. Port 9119 is the module default; envy17 has no firewall, so tailnet-only exposure comes solely from the interface bind.
 - Secrets: `sops.secrets.hermes_env` from `secrets.yaml` passed as `environmentFiles`; it holds the OpenRouter API key.
 - Model endpoint is OpenRouter (`openrouter/free`) via `OPENAI_API_BASE`. The service runs headless; the `nixos` user (group `hermes`) drives it with hermes CLI commands against `/var/lib/hermes`.
 
