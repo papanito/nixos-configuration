@@ -18,6 +18,14 @@
   sops.secrets."hermes_env" = {
     sopsFile = ./secrets.yaml;
   };
+  # Session token authorizing the dashboard backend's REST API and
+  # /api/ws connections (token-mode clients: mobile agent, Hermes Desktop).
+  sops.secrets."hermes_dashboard_token" = {
+    sopsFile = ./secrets.yaml;
+    owner = "hermes";
+    group = "hermes";
+    mode = "0400";
+  };
 
   # Configuration for hermes-agent service.
   # No chat platform integration (Google Chat removed); the service runs
@@ -68,6 +76,10 @@
       mode = "dashboard";
       waitFor = "interface";
       interfaceName = "tailscale0";
+      # Auth gate for the non-loopback bind: the bundled session-token
+      # provider reads this sops file at each start and authorizes bearer
+      # REST + /api/ws?token= connections.
+      sessionTokenFile = config.sops.secrets."hermes_dashboard_token".path;
     };
   };
 
