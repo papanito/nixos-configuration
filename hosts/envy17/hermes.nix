@@ -26,6 +26,12 @@
     group = "hermes";
     mode = "0400";
   };
+  # EnvironmentFile for the dashboard session signing secret
+  # (HERMES_DASHBOARD_BASIC_AUTH_SECRET), read by systemd.
+  sops.secrets."hermes_dashboard_secret" = {
+    sopsFile = ./secrets.yaml;
+    mode = "0400";
+  };
 
   # Configuration for hermes-agent service.
   # No chat platform integration (Google Chat removed); the service runs
@@ -41,6 +47,13 @@
     ];
     settings = {
       model.default = "openrouter/free";
+
+      # Dashboard browser login (stacks with the session-token provider):
+      # scrypt hash only, password is not at rest in repo or state.
+      dashboard.basic_auth = {
+        username = "aedu";
+        password_hash = "scrypt$16384$8$1$K2/OEVgQvPW8jhbX4rYE2w==$LTxFOdMXkjsgbgWBlLEmfSLwtk2dvGpk67tKSGMvavY=";
+      };
 
       toolsets = [ "all" ];
       terminal = {
@@ -62,7 +75,10 @@
       HERMES_LOG_LEVEL = "DEBUG";
     };
 
-    environmentFiles = [ config.sops.secrets.hermes_env.path ];
+    environmentFiles = [
+      config.sops.secrets.hermes_env.path
+      config.sops.secrets."hermes_dashboard_secret".path
+    ];
     addToSystemPackages = true;
 
     # Web dashboard backend (hermes-agent module term: `serve`+UI). Runs as a
