@@ -90,6 +90,10 @@ When the user requests a durable behavior change, record it here or in the relev
 - CI deployment lives in `.gitlab-ci.yml` and runs on the project-scoped shell runner on envy17 (tag `nixos-deploy`). A schedule (cron `0 3 * * */3`, Mon/Wed/Sat 03:00 Europe/Zurich) updates `flake.lock`, opens/updates an MR, and announces it in Google Chat; the schedule never deploys. Merges to `main` run `colmena build` then two deploy jobs: `deploy:x86` (`envy`, `lenovo` → `envy17` last) and `deploy:rpi4` (`rpi4-a`). Manual web pipelines on `main` offer both jobs independently, so the Pi can be skipped. Required protected CI variables: `CI_PUSH_TOKEN` (project access token, `api` + `write_repository`), `NIXOS_SSH_KEY_FILE` (file variable with the `ci-deploy@nixos-configuration` private key; its public key is in `profiles/servers/users/nixos.nix`), and `GOOGLE_CHAT_WEBHOOK` (protected webhook used for the MR notification, optional; GitLab cannot mask query-string URLs, so it stays unmasked and is never echoed). Keep fork pipelines disabled in GitLab: shell-executor jobs run directly on envy17.
 - lenovo's dbus-broker cannot be reloaded: activation runs `systemctl reload dbus-broker`, it exits 4, and switch-to-configuration aborts the whole deploy (`deploy:x86` failed 2026-11-18 after the dbus-broker 37 bump). `hosts/lenovo/default.nix` sets `reloadIfChanged = lib.mkForce false` so the unit restarts instead; keep the `mkForce`, because dbus.nix defines it as true.
 
+### Networking
+
+- Fleet hosts ignore ICMP echo (`net.ipv4.icmp_echo_ignore_all = 1` in `common/networking/default.nix`, kept deliberately 2026-11-18): ping against every NixOS host fails even when the host is healthy, which has caused false "host is down" impressions. Probe liveness over TCP (`nc -zw5 <ip> 22`), `tailscale status`, or ssh instead.
+
 ### Package pins
 
 - Insecure-package exemptions live only in `flake.nix` (`nixpkgsFor.config.permittedInsecurePackages`) because that instance feeds every host (`pkgs = nixpkgsFor.${system}`). Never add `nixpkgs.config` per host.

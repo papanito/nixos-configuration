@@ -48,7 +48,10 @@
     "net.ipv4.conf.all.send_redirects" = 0;
     "net.ipv4.conf.default.send_redirects" = 0;
 
-    # ignore ICMP requests, helps avoid Smurf attacks and man-in-the-middle probing
+    # ignore ICMP requests, helps avoid Smurf attacks and man-in-the-middle probing.
+    # Deliberate, fleet-wide (unchanged 2026-11-18): ping against any NixOS host
+    # fails even when it is healthy. Probe liveness over TCP (`nc -zw5 <ip> 22`)
+    # or `tailscale status` instead.
     "net.ipv4.icmp_echo_ignore_all" = 1;
 
     "net.ipv4.conf.default.accept_source_route" = 0;
