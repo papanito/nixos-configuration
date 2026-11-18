@@ -78,6 +78,10 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
+### Working copy
+
+- All edits happen in the dev clone `~/Projects/papanito/nixos-configuration`. Never write to `/etc/nixos`: it is the root-owned deployed checkout (`root:root`, not writable by the user), and its README/config can lag the dev clone. Commit in the dev clone and deploy from there via CI or `colmena apply`; treat `/etc/nixos` as read-only reference.
+
 ### Deployment rules
 
 - rpi4-a (aarch64) is cross-built on the deploy host. `deployment.buildOnTarget` is not set in `flake.nix`; the deploy host must have binfmt/qemu emulation. Both clawfinger (`hosts/clawfinger/hardware.nix`) and the CI runner host (`hosts/envy17/gitlab-runner.nix`) enable `boot.binfmt.emulatedSystems` for `aarch64-linux` and `armv7l-linux`. Apply with `nix develop --command colmena apply --impure --on rpi4-a`.
