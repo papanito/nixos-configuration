@@ -90,6 +90,7 @@ When the user requests a durable behavior change, record it here or in the relev
 - Insecure-package exemptions live only in `flake.nix` (`nixpkgsFor.config.permittedInsecurePackages`) because that instance feeds every host (`pkgs = nixpkgsFor.${system}`). Never add `nixpkgs.config` per host.
 - The name must match nixpkgs exactly, prefix included — Python packages carry the interpreter version (`python3.13-python-jose-3.5.0`), so a Python bump or a nixpkgs rename breaks the whole toplevel eval until the pin is updated. `glances` (`profiles/pc`) is what pulls `python-jose`; dropping glances removes the need for that pin entirely.
 - Flakes whose Nix build is only tested against their own lock (hermes-agent) must keep the nixpkgs their own flake.lock commits, pinned by rev in `flake.nix`. Do not set `follows` to the fleet nixpkgs (breaks eval: fetch-pnpm-deps `pnpm.override` on the pm-pinned pnpm attrset) and do not let it resolve the moving `nixos-unstable` branch (breaks source builds: patchelf security patch does not apply to the 0.15.2 tarball).
+- paperless-ngx (`hosts/lenovo/paperless-ngx.nix`) runs from `pkgs-unstable.paperless-ngx` (3.x) because native AI (`PAPERLESS_AI_*`) only exists since v3.0; the 26.05 module drives that package. It must keep `PAPERLESS_ENABLE_NLTK = false`: the 26.05 module reads `package.nltkDataDir`, which the 3.x package no longer defines, and the eval breaks otherwise. Every paperless version bump is a one-way Django migration (3.0 requires exactly 2.20.15 as source) — back up `/var/lib/paperless/data` on lenovo before deploying. The AI API key lives in the per-host sops file `hosts/lenovo/secrets.yaml` (creation rule in `.sops.yaml`, encrypted to both admins + `server_lenovo`; edit with `sops hosts/lenovo/secrets.yaml`), rendered for the unit via the `paperless-ai-key.env` template in the same file.
 
 ### Boot console
 
@@ -112,3 +113,4 @@ When the user requests a durable behavior change, record it here or in the relev
 
 - `hosts/clawfinger/` — local workstation host config; owns its deploy method, privilege-escalation model (run0, no sudo binary), and suspend/GNOME-freeze mitigations.
 - `hosts/envy17/` — server host config; owns the GitLab runner setup (docker + shell executors), binfmt cross-builds for rpi4-a, and CI deploy-key/self-deploy constraints.
+- `hosts/lenovo/` — server host config; owns paperless-ngx (3.x package + native AI via ollama cloud, sops-wrapped key) and the paperless consume-area fileserver.
