@@ -11,7 +11,30 @@ nix-shell -p sops --run "sops secrets/secrets.yaml"
 nix-shell -p spos --run 'sops updatekeys secrets/secrets.yaml'
 ```
 
-## Setup remote system
+## Deployment with Colmena
+
+Hosts are declared once in `flake.nix` (`self.hosts`) and the Colmena hive is derived from that list: every host carrying a `deployment` attribute becomes a node, so a new machine is added in one place and appears in the hive automatically.
+
+- **Remote hosts** are Colmena-managed: `envy` (10.0.0.10), `envy17` (10.0.0.12), `lenovo` (10.0.0.61), `rpi4-a` (10.0.0.11). Each node deploys as `nixos@<targetHost>`.
+- **Schema:** the hive uses Colmena **0.4**; the devShell pins that version. A Colmena 0.5 binary expects a `colmenaHive`/`v0.5` schema and rejects this hive.
+- **clawfinger** is the local workstation and is *not* in the hive (no `deployment` attribute, no sshd reachable by Colmena), so it is filtered out. Deploy it locally with `run0 nixos-rebuild switch --flake .#clawfinger`.
+- **rpi4-a** is `aarch64-linux` and is cross-built on the deploy host — binfmt/qemu emulation is enabled on clawfinger and envy17. `deployment.buildOnTarget` is deliberately unset, so builds stay on the deploy host's disk and only the final closure is copied to the Pi.
+
+```sh
+# x86 hosts first, runner host last; -p 1 keeps builds serial
+nix develop --command colmena apply --impure --on envy,lenovo -p 1
+nix develop --command colmena apply --impure --on envy17
+
+# Raspberry Pi (cross-built via binfmt)
+nix develop --command colmena apply --impure --on rpi4-a
+
+# Everything at once, including the Pi
+nix develop --command colmena apply --impure --on envy,envy17,lenovo,rpi4-a
+```
+
+`nix develop --command colmena build --impure --on <hosts>` builds without activating — useful to pre-seed the store before a deploy window.
+
+## Provisioning a new host (manual reference)
 
 1. Create bootable image with fixed ip and user password/ssh_key enabled
 
@@ -62,9 +85,11 @@ If there is a problem with ssh, you can specify the key to use:
 NIX_SSHOPTS="-i /home/papanito/.ssh/id_ssh_admin@envy.ed25519"
 ```
 
-## CI: flake updates and deployment
+## CI pipeline (the normal deploy path)
 
-The repository uses GitLab CI (`.gitlab-ci.yml`) with a project-scoped **shell executor** runner on `envy17` (tag `nixos-deploy`). The shell executor shares envy17's Nix store, so builds are incremental and Colmena can cross-build `rpi4-a` locally via binfmt.
+Deploying by hand is the exception: merges to `main` go through GitLab CI, which validates, builds and then applies Colmena to every host. The manual commands above stay the escape hatch for provisioning, runner changes and recovery.
+
+The repository uses GitLab CI (`.gitlab-ci.yml`) with a project-scoped **shell executor** runner on `envy17` (tag `nixos-deploy`). The shell executor shares envy17's Nix store, so builds are incremental and Colmena can cross-build `rpi4-a` locally via binfmt (`extra-platforms = aarch64-linux armv7l-linux`).
 
 Pipeline behavior:
 
@@ -95,6 +120,19 @@ ssh nixos@10.0.0.12 'sudo systemctl restart gitlab-runner'
 ```
 
 After the restart, GitLab → Settings → CI/CD → Runners should show `nixos-deploy-envy17` online. Keep fork pipelines disabled (`ci_allow_fork_pipelines_to_run_in_parent_project = false`): shell jobs execute directly on envy17.
+
+## Cloud & Networking
+
+What leaves the LAN is declarative too: hosts join the tailnet on boot, the homelab is published without opening inbound ports, and provider-side state is managed as code.
+
+|What|How|
+|----|-----------|
+|[Tailscale](https://tailscale.com/)|[`common/tailscale.nix`](./common/tailscale.nix) joins every host (clawfinger, envy, envy17, lenovo, rpi4-a) to the tailnet. `useRoutingFeatures = "client"` relaxes the firewall's reverse-path check without making any host a subnet router or exit node. The auth key comes from `secrets/secrets.yaml` via sops, so `tailscaled-autoconnect` joins on boot with no manual `tailscale up` — it must stay reusable, non-ephemeral and pre-approved.|
+|[Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/)|[`hosts/clawfinger/networking/cloudflare.nix`](./hosts/clawfinger/networking/cloudflare.nix) installs `cloudflared` and `cloudflare-warp` so homelab services are reachable without inbound ports. Origin certificates live in `~/.cloudflared/`; the WARP service is wired but disabled.|
+|[Cloudflare Workers](https://www.cloudflare.com/products/workers/)|Edge functions and static assets built and deployed with `wrangler` from the project repos (`wrangler.jsonc` + `wrangler.production.jsonc`, e.g. eventcompass). Not part of this flake.|
+|[Backblaze B2](https://www.backblaze.com/cloud-storage) + [restic](https://restic.net/)|[`profiles/servers/restic.nix`](./profiles/servers/restic.nix) enables `services.restic.backups.b2`: encrypted, deduplicated snapshots of `/var/lib` pushed daily to `b2:<bucket>/<host>`. The repo password and B2 keys are sops secrets rendered into `restic.env`; `autorestic` is installed alongside, and a Google Chat notifier reports success and failure.|
+|[GitLab](https://gitlab.com/)|Primary CI/CD and secrets backend — see [CI pipeline](#ci-pipeline-the-normal-deploy-path). Deploy credentials are protected CI/CD variables (`CI_PUSH_TOKEN`, `NIXOS_SSH_KEY_FILE`), and the runner is a project-scoped shell executor on envy17.|
+|[Terraform](https://developer.hashicorp.com/terraform)|Provider-side state as code: [`hosts/terraform/terraform/variables.tfvars`](./hosts/terraform/terraform/variables.tfvars) holds the Cloudflare account and zone IDs, so zones and DNS changes are reviewed instead of clicked. Local tooling (`terraform`, `cloudflared`, `wrangler`, `restic`) comes from the dotfiles repo.|
 
 ## Raspberry PI
 
