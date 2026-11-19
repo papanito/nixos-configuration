@@ -42,9 +42,11 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ91S1yRB15KxFHvko7/ZtyUumrD44RZI4HkLpED/iRE paperless-sync-key"
       # Used by the nixos-configuration GitLab pipeline (shell runner on
       # envy17) to deploy via Colmena. Private key lives in the protected
-      # CI variable NIXOS_SSH_KEY_FILE. Rotated 2026-11-18 after the previous
-      # RSA key was printed into a public job trace (pipeline iid 26).
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHoF+mNGNSzp5053F4ryoXrTbfxUxzy07Rscue7KKa81 ci-deploy@nixos-configuration"
+      # CI variable NIXOS_SSH_KEY_FILE. Rotated 2026-11-19: the 2026-11-18
+      # ed25519 key was printed into an aborted validate job trace
+      # (pipeline 3085516035, job 18155452345) — never authorized on any
+      # host because no deploy succeeded after the rotation.
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPiiO/IFTvF7Aj26rqFOtalg+BJU3YfFzU3srShhTwGd ci-deploy@nixos-configuration"
       #''command="sudo rsync --server --daemon -vlogDtpr.",no-agent-forwarding,no-port-forwarding,no-pty ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ91S1yRB15KxFHvko7/ZtyUumrD44RZI4HkLpED/iRE  paperless-sync-key''
     ];
   };
